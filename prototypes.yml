@@ -1,4 +1,0 @@
-default:
-  matches: '*'
-  prototype: default
-  environment: live

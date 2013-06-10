@@ -1,8 +1,8 @@
 {
-    "name": "allmarkedup/prontotype",
-    "description": "A server-side framework to help you quickly build interactive, data-driven HTML prototypes",
+    "name": "prontotype/core",
+    "description": "Core application code for Prontotype",
     "keywords": ["prototyping","prototype server","framework"],
-    "homepage": "http://prontotype.allmarkedup.com",
+    "homepage": "http://github.com/prontotype/prontotype",
     "license": "BSD-3",
     "authors": [
         {
@@ -23,13 +23,9 @@
         "mheap/Silex-Markdown": "*"
     },
     "minimum-stability": "dev",
-    "config": {
-        "vendor-dir": "app/vendor",
-        "bin-dir": "app/bin"
-    },
     "autoload": {
         "psr-0": {
-            "Prontotype": "app/src/"
+            "Prontotype": "src/"
         }
     }
 }
