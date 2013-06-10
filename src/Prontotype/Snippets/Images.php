@@ -8,11 +8,13 @@ Class Images extends Base {
     
     protected $configKey = 'images';
     
-    protected $placeholderUrls = array(
-        'dummyimage'  => "http://dummyimage.com/{{ width }}x{{ height }}/{{ bgcolor }}/{{ fgcolor }}/{{ format }}&text={{ text }}",
-        'placeholdit' => "http://placehold.it/{{ width }}x{{ height }}/{{ bgcolor }}/{{ fgcolor }}/{{ format }}&text={{ text }}",
-        'lorempixel'  => "http://lorempixel.com/{{ width }}/{{ height }}/{{ category }}/{{ text }}",
-    );
+    protected $placeholderUrls = array();
+    
+    public function __construct($app)
+    {
+        parent::__construct($app);
+        $this->placeholderUrls = $app['pt.config']['system']['snippets']['images']['placeholder']['services'];
+    }
     
     public function placeholder($opts = array(), $attrs = array())
     {

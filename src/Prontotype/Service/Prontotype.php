@@ -15,6 +15,7 @@ use Twig_Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 
+use Prontotype\Cache;
 use Prontotype\Twig\HelperExtension as TwigHelperExtension;
 use Prontotype\Data\Manager as DataManager;
 use Prontotype\Data\JsonParser;
@@ -100,6 +101,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.prototype.paths.cache.templates'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/views';
         $app['pt.prototype.paths.cache.assets'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
         $app['pt.prototype.paths.cache.data'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
+        $app['pt.prototype.paths.cache.requests'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
     }
     
     protected function loadConfig($app)
@@ -131,6 +133,23 @@ Class Prontotype implements ServiceProviderInterface {
             $ext = new ExtensionManager($app);
             $ext->load($app['pt.config']['extensions']);
             return $ext;
+        });
+        
+        $app['pt.cache'] = $app->share(function($app) {
+            return new Cache($app, array(
+                'assets' => array(
+                    'expiry' => 60 * 60 * 24 * 365,
+                    'path' => $app['pt.prototype.paths.cache.assets'],
+                ),
+                'data' => array(
+                    'expiry' => 60 * 60 * 24 * 365,
+                    'path' => $app['pt.prototype.paths.cache.data'],
+                ),
+                'requests' => array(
+                    'expiry' => $app['pt.config']['cache']['requests']['expiry'],
+                    'path' => $app['pt.prototype.paths.cache.data'],
+                )
+            ));
         });
         
         $app['pt.data'] = $app->share(function($app) {
