@@ -55,6 +55,8 @@ Class Application {
         foreach($this->relPaths as $key => $path) {
             $this->app['pt.core.paths.' . $key] = __DIR__ . $path;
         }
+        
+        $this->doHealthCheck();
     }
     
     public function run()
