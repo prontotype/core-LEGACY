@@ -4,6 +4,10 @@ namespace Prontotype;
 
 Class Cache {
 
+    const CACHE_TYPE_REQUESTS = 'requests';
+    const CACHE_TYPE_DATA = 'data';
+    const CACHE_TYPE_ASSETS = 'assets';
+
     protected $app;
     
     protected $cacheInfo;
@@ -60,7 +64,7 @@ Class Cache {
     
     protected function encodeKey( $key )
     {
-        return base64_encode( $key );
+        return sha1(base64_encode( $key )) . $this->cacheExt;
     }
     
     public function delete($type, $key = null)

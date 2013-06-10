@@ -137,15 +137,15 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app['pt.cache'] = $app->share(function($app) {
             return new Cache($app, array(
-                'assets' => array(
+                Cache::CACHE_TYPE_ASSETS => array(
                     'expiry' => 60 * 60 * 24 * 365,
                     'path' => $app['pt.prototype.paths.cache.assets'],
                 ),
-                'data' => array(
+                Cache::CACHE_TYPE_DATA => array(
                     'expiry' => 60 * 60 * 24 * 365,
                     'path' => $app['pt.prototype.paths.cache.data'],
                 ),
-                'requests' => array(
+                Cache::CACHE_TYPE_REQUESTS => array(
                     'expiry' => $app['pt.config']['cache']['requests']['expiry'],
                     'path' => $app['pt.prototype.paths.cache.data'],
                 )

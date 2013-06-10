@@ -20,9 +20,13 @@ Class Utils {
         return $url;
     }
     
-    // TODO: cache this!
-    public function fetchFromUrl($url)
+    public function fetchFromUrl($url, $ignoreCache = false)
     {
+        if ( ! $ignoreCache ) {
+            $data = $this->app['pt.cache']->get(Cache::CACHE_TYPE_REQUESTS, $url);
+            if ( $data ) return $data;
+        }
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -33,6 +37,9 @@ Class Utils {
             "mime" => curl_getinfo($ch, CURLINFO_CONTENT_TYPE)
         );
         curl_close($ch);
+        
+        $this->app['pt.cache']->set(Cache::CACHE_TYPE_REQUESTS, $url, $info);
+        
         return $info;
     }
     
