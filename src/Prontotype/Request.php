@@ -23,10 +23,18 @@ Class Request {
         return $this->unPrefixUrl($this->getRawUrlPath());
     }
     
-    public function getRawUrlPath()
+    public function getRawUrlPath($stripTrailingSlash = true)
     {
         list($path) = explode('?', $this->getRequestUri());
+        if ( $stripTrailingSlash ) {
+            $path = rtrim($path,'/');
+        }
         return $path;
+    }
+    
+    public function urlPathHasTrailingSlash()
+    {
+        return $this->getRequestUri() != '/' && substr($this->getRequestUri(), -1) == '/';
     }
     
     public function getUrlSegments()
