@@ -47,7 +47,8 @@ Class Application {
         $this->app = $app = new SilexApp();
         
         $this->app['pt.core.paths.root'] = $this->paths['root'];
-        $this->app['pt.core.paths.cache'] = $this->paths['cache'];
+        $this->app['pt.core.paths.cache.root'] = $this->paths['cache'];
+        $this->app['pt.core.paths.cache.templates'] = $this->paths['cache'] . '/templates';
         $this->app['pt.core.paths.vendor'] = $this->paths['vendor'];
         $this->app['pt.core.paths.prototypes'] = $this->paths['prototypes'];
         $this->app['pt.core.paths.prototype_config'] = $this->paths['root'] . '/prototypes.yml';
@@ -56,7 +57,6 @@ Class Application {
             $this->app['pt.core.paths.' . $key] = __DIR__ . $path;
         }
         
-        $this->doHealthCheck();
     }
     
     public function run()
@@ -64,6 +64,8 @@ Class Application {
         $app = $this->app;
         
         $this->app->register(new Service\Prontotype($this->sharedServices));
+        
+        $this->doHealthCheck();
         
         // redirect if there is a trailing slash
         $this->app->before(function() use ($app){
@@ -85,11 +87,21 @@ Class Application {
         if ( ! file_exists($this->app['pt.core.paths.prototype_config']) ) {
             $errors[] = 'The required prototypes configuration file (' . $this->app['pt.core.paths.prototype_config'] . ') does not exist.';
         }
-        if ( ! is_writeable($this->app['pt.core.paths.cache']) ) {
-            $errors[] = 'The cache directory (' . $this->app['pt.core.paths.cache'] . ') is not writeable or does not exist.';
+        if ( ! is_writeable($this->app['pt.core.paths.cache.root']) ) {
+            $errors[] = 'The cache directory (' . $this->app['pt.core.paths.cache.root'] . ') is not writeable or does not exist.';
         }
         if ( count($errors) ) {
             throw new \Exception(implode('<br>', $errors));
+        }
+        
+        foreach(array(
+            $this->app['pt.prototype.paths.cache.templates'],
+            $this->app['pt.prototype.paths.cache.assets'],
+            $this->app['pt.prototype.paths.cache.data'],
+        ) as $path) {
+            if ( ! file_exists($path) ) {
+                mkdir($path, 0777, true);
+            }
         }
     }
     

@@ -40,4 +40,30 @@ Class Utils {
     {
         return file_exists($this->app['pt.prototype.paths.templates'] . '/' . $templatePath);
     }
+    
+    protected function forcefileContents($path, $contents)
+    {
+        $file = basename($path);
+        $dir = dirname($path);
+
+        if ( ! is_dir($dir) ) {
+            mkdir($dir, 0771, true);
+        }
+        
+        file_put_contents($path, $contents);
+        chmod($path, 0644);
+    }
+
+    protected function forceRemoveDir($dir)
+    {
+        foreach ( glob($dir . '/*') as $file ) {
+            if ( is_dir($file) ) {
+                $this->rrmdir( $file );
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dir);
+    }
+    
 }

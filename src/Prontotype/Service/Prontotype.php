@@ -86,6 +86,7 @@ Class Prontotype implements ServiceProviderInterface {
         }
         
         $app['pt.prototype.label'] = $label;
+        $app['pt.prototype.folder'] = $ptConfig['prototype'];
         $app['pt.prototype.environment'] = $ptConfig['environment'];
         
         $app['pt.prototype.paths.root'] = $ptDirPath;
@@ -94,6 +95,11 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.prototype.paths.data'] = $app['pt.prototype.paths.root'] . '/data';
         $app['pt.prototype.paths.config'] = $app['pt.prototype.paths.root'] . '/config';
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
+        
+        $app['pt.prototype.paths.cache.root'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
+        $app['pt.prototype.paths.cache.templates'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/views';
+        $app['pt.prototype.paths.cache.assets'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
+        $app['pt.prototype.paths.cache.data'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
     }
     
     protected function loadConfig($app)
@@ -143,7 +149,7 @@ Class Prontotype implements ServiceProviderInterface {
             'twig.path'         => array( $app['pt.prototype.paths.templates'], $app['pt.core.paths.templates'] ),
             'twig.options'      => array(
                 'strict_variables'  => false,
-                'cache'             => $app['pt.core.paths.cache'],
+                'cache'             => $app['pt.prototype.paths.cache.templates'],
                 'auto_reload'       => true,
                 'debug'             => $app['pt.config']['debug'],
                 'autoescape'        => false
@@ -201,7 +207,6 @@ Class Prontotype implements ServiceProviderInterface {
         $app->mount('/' . $app['pt.config']['triggers']['shorturl'], new \Prontotype\Controller\RedirectController());
         $app->mount('/', new \Prontotype\Controller\MainController());
     }
-
     
     public function boot ( SilexApp $app ) {}
     

@@ -2,3 +2,7 @@
 composer.lock
 vendor/*
 bin/*
+cache/*
+prototypes/*
+prototypes.yml
+index.php
