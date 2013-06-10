@@ -10,8 +10,8 @@ use Silex\ServiceProviderInterface;
 
 use Twig_Extension_Debug;
 use Twig_Loader_String;
-
 use Twig_Environment;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 

@@ -14,6 +14,15 @@ class AssetController implements ControllerProviderInterface {
     {
         $controllers = $app['controllers_factory'];
         
+        $controllers->get('/{asset_path}', function ($asset_path) use ($app) {
+            
+            $cachePath = $app['pt.assets']->getProcessedAssetPath($asset_path);
+            
+            return $app->sendFile($cachePath);
+
+        })
+        ->assert('asset_path', '.+')
+        ->bind('asset.get');
         
         return $controllers;
     }
