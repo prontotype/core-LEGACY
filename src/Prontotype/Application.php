@@ -30,7 +30,6 @@ Class Application {
         'pt.exporter'      => '\Prontotype\Exporter',
         'pt.scraper'       => '\Prontotype\Scraper\Scraper',
         'pt.utils'         => '\Prontotype\Utils',
-        'pt.assets'        => '\Prontotype\Assets\Manager',
         'pt.user_manager'  => '\Prontotype\UserManager',
         'pt.snippets'      => '\Prontotype\Snippets\Manager',
     );

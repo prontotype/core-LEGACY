@@ -32,6 +32,7 @@ Class Cache {
             'content' => $content
         );
         file_put_contents($path, serialize($data));
+        return $path;
     }
     
     public function get($type, $key, $newerThan = null)

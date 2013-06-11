@@ -16,9 +16,15 @@ class AssetController implements ControllerProviderInterface {
         
         $controllers->get('/{asset_path}', function ($asset_path) use ($app) {
             
-            $cachePath = $app['pt.assets']->getProcessedAssetPath($asset_path);
+            try {
+                $assetDetails = $app['pt.assets']->generateAsset($asset_path);                
+            } catch ( \Exception $e ) {
+                $app->abort(404);
+            }
             
-            return $app->sendFile($cachePath);
+            return new Response($assetDetails['content'], 200, array(
+                'Content-Type' => $assetDetails['mime']
+            ));
 
         })
         ->assert('asset_path', '.+')

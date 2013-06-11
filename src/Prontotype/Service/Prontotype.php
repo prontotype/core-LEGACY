@@ -23,6 +23,9 @@ use Prontotype\Data\YamlParser;
 use Prontotype\Data\XmlParser;
 use Prontotype\Data\CsvParser;
 use Prontotype\Extension\Manager as ExtensionManager;
+use Prontotype\Assets\Manager as AssetManager;
+use Prontotype\Assets\LessProcessor;
+use Prontotype\Assets\ScssProcessor;
 
 use Silextend\Config\YamlConfig;
 
@@ -96,6 +99,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.prototype.paths.data'] = $app['pt.prototype.paths.root'] . '/data';
         $app['pt.prototype.paths.config'] = $app['pt.prototype.paths.root'] . '/config';
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
+        $app['pt.prototype.paths.assets'] = $app['pt.prototype.paths.root'] . '/assets';
         
         $app['pt.prototype.paths.cache.root'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
         $app['pt.prototype.paths.cache.templates'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/views';
@@ -158,6 +162,13 @@ Class Prontotype implements ServiceProviderInterface {
                 new YamlParser($app),
                 new XmlParser($app),
                 new CsvParser($app)
+            ));
+        });
+        
+        $app['pt.assets'] = $app->share(function($app) {
+            return new AssetManager($app, array(
+                new LessProcessor($app),
+                new ScssProcessor($app),
             ));
         });
         
