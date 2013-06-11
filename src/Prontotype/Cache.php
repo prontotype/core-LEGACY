@@ -7,6 +7,7 @@ Class Cache {
     const CACHE_TYPE_REQUESTS = 'requests';
     const CACHE_TYPE_DATA = 'data';
     const CACHE_TYPE_ASSETS = 'assets';
+    const CACHE_TYPE_EXPORTS = 'exports';
 
     protected $app;
     
@@ -55,6 +56,55 @@ Class Cache {
         return $data['content'];
     }
     
+    public function delete($type, $key = null)
+    {
+        if ( ! isset($this->cacheInfo[$type]['path']) ) {
+            throw new \Exception('Cannot delete cache data of type \'' . $type . '\'');
+        }
+        if ( $key ) {
+            unlink($this->getCachePath($type, $key));
+        } else {
+            $this->app['pt.utils']->forceRemoveDir($this->cacheInfo[$type]['path'], false);
+        }
+    }
+    
+    public function setRaw($type, $key, $contents, $subDir = null)
+    {        
+        if ( ! isset($this->cacheInfo[$type]['path']) ) {
+            return null;
+        }
+        
+        $path = $this->getRawCachePath($type, $key, $subDir);
+        
+        $this->app['pt.utils']->forcefileContents($path, $contents);
+        return $path;
+    }
+    
+    public function deleteRaw($type, $key, $subDir = null)
+    {        
+        if ( ! isset($this->cacheInfo[$type]['path']) ) {
+            throw new \Exception('Cannot delete cache data of type \'' . $type . '\'');
+        }
+        if ( $key ) {
+            unlink($this->getRawCachePath($type, $key, $subDir));
+        } else {
+            if ( $subDir ) {
+                $this->app['pt.utils']->forceRemoveDir($this->cacheInfo[$type]['path'] . '/' . $subDir);    
+            } else {
+                $this->app['pt.utils']->forceRemoveDir($this->cacheInfo[$type]['path'], false);
+            }
+        }
+    }
+    
+    protected function getRawCachePath($type, $key, $subDir = null)
+    {
+        if ( $subDir ) {
+            return $this->cacheInfo[$type]['path'] . '/' . $subDir . '/' . trim($key,'/');
+        } else {
+            return $this->cacheInfo[$type]['path'] . '/' . trim($key,'/');
+        }
+    }
+    
     protected function getCachePath($type, $key)
     {
          if ( ! isset($this->cacheInfo[$type]['path']) ) {
@@ -68,20 +118,6 @@ Class Cache {
         return sha1(base64_encode( $key )) . $this->cacheExt;
     }
     
-    public function delete($type, $key = null)
-    {
-        if ( ! isset($this->cacheInfo[$type]['path']) ) {
-            throw new \Exception('Cannot delete cache data of type \'' . $type . '\'');
-        }
-        if ( $key ) {
-            unlink($this->getCachePath($type, $key));
-        } else {
-            foreach( glob( $this->cacheInfo[$type]['path'] . '/*' ) as $file  ) {
-                unlink($file);
-            }
-        }
-    }
-    
     protected function getCacheTypeExpiry($type, $override = null)
     {
         if ( $override ){
@@ -92,5 +128,6 @@ Class Cache {
         }
         return time() + $this->defaultCacheExpiry;
     }
-
+    
+    
 }

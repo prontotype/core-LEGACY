@@ -98,9 +98,10 @@ Class Application {
             $this->app['pt.prototype.paths.cache.assets'],
             $this->app['pt.prototype.paths.cache.data'],
             $this->app['pt.prototype.paths.cache.requests'],
+            $this->app['pt.prototype.paths.cache.exports'],
         ) as $path) {
             if ( ! file_exists($path) ) {
-                mkdir($path, 0777, true);
+                mkdir($path, 0771, true);
             }
         }
     }

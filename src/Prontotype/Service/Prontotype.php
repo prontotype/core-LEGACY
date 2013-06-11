@@ -106,6 +106,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.prototype.paths.cache.assets'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
         $app['pt.prototype.paths.cache.data'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
         $app['pt.prototype.paths.cache.requests'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
+        $app['pt.prototype.paths.cache.exports'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';
     }
     
     protected function loadConfig($app)
@@ -151,7 +152,11 @@ Class Prontotype implements ServiceProviderInterface {
                 ),
                 Cache::CACHE_TYPE_REQUESTS => array(
                     'expiry' => $app['pt.config']['cache']['requests']['expiry'],
-                    'path' => $app['pt.prototype.paths.cache.data'],
+                    'path' => $app['pt.prototype.paths.cache.requests'],
+                ),
+                Cache::CACHE_TYPE_EXPORTS => array(
+                    'expiry' => 60 * 60 * 24 * 365,
+                    'path' => $app['pt.prototype.paths.cache.exports'],
                 )
             ));
         });
@@ -235,6 +240,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app->mount('/' . $app['pt.config']['triggers']['user'], new \Prontotype\Controller\UserController());
         $app->mount('/' . $app['pt.config']['triggers']['assets'], new \Prontotype\Controller\AssetController());
         $app->mount('/' . $app['pt.config']['triggers']['shorturl'], new \Prontotype\Controller\RedirectController());
+        $app->mount('/' . $app['pt.config']['triggers']['export'], new \Prontotype\Controller\ExportController());
         $app->mount('/', new \Prontotype\Controller\MainController());
     }
     
