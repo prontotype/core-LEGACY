@@ -67,7 +67,7 @@ Class Cache {
             $this->app['pt.utils']->forceRemoveDir($this->cacheInfo[$type]['path'], false);
         }
     }
-    
+        
     public function setRaw($type, $key, $contents, $subDir = null)
     {        
         if ( ! isset($this->cacheInfo[$type]['path']) ) {
@@ -80,7 +80,7 @@ Class Cache {
         return $path;
     }
     
-    public function deleteRaw($type, $key, $subDir = null)
+    public function deleteRaw($type, $key = null, $subDir = null)
     {        
         if ( ! isset($this->cacheInfo[$type]['path']) ) {
             throw new \Exception('Cannot delete cache data of type \'' . $type . '\'');
@@ -94,6 +94,27 @@ Class Cache {
                 $this->app['pt.utils']->forceRemoveDir($this->cacheInfo[$type]['path'], false);
             }
         }
+    }
+    
+    public function listContents($type)
+    {
+        if ( ! isset($this->cacheInfo[$type]['path']) ) {
+            return array();
+        }
+        $list = array();
+        $files = glob($this->cacheInfo[$type]['path'] . '/*' );
+        foreach($files as $file) {
+            $list[] = str_replace($this->cacheInfo[$type]['path'] . '/', '', $file);
+        }
+        return $list;
+    }
+    
+    public function getCacheDirPath($type)
+    {
+        if ( ! isset($this->cacheInfo[$type]['path']) ) {
+            return null;
+        }
+        return $this->cacheInfo[$type]['path'];
     }
     
     protected function getRawCachePath($type, $key, $subDir = null)

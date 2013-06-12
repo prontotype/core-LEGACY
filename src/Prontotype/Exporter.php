@@ -18,28 +18,55 @@ Class Exporter {
         $this->app = $app;
     }
     
-    public function run($startPaths = null)
+    public function run($startPaths = null, $exportTag = null)
     {
-        $this->app['pt.cache']->deleteRaw(Cache::CACHE_TYPE_EXPORTS);
-        $exportTag = 'export';
+        if ( $exportTag ) {
+            $this->app['pt.cache']->deleteRaw(Cache::CACHE_TYPE_EXPORTS, $exportTag);  
+        } else {
+            $exportTag = time();
+        }
+        
+        $exportHtml = $exportTag . '/html';
         
         if ( ! $startPaths ) {
             $startPaths = array('/');
         }
         foreach( $startPaths as $path ) {
-            $this->processPath($path, $exportTag);
+            $this->processPath($path, $exportHtml);
         }
+        
+        $exportPath = $this->app['pt.cache']->getCacheDirPath(Cache::CACHE_TYPE_EXPORTS) . '/' . $exportTag;
+        $exportHtmlPath = $this->app['pt.cache']->getCacheDirPath(Cache::CACHE_TYPE_EXPORTS) . '/' . $exportHtml;
+        $zipPath = $exportPath . '/' . $exportTag . '.zip';
+        if ( $this->app['pt.utils']->zipDir($exportHtmlPath, $zipPath) ) {
+            return array(
+                'filename' => $exportTag . '.zip',
+                'path' => $zipPath
+            );            
+        } else {
+            return false;
+        }
+    }
+    
+    public function clear()
+    {
+        $this->app['pt.cache']->deleteRaw(Cache::CACHE_TYPE_EXPORTS); 
+    }
+    
+    public function listContents()
+    {
+        return $this->app['pt.cache']->listContents(Cache::CACHE_TYPE_EXPORTS);
     }
     
     protected function processPath($urlPath, $exportTag)
     {        
         if ( $this->isValidPath($urlPath) ) {
             
-            $canonicalPath = $this->getCanonicalPath($urlPath);
+            $cleanPath = $this->cleanPath($urlPath);
             
-            if ( ! in_array($canonicalPath, $this->processedPaths) ) {
+            if ( ! in_array($cleanPath, $this->processedPaths) ) {
                 
-                $this->processedPaths[] = $canonicalPath;
+                $this->processedPaths[] = $cleanPath;
                 
                 $client = new Client($this->app);
                 $crawler = $client->request('GET', $urlPath);
@@ -51,75 +78,126 @@ Class Exporter {
                 foreach($links as $link) {
                     $href = $link->getAttribute('href');  
                     if ( ! empty($href) ) {
-                        $canonicalHref = $this->getCanonicalPath($href);
-                        $this->processPath($href, $exportTag);
-                        if ( $this->isValidPath($href) ) {
-                            $replacements[$href] = $canonicalHref;    
+                        $canonicalHref = $this->cleanPath($href, $urlPath);
+                        $rootRelativeHref = $this->convertRelativeToRootRelativeUrl($href, $urlPath);
+                        $this->processPath($rootRelativeHref, $exportTag);
+                        if ( $this->isValidPath($canonicalHref) ) {
+                            $replacements[$href] = $this->convertUrl($canonicalHref, $cleanPath);        
                         }
                     }
                 }
                 
-                echo '<pre>';
-                print_r($canonicalPath);
-                echo '</pre>';
-                
-                $currentUrlParts = array_slice(explode('/', trim($canonicalPath, '/')), 0, -1);
-                // echo '<pre>';
-                // print_r($currentUrlParts);
-                // echo '</pre>';
-                // echo '<pre>';
-                // print_r('-------');
-                // echo '</pre>';
-                
-                $relReplacements = array();
-                foreach($replacements as $key => $replacement) {
-                    $repParts = explode('/', trim($replacement, '/'));
-                    if ( $repParts < $currentUrlParts ) {
-                        for ($i = 0; $i < count($currentUrlParts); $i++ ) {
-                            if ( $repParts[$i] == $currentUrlParts[$i] ) {
-                                unset($repParts[$i]);
-                            }
-                        }                        
-                    } else {
-                        for ($i = 0; $i < count($currentUrlParts); $i++ ) {
-                            if ( $repParts[$i] == $currentUrlParts[$i] ) {
-                                $repParts[$i] == '../';
-                            }
-                        }
-                    }
-                    
-                    $relReplacements[$key] = './' . implode('/', $repParts);
-                }
-                
-                uksort($relReplacements, function($a,$b){
+                uksort($replacements, function($a,$b){
                     return strlen($a) < strlen($b);
                 });
+                
+                $quotedReplacements = array();
+                foreach($replacements as $key => $replacement) {
+                    $replacement = str_replace('index.php', '',$replacement);
+                    $replacement = str_replace('//','/', $replacement);
+                    $quotedReplacements['"' . $key] = '"' . $replacement;
+                    $quotedReplacements['=' . $key] = '=' . $replacement;
+                    $quotedReplacements['\'' . $key] = '\'' . $replacement;
+                }
+                
+                $html = str_replace(array_keys($quotedReplacements), array_values($quotedReplacements), $html);
+                
+                $cleanPath = $this->stripIndex($cleanPath);
 
-                
-                echo '<pre>';
-                print_r($relReplacements);
-                echo '</pre>';
-                
-                echo '<pre>';
-                print_r("================");
-                echo '</pre>';
-                
-
-                
-                $html = str_replace(array_keys($relReplacements), array_values($relReplacements), $html);
-                
-                $this->app['pt.cache']->setRaw(Cache::CACHE_TYPE_EXPORTS, $canonicalPath, $html, $exportTag);
-            }   
+                if ( !empty($html) ) {
+                    $this->app['pt.cache']->setRaw(Cache::CACHE_TYPE_EXPORTS, $cleanPath, $html, $exportTag);                    
+                }
+            }
         }
     }
     
-    protected function getCanonicalPath($path)
+    protected function stripIndex($path)
     {
-        $path = str_replace('/index.php', '', $path);
-        if ( empty($path) || $path == '/' ) {            
+        $path = str_replace('index.php', '',$path);
+        $path = str_replace('//','/', $path);
+        return $path;
+    }
+    
+    protected function cleanPath($path, $currentUrlPath = null)
+    {
+        if ( $path[0] == '.' && $currentUrlPath ) {
+            $path = $this->convertRelativeToRootRelativeUrl($path, $currentUrlPath);
+        }
+        $indexLessPath = $this->stripIndex($path);
+        if ( empty($indexLessPath) || $indexLessPath == '/' ) {
             $path = '/index';
         }
-        return str_replace('/index.php', '', $path) . '.html';
+        
+        return $path . '.html';
+    }
+    
+    protected function convertUrl($urlPath, $currentUrlPath)
+    {
+        if ( $urlPath[0] == '/' ) {
+            return $this->convertRootRelativeToRelativeUrl($urlPath, $currentUrlPath);    
+        } elseif ( $urlPath[0] == '.' ) {
+            return $this->convertRelativeToRootRelativeUrl($urlPath, $currentUrlPath);
+        }
+        return $urlPath;
+    }
+    
+    protected function convertRelativeToRootRelativeUrl($relativeUrl, $currentUrlPath)
+    {
+        $pathParts = explode('/', $relativeUrl);
+        $currentPathParts = explode('/', $currentUrlPath);
+        $i = 0;
+        foreach( $pathParts as &$part ) {
+            if ($part == '..') {
+                $part = $currentPathParts[$i];
+            }
+            $i++;
+        }
+        return implode('/', $pathParts);
+    }
+    
+    protected function convertRootRelativeToRelativeUrl($rootRelativeUrlPath, $currentUrlPath)
+    {
+        // absolute link
+        $relUrl = '';
+        
+        $currentUrlParts = explode('/', trim($currentUrlPath, '/'));
+        $currentUrlPage = $currentUrlParts[count($currentUrlParts)-1];
+        unset($currentUrlParts[count($currentUrlParts)-1]);
+        
+        $repParts = explode('/', trim($rootRelativeUrlPath, '/'));
+        $repPartsPage = $repParts[count($repParts)-1];
+        unset($repParts[count($repParts)-1]);
+
+
+        for ($i = 0; $i < count($currentUrlParts); $i++ ) {               
+            if ( isset($repParts[$i]) && ($repParts[$i] == $currentUrlParts[$i]) ) {
+                unset($currentUrlParts[$i]);
+                unset($repParts[$i]);
+            } else {
+                break;
+            }
+        }
+    
+        $currentUrlParts = array_values($currentUrlParts);
+        $repParts = array_values($repParts);
+    
+        foreach($currentUrlParts as $currentUrlPart) {
+            array_unshift($repParts, '../');
+        }
+    
+        if ( count($repParts) ) {
+            $relUrl = implode('/', $repParts) . '/' . $repPartsPage;    
+        } else {
+            $relUrl = $repPartsPage;    
+        }
+                
+                        
+        if ( $relUrl[0] !== '.' ) {
+            $relUrl = './' . $relUrl;
+        }
+        $relUrl = str_replace('//','/', $relUrl);
+            
+        return $relUrl;
     }
     
     protected function isValidPath($urlPath)

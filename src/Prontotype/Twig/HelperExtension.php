@@ -37,6 +37,9 @@ class HelperExtension extends \Twig_Extension
                         'form' => $this->app['pt.utils']->generateUrlPath('auth.login'),
                         'login' => $this->app['pt.utils']->generateUrlPath('auth.check'),
                         'logout' => $this->app['pt.utils']->generateUrlPath('auth.logout')
+                    ),
+                    'export' => array(
+                        'fetch' => $this->app['pt.utils']->generateUrlPath('export.run'),
                     )
                 )
             )
