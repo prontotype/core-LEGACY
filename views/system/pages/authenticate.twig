@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<form action="{{ auth_path }}" method="POST" id="pt-login-form">
+<form action="{{ pt.urls.auth.check }}" method="post" id="pt-login-form">
 	
 	{% if error %}
 	<div class="alert alert--error">

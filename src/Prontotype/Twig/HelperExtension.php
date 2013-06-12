@@ -16,6 +16,7 @@ class HelperExtension extends \Twig_Extension
     
     public function getGlobals()
     {
+        $app = $this->app;
         return array(
             'pt' => array(
                 'config'        => $this->app['pt.config'],      
@@ -39,7 +40,10 @@ class HelperExtension extends \Twig_Extension
                         'logout' => $this->app['pt.utils']->generateUrlPath('auth.logout')
                     ),
                     'export' => array(
+                        'tools' => $this->app['pt.utils']->generateUrlPath('export.tools'),
                         'fetch' => $this->app['pt.utils']->generateUrlPath('export.run'),
+                        'clear' => $this->app['pt.utils']->generateUrlPath('export.clear'),
+                        'download' => $this->app['pt.utils']->generateUrlPath('export.download')
                     )
                 )
             )

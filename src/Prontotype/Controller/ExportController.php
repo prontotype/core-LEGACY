@@ -27,21 +27,42 @@ class ExportController implements ControllerProviderInterface {
         })
         ->bind('export.run');
         
+        
+        $controllers->get('/download/{tag}', function ($tag) use ($app) {
+            
+            if ( ! $tag ) {
+                $app->abort(404);
+            }
+            
+            if ( $details = $app['pt.exporter']->getExportDetails($tag) ) {
+                return $app->sendFile($details['path'])->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $details['filename']);  
+            } else {
+                $app->abort(404);
+            }
+            
+        })
+        ->value('tag', null)
+        ->bind('export.download');
+        
+        
         $controllers->get('/clear', function () use ($app) {
             
             $app['pt.exporter']->clear();
+            return $app->redirect($app['pt.utils']->generateUrlPath('export.tools'));
             
         })
         ->bind('export.clear');
         
-        $controllers->get('/list', function () use ($app) {
-                        
-            // echo '<pre>';
- //            print_r($app['pt.exporter']->listContents());
- //            echo '</pre>';
+        
+        $controllers->get('/tools', function () use ($app) {
+            
+            return $app['twig']->render('system/pages/exports/info.twig', array(
+                'exports' => $app['pt.exporter']->listContents()
+            ));
 
         })
-        ->bind('export.list');
+        ->bind('export.tools');
+        
         
         return $controllers;
     }

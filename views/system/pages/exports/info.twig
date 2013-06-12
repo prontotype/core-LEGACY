@@ -1,0 +1,21 @@
+{% extends "system/layouts/system.twig" %}
+
+{% set title = 'Previously exported static HTML templates' %}
+
+{% block content %}
+
+    <h1>Static HTML Exports</h1>
+    <p><a href="{{ pt.urls.export.fetch }}">Generate a new export</a></p>
+	
+    {% if exports|length %}
+    <h2>Previous exports:</h2>
+    <ul>
+        {% for export in exports %}
+        <li><a href="{{ pt.urls.export.download }}/{{ export.tag }}">{{ export.filename }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <p><a href="{{ pt.urls.export.clear }}">Clear exports</a></p>
+
+{% endblock content %}

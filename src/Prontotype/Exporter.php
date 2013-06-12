@@ -55,7 +55,26 @@ Class Exporter {
     
     public function listContents()
     {
-        return $this->app['pt.cache']->listContents(Cache::CACHE_TYPE_EXPORTS);
+        $tags = $this->app['pt.cache']->listContents(Cache::CACHE_TYPE_EXPORTS);
+        $details = array();
+        foreach($tags as $tag) {
+            $details[] = $this->getExportDetails($tag);
+        }
+        return $details;
+    }
+    
+    public function getExportDetails($exportTag)
+    {
+        $zipPath = $this->app['pt.cache']->getCacheDirPath(Cache::CACHE_TYPE_EXPORTS) . '/' . $exportTag . '/' . $exportTag . '.zip';
+            
+        if ( ! file_exists($zipPath) ) {
+            return null;
+        }
+        return array(
+            'filename' => $exportTag . '.zip',
+            'tag' => $exportTag,
+            'path' => $zipPath,
+        );
     }
     
     protected function processPath($urlPath, $exportTag)
