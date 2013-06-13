@@ -243,7 +243,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app->mount('/' . $app['pt.config']['triggers']['user'], new \Prontotype\Controller\UserController());
         $app->mount('/' . $app['pt.config']['triggers']['assets'], new \Prontotype\Controller\AssetController());
         $app->mount('/' . $app['pt.config']['triggers']['shorturl'], new \Prontotype\Controller\RedirectController());
-        $app->mount('/' . $app['pt.config']['triggers']['export'], new \Prontotype\Controller\ExportController());
+        $app->mount('/' . $app['pt.config']['triggers']['tools'], new \Prontotype\Controller\ToolsController());
         $app->mount('/', new \Prontotype\Controller\MainController());
     }
     

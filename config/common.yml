@@ -29,7 +29,7 @@ cookie:
 triggers:
   data: _data
   shorturl: _p
-  export: _export
+  tools: _tools
   auth: _auth
   assets: _assets
   user: _user

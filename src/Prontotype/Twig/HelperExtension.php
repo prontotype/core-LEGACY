@@ -40,7 +40,7 @@ class HelperExtension extends \Twig_Extension
                         'logout' => $this->app['pt.utils']->generateUrlPath('auth.logout')
                     ),
                     'export' => array(
-                        'tools' => $this->app['pt.utils']->generateUrlPath('export.tools'),
+                        'overview' => $this->app['pt.utils']->generateUrlPath('export.overview'),
                         'fetch' => $this->app['pt.utils']->generateUrlPath('export.run'),
                         'clear' => $this->app['pt.utils']->generateUrlPath('export.clear'),
                         'download' => $this->app['pt.utils']->generateUrlPath('export.download')

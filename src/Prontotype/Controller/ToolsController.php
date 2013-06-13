@@ -9,22 +9,33 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExportController implements ControllerProviderInterface {
+class ToolsController implements ControllerProviderInterface {
     
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
+
+
+        $controllers->get('/export', function () use ($app) {
+            
+            return $app['twig']->render('system/pages/tools/export.twig', array(
+                'exports' => $app['pt.exporter']->listContents()
+            ));
+
+        })
+        ->bind('export.overview');
         
-        $controllers->get('/run', function () use ($app) {
+        
+        $controllers->get('/export/run', function () use ($app) {
             
             $details = $app['pt.exporter']->run();
-            return $app->redirect($app['pt.utils']->generateUrlPath('export.tools'));
+            return $app->redirect($app['pt.utils']->generateUrlPath('export.overview'));
             
         })
         ->bind('export.run');
         
         
-        $controllers->get('/current', function () use ($app) {
+        $controllers->get('/export/current', function () use ($app) {
             
             $details = $app['pt.exporter']->run();
             return $app->redirect($app['pt.utils']->generateUrlPath('export.download', array(
@@ -35,7 +46,7 @@ class ExportController implements ControllerProviderInterface {
         ->bind('export.current');
         
         
-        $controllers->get('/download/{tag}', function ($tag) use ($app) {
+        $controllers->get('/export/download/{tag}', function ($tag) use ($app) {
             
             if ( ! $tag ) {
                 $app->abort(404);
@@ -52,23 +63,13 @@ class ExportController implements ControllerProviderInterface {
         ->bind('export.download');
         
         
-        $controllers->get('/clear', function () use ($app) {
+        $controllers->get('/export/clear', function () use ($app) {
             
             $app['pt.exporter']->clear();
-            return $app->redirect($app['pt.utils']->generateUrlPath('export.tools'));
+            return $app->redirect($app['pt.utils']->generateUrlPath('export.overview'));
             
         })
         ->bind('export.clear');
-        
-        
-        $controllers->get('/tools', function () use ($app) {
-            
-            return $app['twig']->render('system/pages/exports/tools.twig', array(
-                'exports' => $app['pt.exporter']->listContents()
-            ));
-
-        })
-        ->bind('export.tools');
         
         
         return $controllers;
