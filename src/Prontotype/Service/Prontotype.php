@@ -174,6 +174,9 @@ Class Prontotype implements ServiceProviderInterface {
             return new AssetManager($app, array(
                 new LessProcessor($app),
                 new ScssProcessor($app),
+            ), array(
+                $app['pt.prototype.paths.assets'],
+                $app['pt.core.paths.assets'],
             ));
         });
         

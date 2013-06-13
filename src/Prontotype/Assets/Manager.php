@@ -15,10 +15,13 @@ Class Manager {
     protected $aliases = array(
         'css' => array('less', 'scss')
     );
+    
+    protected $searchPaths = array();
 
-    public function __construct($app, $processors = array())
+    public function __construct($app, $processors = array(), $searchPaths = array())
     {
         $this->app = $app;
+        $this->searchPaths = $searchPaths;
         foreach( $processors as $processor ) {
             $this->registerProcessor($processor);
         }
@@ -26,24 +29,7 @@ Class Manager {
     
     public function generateAsset($assetPath)
     {        
-        $fullPath = $this->app['pt.prototype.paths.assets'] . '/' . strtolower($assetPath);
-        
-        if ( ! file_exists( $fullPath ) ) {
-            $aliasPath = null;
-            $aliases = $this->getPathAliases($fullPath);
-            if ( count($aliases) ) {
-                foreach($aliases as $alias) {
-                    if ( file_exists($alias) ) {
-                        $aliasPath = $alias;
-                    }
-                }
-            }
-            if ( ! $aliasPath ) {
-                throw new \Exception('File not found'); // TODO replace with specific exception
-            } else {
-                $fullPath = $aliasPath;
-            }
-        }
+        $fullPath = $this->findAssetFile($assetPath);
         
         $lastEditTime = filemtime($fullPath);
         $parts = pathinfo($fullPath);
@@ -85,6 +71,30 @@ Class Manager {
             }
         }
         return $contents;
+    }
+    
+    protected function findAssetFile($assetPath)
+    {
+        $aliasPath = null;
+        foreach($this->searchPaths as $searchPath) {
+            $fullPath = $searchPath . '/' . strtolower($assetPath);
+            if ( ! file_exists( $fullPath ) ) {
+                $aliases = $this->getPathAliases($fullPath);
+                if ( count($aliases) ) {
+                    foreach($aliases as $alias) {
+                        if ( file_exists($alias) ) {
+                            $fullPath = $alias;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if ( ! file_exists($fullPath) ) {
+            throw new \Exception('File not found'); // TODO replace with specific exception
+        }
+        
+        return $fullPath;
     }
     
     protected function getPathAliases($path)

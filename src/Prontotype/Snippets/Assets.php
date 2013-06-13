@@ -8,7 +8,7 @@ Class Assets extends Base {
     
     protected $configKey = 'assets';
     
-    public function stylesheet($href, $media = 'all', $appendAssetPath = true)
+    public function stylesheet($href, $media = 'all', $attrs = array(), $appendAssetPath = true)
     {
         if ($appendAssetPath) {
             $href = $this->prefixPath($href);
