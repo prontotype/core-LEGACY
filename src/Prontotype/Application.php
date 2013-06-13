@@ -52,7 +52,7 @@ Class Application {
         $this->app['pt.core.paths.prototype_config'] = $this->paths['root'] . '/prototypes.yml';
         
         foreach($this->relPaths as $key => $path) {
-            $this->app['pt.core.paths.' . $key] = __DIR__ . $path;
+            $this->app['pt.core.paths.' . $key] = realpath(__DIR__ . $path);
         }
         
     }

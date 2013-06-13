@@ -75,8 +75,7 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        $aliasPath = null;
-        foreach($this->searchPaths as $searchPath) {
+        foreach($this->searchPaths as $searchPath) {            
             $fullPath = $searchPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {
                 $aliases = $this->getPathAliases($fullPath);
@@ -84,11 +83,15 @@ Class Manager {
                     foreach($aliases as $alias) {
                         if ( file_exists($alias) ) {
                             $fullPath = $alias;
+                            break 2;
                         }
                     }
                 }
+            } else {
+                break;                
             }
         }
+      
         
         if ( ! file_exists($fullPath) ) {
             throw new \Exception('File not found'); // TODO replace with specific exception
