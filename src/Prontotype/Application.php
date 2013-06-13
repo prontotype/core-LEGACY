@@ -47,7 +47,6 @@ Class Application {
         
         $this->app['pt.core.paths.root'] = $this->paths['root'];
         $this->app['pt.core.paths.cache.root'] = $this->paths['cache'];
-        $this->app['pt.core.paths.cache.templates'] = $this->paths['cache'] . '/templates';
         $this->app['pt.core.paths.vendor'] = $this->paths['vendor'];
         $this->app['pt.core.paths.prototypes'] = $this->paths['prototypes'];
         $this->app['pt.core.paths.prototype_config'] = $this->paths['root'] . '/prototypes.yml';
