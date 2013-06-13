@@ -28,7 +28,7 @@ class HelperExtension extends \Twig_Extension
                 'store'         => $this->app['pt.store'],
                 'notifications' => $this->app['pt.notifications'],
                 'snippets'      => $this->app['pt.snippets'],
-                // 'scraper'       => $this->app['pt.scraper'], // TODO
+                'scraper'       => $this->app['pt.scraper'],
                 'urls' => array(
                     'user' => array(
                         'login' => $this->app['pt.utils']->generateUrlPath('user.login'),

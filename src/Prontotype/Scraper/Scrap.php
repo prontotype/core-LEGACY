@@ -6,7 +6,7 @@ use Symfony\Component\CssSelector\CssSelector;
 
 class Scrap implements ScrapInterface {
 
-	protected $full_html;
+	protected $fullHtml;
 	protected $html;
 	protected $uri;
 	protected $dom;
@@ -17,7 +17,7 @@ class Scrap implements ScrapInterface {
         $this->html = $html;
         $this->uri = $uri;
 
-        $this->full_html = strpos($html, '<html') > -1;
+        $this->fullHtml = strpos($html, '<html') > -1;
     }
 
     protected function domBootstrap () {
@@ -34,7 +34,7 @@ class Scrap implements ScrapInterface {
             // change href and src attribute values
             foreach (array('href', 'src') as $attr) {
                 foreach ($this->xpath->query("//*[@" . $attr . "]") as $element) {
-                    $url = $this->absolute_url($this->uri, $element->getAttribute($attr));
+                    $url = $this->absoluteUrl($this->uri, $element->getAttribute($attr));
                     $element->setAttribute($attr, $url);
                 }
             }
@@ -82,7 +82,7 @@ class Scrap implements ScrapInterface {
     /*
     * from http://www.php.net/manual/en/function.realpath.php#85388
     */
-    protected function absolute_url ($base, $href) {
+    protected function absoluteUrl ($base, $href) {
         if (!$href) {
             return $base;
         }
@@ -122,7 +122,7 @@ class Scrap implements ScrapInterface {
 
     public function content () {
         if (isset($this->dom)) {
-            if (!$this->full_html) {
+            if (!$this->fullHtml) {
                 $content = '';
                 $body = $this->dom->getElementsByTagName('body')->item(0);
 
