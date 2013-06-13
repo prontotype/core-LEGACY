@@ -23,7 +23,7 @@ Class Exporter {
         if ( $exportTag ) {
             $this->app['pt.cache']->deleteRaw(Cache::CACHE_TYPE_EXPORTS, $exportTag);  
         } else {
-            $exportTag = time();
+            $exportTag = time() . '-' . date('Y-m-d');
         }
         
         $exportHtml = $exportTag . '/html';
@@ -41,6 +41,7 @@ Class Exporter {
         if ( $this->app['pt.utils']->zipDir($exportHtmlPath, $zipPath) ) {
             return array(
                 'filename' => $exportTag . '.zip',
+                'tag' => $exportTag,
                 'path' => $zipPath
             );            
         } else {

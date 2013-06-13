@@ -48,7 +48,7 @@ Class Forms extends Base {
         ));
     }
     
-    public function input($name = null, $value = null, $type = 'text', $attrs = array())
+    public function input($name = null, $type = 'text', $value = null, $attrs = array())
     {
         $attrs = $this->mergeOpts(array(
             'name'  => $name,

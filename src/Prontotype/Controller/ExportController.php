@@ -18,14 +18,21 @@ class ExportController implements ControllerProviderInterface {
         $controllers->get('/run', function () use ($app) {
             
             $details = $app['pt.exporter']->run();
-            if ( $details ) {
-                return $app->sendFile($details['path'])->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $details['filename']);    
-            } else {
-                $app->abort(500);
-            }
+            return $app->redirect($app['pt.utils']->generateUrlPath('export.tools'));
             
         })
         ->bind('export.run');
+        
+        
+        $controllers->get('/current', function () use ($app) {
+            
+            $details = $app['pt.exporter']->run();
+            return $app->redirect($app['pt.utils']->generateUrlPath('export.download', array(
+                'tag' => $details['tag']
+            )));
+            
+        })
+        ->bind('export.current');
         
         
         $controllers->get('/download/{tag}', function ($tag) use ($app) {
@@ -56,7 +63,7 @@ class ExportController implements ControllerProviderInterface {
         
         $controllers->get('/tools', function () use ($app) {
             
-            return $app['twig']->render('system/pages/exports/info.twig', array(
+            return $app['twig']->render('system/pages/exports/tools.twig', array(
                 'exports' => $app['pt.exporter']->listContents()
             ));
 

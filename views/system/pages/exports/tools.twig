@@ -1,0 +1,27 @@
+{% extends "system/layouts/system.twig" %}
+
+{% set title = 'HTML exports' %}
+
+{% block content %}
+
+<div class="pt-content-block">
+    
+    <h1>HTML exports</h1>
+    
+    <p><a href="{{ pt.urls.export.fetch }}">Generate new export &rarr;</a>{% if exports|length %}</p>
+    
+    {% if exports|length %}
+    <div class="pt-content-panel">
+        <h2>Previous exports:</h2>
+        <ul>
+            {% for export in exports %}
+            <li><a href="{{ pt.urls.export.download }}/{{ export.tag }}">{{ export.filename }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href="{{ pt.urls.export.clear }}" class="pt-clear-exports">Clear exports</a>{% endif %}
+    </div>
+    {% endif %}
+    
+</div>
+
+{% endblock content %}

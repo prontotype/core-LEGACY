@@ -22,8 +22,8 @@ Class Auth {
     }
     
     public function check()
-    {        
-        if ( in_array($this->app['pt.request']->getRawUrlPath(), $this->excludePaths) ) {
+    {
+        if ( in_array($this->app['pt.request']->getRawUrlPath(), $this->excludePaths) || strpos($this->app['pt.request']->getRawUrlPath(), $this->app['pt.config']['triggers']['assets']) !== false ) {
             return true; // no auth required for this URL
         }
         

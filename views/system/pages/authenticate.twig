@@ -5,24 +5,29 @@
 
 {% block content %}
 
-<form action="{{ pt.urls.auth.check }}" method="post" id="pt-login-form">
-	
-	{% if error %}
-	<div class="alert alert--error">
-		{{ error }}
-	</div>
-	{% else %}
-	<div class="alert alert--info">
-		<strong>You must be logged in to access this content.</strong>
-	</div>
-	{% endif %}
-	
-	{{ form.labeled_control('password', 'Password', { name : 'password', id : 'password' }) }}
-	
-	<div class="form-actions">
-		{{ form.button('Log in &rarr;', 'btn-primary') }}
-	</div>
+<div class="pt-content-block">
+    
+    <h1>You must be logged in to access this content.</h1>
+    
+    {% if error %}
+    <div class="pt-notification pt-notification--error">
+        {{ error }}
+    </div>
+    {% endif %}
+    
+    <form action="{{ pt.urls.auth.check }}" method="post" class="pt-auth-form pt-content-panel">
+        
+        {{ pt.snippets.forms.label('Password:', 'pt-auth-password') }}
+        {{ pt.snippets.forms.input('password', 'password', null, {id : 'pt-auth-password'}) }}
+        {{ pt.snippets.forms.button('Go &rarr;') }}
+        
+    </form>
+    
+</div>
 
-</form>
+
+    
+    
+
 
 {% endblock content %}
