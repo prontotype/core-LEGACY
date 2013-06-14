@@ -18,7 +18,7 @@ timezone: Europe/London
 debug: false
 
 authenticate:
-  password: hello
+  password: 
   error: Your password was incorrect.
   ip_whitelist: # eg. 127.0.0.1
   
