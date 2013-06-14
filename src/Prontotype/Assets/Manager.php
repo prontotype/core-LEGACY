@@ -91,10 +91,9 @@ Class Manager {
                 break;                
             }
         }
-      
         
         if ( ! file_exists($fullPath) ) {
-            throw new \Exception('File not found'); // TODO replace with specific exception
+            throw new \Exception('Asset file \'' . $assetPath . '\' not found'); // TODO replace with specific exception
         }
         
         return $fullPath;

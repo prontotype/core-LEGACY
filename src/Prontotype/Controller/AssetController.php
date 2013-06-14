@@ -19,7 +19,7 @@ class AssetController implements ControllerProviderInterface {
             try {
                 $assetDetails = $app['pt.assets']->generateAsset($asset_path);                
             } catch ( \Exception $e ) {
-                $app->abort(404);
+                return $app->abort(404);
             }
             
             return new Response($assetDetails['content'], 200, array(

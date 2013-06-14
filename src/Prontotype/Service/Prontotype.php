@@ -167,6 +167,9 @@ Class Prontotype implements ServiceProviderInterface {
                 new YamlParser($app),
                 new XmlParser($app),
                 new CsvParser($app)
+            ),array(
+                $app['pt.prototype.paths.data'],
+                $app['pt.core.paths.data'],
             ));
         });
         
@@ -182,7 +185,8 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app->register(new SessionServiceProvider());
         $app->register(new UrlGeneratorServiceProvider());
-    
+
+        
         $app->register(new TwigServiceProvider(), array(
             'twig.path'         => array( $app['pt.prototype.paths.templates'], $app['pt.core.paths.templates'] ),
             'twig.options'      => array(
@@ -220,7 +224,7 @@ Class Prontotype implements ServiceProviderInterface {
         });
 
         $app->error(function(\Exception $e, $code) use ($app) {
-    
+            
             switch( $code ) {
                 case '404':
                     $template = 'system/pages/404.twig';
@@ -229,7 +233,7 @@ Class Prontotype implements ServiceProviderInterface {
                     $template = 'system/pages/error.twig';
                     break;
             }
-    
+            
             return new Response($app['twig']->render($template, array(
                 'message' => $e->getMessage()
             )), $code);

@@ -38,6 +38,7 @@ Class Application {
         'config'    => '/../../config',
         'assets'    => '/../../assets',
         'templates' => '/../../views',
+        'data'      => '/../../data',
     );
     
 	public function __construct($paths)

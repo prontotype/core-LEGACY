@@ -9,10 +9,13 @@ Class Manager {
     protected $parsers = array();
     
     protected $parsed = array();
+    
+    protected $searchPaths = array();
 
-    public function __construct($app, $parsers = array())
+    public function __construct($app, $parsers = array(), $searchPaths = array())
     {
         $this->app = $app;
+        $this->searchPaths = $searchPaths;
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
         }
@@ -31,26 +34,17 @@ Class Manager {
         if ( isset($this->parsed[$filePath]) ) {
             $data = $this->parsed[$filePath];
         } else {
-            $filePath = $this->app['pt.prototype.paths.data'] . '/'. trim($filePath,'/');
+            $filePath = $this->findDataFile($filePath);          
             if ( file_exists($filePath) ) {
-                $dataFiles = array($filePath);
-            } else {
-                $dataFiles = glob( $filePath . '.*' );
-            }
-            $data = array();
-            if ( count( $dataFiles ) ) {
-                foreach( $dataFiles as $file ) {
-                    $parts = pathinfo($file);
-                    $extension = ! $type ? $parts['extension'] : $type;
-                    $contents = file_get_contents($file);
-                    try {
-                        $newData = $this->parse($contents, $extension);
-                        $data = $this->merge($data, $newData);                    
-                    } catch ( \Exception $e ) {
-                        throw new \Exception(sprintf('Error parsing data file %s', $filePath));
-                    }
+                $parts = pathinfo($filePath);
+                $extension = ! $type ? $parts['extension'] : $type;
+                $contents = file_get_contents($filePath);
+                try {
+                    $data = $this->parse($contents, $extension);
+                } catch ( \Exception $e ) {
+                    throw new \Exception(sprintf('Error parsing data file %s', $filePath));
                 }
-            }  else {
+            } else {
                 $data = null;
             }
             $this->parsed[$filePath] = $data;
@@ -138,6 +132,30 @@ Class Manager {
             return $old . $new;
         }
         throw new \Exception('Could not merge data');
+    }
+    
+    protected function findDataFile($filePath)
+    {
+
+        foreach($this->searchPaths as $searchPath) {            
+            $fullPath = $searchPath . '/' . strtolower($filePath);
+            if ( file_exists( $fullPath ) ) {
+                break;
+            }
+        }
+        
+        if ( ! file_exists($fullPath) ) {
+            foreach($this->searchPaths as $searchPath) {            
+                $fullPath = $searchPath . '/' . strtolower($filePath);
+                $matches = glob( $fullPath . '.*' );
+                if ( count($matches) ) {
+                    $fullPath = $matches[0];
+                    return $fullPath;
+                }
+            }
+        }
+        
+        return $fullPath;
     }
     
     protected function getExtensionFromMimeType($mime)
