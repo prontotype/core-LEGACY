@@ -21,6 +21,11 @@ Class Manager {
         }
     }
     
+    public function addLoadPath($path)
+    {
+        $this->searchPaths[] = $path;
+    }
+    
     public function get($location, $dataPath = null, $type = null) {
         if ( strpos($location, 'http') !== 0 ) {
             return $this->load($location, $dataPath, $type);
@@ -136,8 +141,9 @@ Class Manager {
     
     protected function findDataFile($filePath)
     {
-
-        foreach($this->searchPaths as $searchPath) {            
+        $searchPaths = $this->searchPaths;
+        $searchPaths[] = $this->app['pt.core.paths.data']; // append core path
+        foreach($searchPaths as $searchPath) {            
             $fullPath = $searchPath . '/' . strtolower($filePath);
             if ( file_exists( $fullPath ) ) {
                 break;
@@ -145,12 +151,14 @@ Class Manager {
         }
         
         if ( ! file_exists($fullPath) ) {
-            foreach($this->searchPaths as $searchPath) {            
-                $fullPath = $searchPath . '/' . strtolower($filePath);
-                $matches = glob( $fullPath . '.*' );
-                if ( count($matches) ) {
-                    $fullPath = $matches[0];
-                    return $fullPath;
+            foreach($this->searchPaths as $searchPath) {
+                if ( is_dir($searchPath) ) {
+                    $fullPath = $searchPath . '/' . strtolower($filePath);
+                    $matches = glob( $fullPath . '.*' );
+                    if ( count($matches) ) {
+                        $fullPath = $matches[0];
+                        return $fullPath;
+                    }                    
                 }
             }
         }

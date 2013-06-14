@@ -75,7 +75,9 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        foreach($this->searchPaths as $searchPath) {            
+        $searchPaths = $this->searchPaths;
+        $searchPaths[] = $this->app['pt.core.paths.assets']; // append core path
+        foreach($searchPaths as $searchPath) {            
             $fullPath = $searchPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {
                 $aliases = $this->getPathAliases($fullPath);
@@ -88,7 +90,7 @@ Class Manager {
                     }
                 }
             } else {
-                break;                
+                break;
             }
         }
         

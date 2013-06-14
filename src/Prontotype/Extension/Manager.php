@@ -12,25 +12,20 @@ class Manager
         $this->extensions = array();
     }
         
-    public function load($extensions)
+    public function load($extension)
     {   
-        if ( count($extensions) ) {
-            foreach( $extensions as $extensionKey => $extensionFile ) {
-                $extPath = $this->path . '/' . $extensionFile;
-                if ( file_exists($extPath) ) {
-                    require_once $extPath;
-                    $pathInfo = pathinfo($extPath);
-                    $extName = $pathInfo['filename'];
-                    $extension = new $extName($this->app);
-                    $this->extensions[$extensionKey] = $extension;
-                }
-            }
-            $this->app['twig']->addGlobal('ext', $this->extensions);
+        if ( file_exists($extension) ) {
+            require_once $extension;
+            $pathInfo = pathinfo($extension);
+            $extName = $pathInfo['filename'];
+            $extObj = new $extName($this->app);
+            $this->extensions[$extObj->getName()] = $extObj;
         }
     }
     
     public function before()
     {
+        $this->app['twig']->addGlobal('ext', $this->extensions);
         foreach($this->extensions as $extension) {
             $extension->before();
         }

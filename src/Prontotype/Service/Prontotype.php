@@ -134,12 +134,6 @@ Class Prontotype implements ServiceProviderInterface {
             });
         }
         
-        $app['pt.extensions'] = $app->share(function($app) {
-            $ext = new ExtensionManager($app);
-            $ext->load($app['pt.config']['extensions']);
-            return $ext;
-        });
-        
         $app['pt.cache'] = $app->share(function($app) {
             return new Cache($app, array(
                 Cache::CACHE_TYPE_ASSETS => array(
@@ -168,8 +162,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new XmlParser($app),
                 new CsvParser($app)
             ),array(
-                $app['pt.prototype.paths.data'],
-                $app['pt.core.paths.data'],
+                $app['pt.prototype.paths.data']
             ));
         });
         
@@ -179,8 +172,19 @@ Class Prontotype implements ServiceProviderInterface {
                 new ScssProcessor($app),
             ), array(
                 $app['pt.prototype.paths.assets'],
-                $app['pt.core.paths.assets'],
             ));
+        });
+        
+        $app['pt.extensions'] = $app->share(function($app) {
+            $ext = new ExtensionManager($app);
+            $extensions = glob($app['pt.prototype.paths.extensions'] . '/*', GLOB_ONLYDIR);            
+            foreach($extensions as $extension) {
+                $path = $extension . '/Extension.php';
+                if ( file_exists($path) ) {
+                    $ext->load($path);
+                }
+            }
+            return $ext;
         });
         
         $app->register(new SessionServiceProvider());
