@@ -179,10 +179,7 @@ Class Prontotype implements ServiceProviderInterface {
             $ext = new ExtensionManager($app);
             $extensions = glob($app['pt.prototype.paths.extensions'] . '/*', GLOB_ONLYDIR);            
             foreach($extensions as $extension) {
-                $path = $extension . '/Extension.php';
-                if ( file_exists($path) ) {
-                    $ext->load($path);
-                }
+                $ext->load($path);
             }
             return $ext;
         });
@@ -192,7 +189,7 @@ Class Prontotype implements ServiceProviderInterface {
 
         
         $app->register(new TwigServiceProvider(), array(
-            'twig.path'         => array( $app['pt.prototype.paths.templates'], $app['pt.core.paths.templates'] ),
+            'twig.path'         => array( $app['pt.prototype.paths.templates']),
             'twig.options'      => array(
                 'strict_variables'  => false,
                 'cache'             => $app['pt.prototype.paths.cache.templates'],
@@ -220,6 +217,8 @@ Class Prontotype implements ServiceProviderInterface {
             if ( ! $app['pt.auth']->check() ) {
                 return $app->redirect($app['pt.utils']->generateUrlPath('auth.login')); // not logged in, redirect to auth page
             }
+            $app['pt.extensions']->loadPaths();
+            $app['twig']->addPath($app['pt.core.paths.templates']);
             $app['pt.extensions']->before();
         });
         
