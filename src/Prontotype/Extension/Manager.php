@@ -17,17 +17,22 @@ class Manager
     public function load($path)
     {   
         if ( file_exists($path) ) {
-            $baseName = strtolower(basename($path));
-            $className = ucfirst($baseName) . 'Extension';
-            $configPath = $path . '/config.yml';
-            if ( file_exists($configPath) ) {
-                $config = Yaml::parse(file_get_contents($configPath));
-                $className = isset($config['class']) ? $config['class'] : ;
-                $classPath = 
-            } else {
-                $config = array();
-                $pathParts = explode()
-            }
+            echo '<pre>';
+            print_r($path);
+            echo '</pre>';
+            require_once($path . '/Extension.php');
+            $foo = new Example\Extension($this->app);
+            // $baseName = strtolower(basename($path));
+//             $className = ucfirst($baseName) . 'Extension';
+//             $configPath = $path . '/config.yml';
+//             if ( file_exists($configPath) ) {
+//                 $config = Yaml::parse(file_get_contents($configPath));
+//                 $className = isset($config['class']) ? $config['class'] : ;
+//                 $classPath = 
+//             } else {
+//                 $config = array();
+//                 $pathParts = explode()
+//             }
         }
         // if ( file_exists($extension) ) {
         //     require_once $extension;
