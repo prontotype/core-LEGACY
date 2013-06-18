@@ -24,6 +24,7 @@ use Prontotype\Data\XmlParser;
 use Prontotype\Data\CsvParser;
 use Prontotype\Extension\Manager as ExtensionManager;
 use Prontotype\Assets\Manager as AssetManager;
+use Prontotype\Config as ConfigManager;
 use Prontotype\Assets\LessProcessor;
 use Prontotype\Assets\ScssProcessor;
 
@@ -40,12 +41,13 @@ Class Prontotype implements ServiceProviderInterface {
           
     public function register( SilexApp $app )
     {
-        // load up prototype
         $this->loadPrototype($app);
-        $this->loadConfig($app);
-        $this->registerServices($app);
-        $this->bindMiddleware($app);
-        $this->mountRoutes($app);
+        $app['pt.config'] = $app->share(function($app) {
+            return new ConfigManager($app, array(
+                $app['pt.core.paths.config'],
+                $app['pt.prototype.paths.config'],
+            ), $app['pt.prototype.environment']);
+        });
     }
     
     protected function loadPrototype($app)
@@ -109,25 +111,25 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.prototype.paths.cache.exports'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';
     }
     
-    protected function loadConfig($app)
-    {
-        $config = array(
-            $app['pt.core.paths.config'] . '/common.yml'    
-        );
-        $commonConfig = $app['pt.prototype.paths.config'] . '/common.yml';
-        if ( file_exists($commonConfig) ) {
-            $config[] = $commonConfig;
-        }
-        $envConfig = $app['pt.prototype.paths.config'] . '/' . $app['pt.prototype.environment'] . '.yml';
-        if ( file_exists( $envConfig ) ) {
-            $config[] = $envConfig;
-        }
-        $app->register(new YamlConfig($config));
-        $app['pt.config'] = $app['config'];
-    }
+    // protected function loadConfig($app)
+ //    {
+ //        $config = array(
+ //            $app['pt.core.paths.config'] . '/common.yml'    
+ //        );
+ //        $commonConfig = $app['pt.prototype.paths.config'] . '/common.yml';
+ //        if ( file_exists($commonConfig) ) {
+ //            $config[] = $commonConfig;
+ //        }
+ //        $envConfig = $app['pt.prototype.paths.config'] . '/' . $app['pt.prototype.environment'] . '.yml';
+ //        if ( file_exists( $envConfig ) ) {
+ //            $config[] = $envConfig;
+ //        }
+ //        $app->register(new YamlConfig($config));
+ //        $app['pt.config'] = $app['config'];
+ //    }
     
     protected function registerServices($app)
-    {
+    {        
         foreach( $this->sharedServices as $serviceName => $serviceClass ) {
             $app[$serviceName] = $app->share(function() use ($app, $serviceClass) {
                 return new $serviceClass($app);
@@ -145,7 +147,7 @@ Class Prontotype implements ServiceProviderInterface {
                     'path' => $app['pt.prototype.paths.cache.data'],
                 ),
                 Cache::CACHE_TYPE_REQUESTS => array(
-                    'expiry' => $app['pt.config']['cache']['requests']['expiry'],
+                    'expiry' => $app['pt.config']->get('cache.requests.expiry'),
                     'path' => $app['pt.prototype.paths.cache.requests'],
                 ),
                 Cache::CACHE_TYPE_EXPORTS => array(
@@ -161,7 +163,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new YamlParser($app),
                 new XmlParser($app),
                 new CsvParser($app)
-            ),array(
+            ), array(
                 $app['pt.prototype.paths.data']
             ));
         });
@@ -174,7 +176,7 @@ Class Prontotype implements ServiceProviderInterface {
                 $app['pt.prototype.paths.assets'],
             ));
         });
-        
+
         $app['pt.extensions'] = $app->share(function($app) {
             $ext = new ExtensionManager($app);
             $extensions = glob($app['pt.prototype.paths.extensions'] . '/*', GLOB_ONLYDIR);            
@@ -194,7 +196,7 @@ Class Prontotype implements ServiceProviderInterface {
                 'strict_variables'  => false,
                 'cache'             => $app['pt.prototype.paths.cache.templates'],
                 'auto_reload'       => true,
-                'debug'             => $app['pt.config']['debug'],
+                'debug'             => $app['pt.config']->get('debug'),
                 'autoescape'        => false
             )
         ));
@@ -204,11 +206,14 @@ Class Prontotype implements ServiceProviderInterface {
             $twig->addExtension(new TwigHelperExtension($app));
             return $twig;
         }));
-
+        
         $app['twig.stringloader'] = $app->share(function($app) {
             $loader = new Twig_Loader_String();
             return new Twig_Environment($loader);
         });
+        
+        $app['pt.extensions']->loadPaths();
+        $app['twig.loader.filesystem']->addPath($app['pt.core.paths.templates']);
     }
     
     protected function bindMiddleware($app)
@@ -217,8 +222,6 @@ Class Prontotype implements ServiceProviderInterface {
             if ( ! $app['pt.auth']->check() ) {
                 return $app->redirect($app['pt.utils']->generateUrlPath('auth.login')); // not logged in, redirect to auth page
             }
-            $app['pt.extensions']->loadPaths();
-            $app['twig.loader.filesystem']->addPath($app['pt.core.paths.templates']);
             $app['pt.extensions']->before();
         });
         
@@ -245,15 +248,20 @@ Class Prontotype implements ServiceProviderInterface {
     
     protected function mountRoutes($app)
     {
-        $app->mount('/' . $app['pt.config']['triggers']['auth'], new \Prontotype\Controller\AuthController());
-        $app->mount('/' . $app['pt.config']['triggers']['data'], new \Prontotype\Controller\DataController());
-        $app->mount('/' . $app['pt.config']['triggers']['user'], new \Prontotype\Controller\UserController());
-        $app->mount('/' . $app['pt.config']['triggers']['assets'], new \Prontotype\Controller\AssetController());
-        $app->mount('/' . $app['pt.config']['triggers']['shorturl'], new \Prontotype\Controller\RedirectController());
-        $app->mount('/' . $app['pt.config']['triggers']['tools'], new \Prontotype\Controller\ToolsController());
+        $app->mount('/' . $app['pt.config']->get('triggers.auth'), new \Prontotype\Controller\AuthController());
+        $app->mount('/' . $app['pt.config']->get('triggers.data'), new \Prontotype\Controller\DataController());
+        $app->mount('/' . $app['pt.config']->get('triggers.user'), new \Prontotype\Controller\UserController());
+        $app->mount('/' . $app['pt.config']->get('triggers.assets'), new \Prontotype\Controller\AssetController());
+        $app->mount('/' . $app['pt.config']->get('triggers.shorturl'), new \Prontotype\Controller\RedirectController());
+        $app->mount('/' . $app['pt.config']->get('triggers.tools'), new \Prontotype\Controller\ToolsController());
         $app->mount('/', new \Prontotype\Controller\MainController());
     }
     
-    public function boot ( SilexApp $app ) {}
+    public function boot(SilexApp $app)
+    {
+        $this->registerServices($app);
+        $this->bindMiddleware($app);
+        $this->mountRoutes($app);
+    }
     
 }

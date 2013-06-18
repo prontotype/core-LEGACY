@@ -16,12 +16,12 @@ class Manager
         
     public function load($path)
     {   
+        $this->app['pt.config']->addLoadPath($this->app['pt.prototype.paths.extensions'] .'/Test/config');
+        
         if ( file_exists($path) ) {
-            echo '<pre>';
-            print_r($path);
-            echo '</pre>';
-            require_once($path . '/Extension.php');
-            $foo = new Example\Extension($this->app);
+    
+            // require_once($path . '/Extension.php');
+            // $foo = new Example\Extension($this->app);
             // $baseName = strtolower(basename($path));
 //             $className = ucfirst($baseName) . 'Extension';
 //             $configPath = $path . '/config.yml';
@@ -47,6 +47,7 @@ class Manager
     {
         foreach($this->extensions as $namespace => $extensions) {
             foreach($extensions as $ext) {
+                $this->app['pt.config']->addLoadPath($ext->getConfigPath());
                 $this->app['pt.data']->addLoadPath($ext->getDataPath());
                 $this->app['pt.assets']->addLoadPath($ext->getAssetsPath());
                 $this->app['twig']->addPath($ext->getTemplatesPath());

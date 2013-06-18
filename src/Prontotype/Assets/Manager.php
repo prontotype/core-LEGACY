@@ -16,12 +16,12 @@ Class Manager {
         'css' => array('less', 'scss')
     );
     
-    protected $searchPaths = array();
+    protected $loadPaths = array();
 
-    public function __construct($app, $processors = array(), $searchPaths = array())
+    public function __construct($app, $processors = array(), $loadPaths = array())
     {
         $this->app = $app;
-        $this->searchPaths = $searchPaths;
+        $this->loadPaths = $loadPaths;
         foreach( $processors as $processor ) {
             $this->registerProcessor($processor);
         }
@@ -75,10 +75,10 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        $searchPaths = $this->searchPaths;
-        $searchPaths[] = $this->app['pt.core.paths.assets']; // append core path
-        foreach($searchPaths as $searchPath) {            
-            $fullPath = $searchPath . '/' . strtolower($assetPath);
+        $loadPaths = $this->loadPaths;
+        $loadPaths[] = $this->app['pt.core.paths.assets']; // append core path
+        foreach($loadPaths as $loadPath) {            
+            $fullPath = $loadPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {
                 $aliases = $this->getPathAliases($fullPath);
                 if ( count($aliases) ) {

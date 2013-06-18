@@ -13,11 +13,11 @@ class DataController implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
-        $triggers = $app['pt.config']['triggers'];
+        $triggers = $app['pt.config']->get('triggers');
          
         $controllers->get('/' . $triggers['data'] . '/{data_path}', function ( $data_path ) use ( $app ) {
             
-            $result = $app['data']->find(str_replace('/','.',$data_path));
+            $result = $app['pt.data']->find(str_replace('/','.',$data_path));
                     
             if ( ! $result ) {
                 $app->abort(404);

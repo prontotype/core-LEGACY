@@ -16,7 +16,8 @@ Class Base {
     {
         $this->app = $app;
         if ( $this->configKey ) {
-            $this->config = isset($this->app['config']['snippets'][$this->configKey]) ? $this->app['config']['snippets'][$this->configKey] : array();
+            $snippetConfig = $this->app['pt.config']->get('snippets.' . $this->configKey);
+            $this->config = ! empty($snippetConfig) ? $snippetConfig : array();
         }
     }
     

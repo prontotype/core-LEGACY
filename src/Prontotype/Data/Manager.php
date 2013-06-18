@@ -10,12 +10,12 @@ Class Manager {
     
     protected $parsed = array();
     
-    protected $searchPaths = array();
+    protected $loadPaths = array();
 
-    public function __construct($app, $parsers = array(), $searchPaths = array())
+    public function __construct($app, $parsers = array(), $loadPaths = array())
     {
         $this->app = $app;
-        $this->searchPaths = $searchPaths;
+        $this->loadPaths = $loadPaths;
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
         }
@@ -23,7 +23,7 @@ Class Manager {
     
     public function addLoadPath($path)
     {
-        $this->searchPaths[] = $path;
+        $this->loadPaths[] = $path;
     }
     
     public function get($location, $dataPath = null, $type = null) {
@@ -141,19 +141,19 @@ Class Manager {
     
     protected function findDataFile($filePath)
     {
-        $searchPaths = $this->searchPaths;
-        $searchPaths[] = $this->app['pt.core.paths.data']; // append core path
-        foreach($searchPaths as $searchPath) {            
-            $fullPath = $searchPath . '/' . strtolower($filePath);
+        $loadPaths = $this->loadPaths;
+        $loadPaths[] = $this->app['pt.core.paths.data']; // append core path
+        foreach($loadPaths as $loadPath) {            
+            $fullPath = $loadPath . '/' . strtolower($filePath);
             if ( file_exists( $fullPath ) ) {
                 break;
             }
         }
         
         if ( ! file_exists($fullPath) ) {
-            foreach($this->searchPaths as $searchPath) {
-                if ( is_dir($searchPath) ) {
-                    $fullPath = $searchPath . '/' . strtolower($filePath);
+            foreach($this->loadPaths as $loadPath) {
+                if ( is_dir($loadPath) ) {
+                    $fullPath = $loadPath . '/' . strtolower($filePath);
                     $matches = glob( $fullPath . '.*' );
                     if ( count($matches) ) {
                         $fullPath = $matches[0];
