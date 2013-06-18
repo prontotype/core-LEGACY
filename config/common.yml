@@ -62,7 +62,7 @@ routes:
   # "posts/(:all)" : "posts/post"
 
 extensions:
-  # example: ExampleExtension.php
+  # example: ExampleExtension
   
 snippets:
   images:

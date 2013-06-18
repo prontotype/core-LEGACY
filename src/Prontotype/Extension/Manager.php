@@ -11,17 +11,12 @@ class Manager
     {
         $this->app = $app;
         $this->path = $app['pt.prototype.paths.extensions'];
-        $this->extensions = array();
+        // $this->extensions = array();
     }
         
     public function load($path)
     {   
         if ( file_exists($path) ) {
-            echo '<pre>';
-            print_r($path);
-            echo '</pre>';
-            require_once($path . '/Extension.php');
-            $foo = new Example\Extension($this->app);
             // $baseName = strtolower(basename($path));
 //             $className = ucfirst($baseName) . 'Extension';
 //             $configPath = $path . '/config.yml';
@@ -45,39 +40,44 @@ class Manager
     
     public function loadPaths()
     {
-        foreach($this->extensions as $namespace => $extensions) {
-            foreach($extensions as $ext) {
-                $this->app['pt.data']->addLoadPath($ext->getDataPath());
-                $this->app['pt.assets']->addLoadPath($ext->getAssetsPath());
-                $this->app['twig']->addPath($ext->getTemplatesPath());
-            }
-        }
+        // foreach($this->extensions as $namespace => $extensions) {
+//             foreach($extensions as $ext) {
+//                 $this->app['pt.data']->addLoadPath($ext->getDataPath());
+//                 $this->app['pt.assets']->addLoadPath($ext->getAssetsPath());
+//                 $this->app['twig']->addPath($ext->getTemplatesPath());
+//             }
+//         }
     }
     
     public function before()
     {
-        foreach($this->extensions as $namespace => $extensions) {
-            $this->app['twig']->addGlobal($namespace, $extensions);
-            foreach($extensions as $ext) {
-                $extension->before();
-            }
-        }
+        // foreach($this->extensions as $namespace => $extensions) {
+//             $this->app['twig']->addGlobal($namespace, $extensions);
+//             foreach($extensions as $ext) {
+//                 $extension->before();
+//             }
+//         }
     }
     
     public function after()
     {
-        foreach($this->extensions as $namespace => $extensions) {
-            foreach($extensions as $ext) {
-                $extension->after();
-            }
-        }
+        // foreach($this->extensions as $namespace => $extensions) {
+//             foreach($extensions as $ext) {
+//                 $extension->after();
+//             }
+//         }
+    }
+    
+    public function registerPlugin($class, $key, $namespace)
+    {
+        
     }
     
     protected function addExtension($ext, $name, $namespace = null)
     {
-        if ( $namespace && !isset($this->extensions[$namespace]) ) {
-            $this->extensions[$namespace] = array();
-        }
-        $this->extensions[$namespace][] = $ext;
+        // if ( $namespace && !isset($this->extensions[$namespace]) ) {
+        //     $this->extensions[$namespace] = array();
+        // }
+        // $this->extensions[$namespace][] = $ext;
     }
 }
