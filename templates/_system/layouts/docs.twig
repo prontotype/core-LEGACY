@@ -1,0 +1,110 @@
+{% extends '_system/layouts/skeleton.twig' %}
+
+{% block styles %}
+{{ parent() }}
+{{ pt.snippets.assets.stylesheet('/_system/css/docs.css') }}
+{% endblock %}
+
+{% block title %}
+Prontotype Documentation
+{% endblock title %}
+
+{% block body %}
+
+<div class="site-header receptacle">
+      
+      <div class="receptacle-inner">
+          
+          <a href="/" class="branding">Prontotype Documentation</a>
+          
+      </div>
+      
+  </div>
+  
+  <div class="site-body receptacle">
+      
+      <div class="receptacle-inner">
+          
+          <div class="aside">
+              
+              <nav class="nav--primary">
+                  <ul>
+                      <li class="top-level"><a href="{{ pt.urls.docs.root }}">Overview</a></li>
+                      <li class="top-level">
+                          <a href="{{ pt.urls.docs.root }}/installation">Installation and Setup</a>
+                          <ul>
+                              <li><a href="#">Requirements</a></li>
+                              <li><a href="#">Downloading and installing</a></li>
+                              <li><a href="#">Clean URLs</a></li>
+                              <li><a href="#">Multiple prototypes</a></li>
+                              <li><a href="#">Password protection</a></li>
+                          </ul>
+                      </li>
+                      <li class="top-level">
+                          <a href="#">Pages and URLs</a>
+                          <ul>
+                              <li><a href="#">Mapping URLs to templates</a></li>
+                              <li><a href="#">Custom routes</a></li>
+                          </ul>
+                      </li>
+                      <li class="top-level">
+                          <a href="#">Templating</a>
+                          <ul>
+                              <li><a href="#">Twig Primer</a></li>
+                              <li>
+                                  <a href="#">Reference</a>
+                                  <ul>
+                                      <li><a href="#">Pages</a></li>
+                                      <li><a href="#">Data</a></li>
+                                      <li><a href="#">Users</a></li>
+                                      <li><a href="#">Assets</a></li>
+                                      <li>
+                                          <a href="#">Snippets</a>
+                                          <ul>
+                                              <li><a href="#">Assets</a></li>
+                                              <li><a href="#">Forms</a></li>
+                                              <li><a href="#">Images</a></li>
+                                              <li><a href="#">Navigation</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a href="#">Requests</a></li>
+                                      <li><a href="#">Persistent storage</a></li>
+                                      <li><a href="#">Configs</a></li>
+                                      <li><a href="#">Paths</a></li>
+                                      <li><a href="#">Notifications</a></li>
+                                  </ul>
+                              </li>
+                          </ul>
+                      </li>
+                      <li class="top-level"><a href="#">Data</a></li>
+                      <li class="top-level"><a href="#">Users</a></li>
+                      <li class="top-level"><a href="#">Assets</a></li>
+                      <li class="top-level"><a href="#">Storage</a></li>
+                      <li class="top-level"><a href="#">Snippets</a></li>
+                      <li class="top-level"><a href="#">Scraper</a></li>
+                      <li class="top-level"><a href="#">Extensions</a></li>
+                      <li class="top-level">
+                          <a href="#">Tools</a>
+                          <ul>
+                              <li><a href="#">Static HTML export</a></li>
+                          </ul>
+                      </li>
+                      <li class="top-level">
+                          <a href="#">Config Reference</a> 
+                      </li>
+                  
+                  </ul>                  
+              </nav>
+              
+          </div>
+          
+          <div class="main">                
+          {% block main %}{% endblock %}
+          </div>
+          
+      </div>
+
+  </div>
+      
+
+{% endblock body %}
