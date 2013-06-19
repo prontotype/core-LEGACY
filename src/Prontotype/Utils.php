@@ -14,7 +14,7 @@ Class Utils {
     public function generateUrlPath($route, $params = array())
     {
         $url = $this->app['url_generator']->generate($route, $params);
-        if ( ! $this->app['pt.config']['clean_urls'] && strpos( $url, 'index.php' ) === false ) {
+        if ( ! $this->app['pt.config']->get('clean_urls') && strpos( $url, 'index.php' ) === false ) {
             $url = '/index.php' . $url;
         }
         return $url;

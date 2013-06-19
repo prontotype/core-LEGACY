@@ -11,42 +11,24 @@ class Manager
     {
         $this->app = $app;
         $this->path = $app['pt.prototype.paths.extensions'];
-        // $this->extensions = array();
+        $this->extensions = array();
     }
         
     public function load($path)
     {   
-        if ( file_exists($path) ) {
-            // $baseName = strtolower(basename($path));
-//             $className = ucfirst($baseName) . 'Extension';
-//             $configPath = $path . '/config.yml';
-//             if ( file_exists($configPath) ) {
-//                 $config = Yaml::parse(file_get_contents($configPath));
-//                 $className = isset($config['class']) ? $config['class'] : ;
-//                 $classPath = 
-//             } else {
-//                 $config = array();
-//                 $pathParts = explode()
-//             }
-        }
-        // if ( file_exists($extension) ) {
-        //     require_once $extension;
-        //     $pathInfo = pathinfo($extension);
-        //     $extName = $pathInfo['filename'];
-        //     $extObj = new $extName($this->app);
-        //     $this->addExtension($extObj, $extObj->getName(), $extObj->getNamespace());
-        // }
+
     }
     
     public function loadPaths()
     {
-        // foreach($this->extensions as $namespace => $extensions) {
-//             foreach($extensions as $ext) {
-//                 $this->app['pt.data']->addLoadPath($ext->getDataPath());
-//                 $this->app['pt.assets']->addLoadPath($ext->getAssetsPath());
-//                 $this->app['twig']->addPath($ext->getTemplatesPath());
-//             }
-//         }
+        foreach($this->extensions as $namespace => $extensions) {
+            foreach($extensions as $ext) {
+                $this->app['pt.config']->addLoadPath($ext->getConfigPath());
+                $this->app['pt.data']->addLoadPath($ext->getDataPath());
+                $this->app['pt.assets']->addLoadPath($ext->getAssetsPath());
+                $this->app['twig']->addPath($ext->getTemplatesPath());
+            }
+        }
     }
     
     public function before()

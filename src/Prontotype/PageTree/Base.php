@@ -116,7 +116,7 @@ Class Base implements \RecursiveIterator
     protected function prefixUrl($url)
     {
         $prefix = '';
-        if ( ! $this->app['pt.config']['clean_urls'] ) {
+        if ( ! $this->app['pt.config']->get('clean_urls') ) {
             $prefix = '/index.php';
         }
         return $prefix . $url;
@@ -124,7 +124,7 @@ Class Base implements \RecursiveIterator
     
     protected function unPrefixUrl($url)
     {
-        if ( ! $this->app['pt.config']['clean_urls'] ) {
+        if ( ! $this->app['pt.config']->get('clean_urls') ) {
             return str_replace('/index.php', '', $url);
         }
         return $url;
@@ -156,8 +156,8 @@ Class Base implements \RecursiveIterator
         $cleanName = $this->getCleanName();
         
         $name = null;
-        if ( count($this->app['pt.config']['name_overrides']) ) {
-            foreach( $this->app['pt.config']['name_overrides'] as $path => $niceName ) {
+        if ( count($this->app['pt.config']->get('name_overrides')) ) {
+            foreach( $this->app['pt.config']->get('name_overrides') as $path => $niceName ) {
                 if ($this->unPrefixUrl($path) == $this->unPrefixUrl($this->getUrlPath())) {
                     $name = $niceName;
                     break;

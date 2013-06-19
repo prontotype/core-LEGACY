@@ -27,8 +27,8 @@ Class Assets extends Base {
     
     public function prefixPath($path)
     {        
-        $path = '/' . $this->app['pt.config']['triggers']['assets'] . '/' . trim($path, '/');
-        if ( ! $this->app['pt.config']['clean_urls'] ) {
+        $path = '/' . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
+        if ( ! $this->app['pt.config']->get('clean_urls') ) {
             $path = '/index.php' . $path;
         }
         return $path;

@@ -18,12 +18,12 @@ Class Auth {
             $app['pt.utils']->generateUrlPath('auth.check'),
             $app['pt.utils']->generateUrlPath('auth.logout')
         );
-        $this->authSessionName = $this->app['pt.config']['cookie']['prefix'] . $this->authSessionName;
+        $this->authSessionName = $this->app['pt.config']->get('cookie.prefix') . $this->authSessionName;
     }
     
     public function check()
     {
-        if ( in_array($this->app['pt.request']->getRawUrlPath(), $this->excludePaths) || strpos($this->app['pt.request']->getRawUrlPath(), $this->app['pt.config']['triggers']['assets']) !== false ) {
+        if ( in_array($this->app['pt.request']->getRawUrlPath(), $this->excludePaths) || strpos($this->app['pt.request']->getRawUrlPath(), $this->app['pt.config']->get('triggers.assets')) !== false ) {
             return true; // no auth required for this URL
         }
         
@@ -32,12 +32,12 @@ Class Auth {
     
     public function attemptLogin($password)
     {
-        if ( $this->app['request']->get('password') === $this->app['pt.config']['authenticate']['password'] ) {
+        if ( $this->app['request']->get('password') === $this->app['pt.config']->get('authenticate.password') ) {
             $this->app['session']->set($this->authSessionName, $this->hashPassword());
             return true;
         }
         
-        $this->app['pt.notifications']->setFlash('error', $this->app['pt.config']['authenticate']['error']);
+        $this->app['pt.notifications']->setFlash('error', $this->app['pt.config']->get('authenticate.error'));
         $this->logout();
         
         return false;
@@ -62,17 +62,18 @@ Class Auth {
     
     protected function hashPassword()
     {
-        return sha1($this->app['pt.config']['authenticate']['password']);
+        return sha1($this->app['pt.config']->get('authenticate.password'));
     }
     
     protected function isAuthRequired()
     {
-        return ! empty($this->app['pt.config']['authenticate']['password']);
+        $password = $this->app['pt.config']->get('authenticate.password');
+        return ! empty($password);
     }
     
     protected function getWhitelistedIps()
     {
-        $ipWhitelist = $this->app['pt.config']['authenticate']['ip_whitelist'];
+        $ipWhitelist = $this->app['pt.config']->get('authenticate.ip_whitelist');
         if ( is_array($ipWhitelist) ) {
             return $ipWhitelist;
         } elseif ( is_string($ipWhitelist) ) {

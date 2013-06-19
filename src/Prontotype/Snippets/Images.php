@@ -13,7 +13,7 @@ Class Images extends Base {
     public function __construct($app)
     {
         parent::__construct($app);
-        $this->placeholderUrls = $app['pt.config']['system']['snippets']['images']['placeholder']['services'];
+        $this->placeholderUrls = $app['pt.config']->get('system.snippets.images.placeholder.services');
     }
     
     public function placeholder($opts = array(), $attrs = array())
