@@ -11,19 +11,7 @@ abstract class Provider {
     }
         
     abstract public function register($app)
-    
-    protected function addLoadPaths($app)
-    {
-        if ( file_exists($this->loadPath . '/data') ) {
-            $app['pt.data']->addLoadPath($this->loadPath . '/data');
-        }
-        if ( file_exists($this->loadPath . '/assets') ) {
-            $app['pt.assets']->addLoadPath($this->loadPath . '/assets');
-        }
-        if ( file_exists($this->loadPath . '/templates') ) {
-            $app['twig.loader.filesystem']->addPath($this->loadPath . '/templates');
-        }
-    }
+
     
     public function before($app)
     {

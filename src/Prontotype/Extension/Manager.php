@@ -6,60 +6,75 @@ use Symfony\Component\Yaml\Yaml;
 
 class Manager
 {
+    protected $extensions = array();
     
-    public function __construct($app)
+    public function __construct($app, $extensionsPath)
     {
         $this->app = $app;
-        $this->path = $app['pt.prototype.paths.extensions'];
-        $this->extensions = array();
-    }
-        
-    public function load($path)
-    {   
-
+        $this->path = $extensionsPath;
+        $this->loadFromDirectory($extensionsPath);
+        $this->loadFromClassPaths($app['pt.config']->get('extensions'));
     }
     
-    public function loadPaths()
+    public function loadFromDirectory($path)
     {
-        foreach($this->extensions as $namespace => $extensions) {
-            foreach($extensions as $ext) {
-                $this->app['pt.config']->addLoadPath($ext->getConfigPath());
-                $this->app['pt.data']->addLoadPath($ext->getDataPath());
-                $this->app['pt.assets']->addLoadPath($ext->getAssetsPath());
-                $this->app['twig']->addPath($ext->getTemplatesPath());
+        if ( file_exists($path) ) {
+            $extensions = glob($path . '/*', GLOB_ONLYDIR);            
+            foreach($extensions as $extension) {
+                $className = $this->getExtensionClassName($extension);
+                $classPath = $this->getExtensionClassPath($extension);
+                require $classPath;
+                $this->load(new $className($this->app, $extension));
             }
         }
     }
     
+    public function loadFromClassPaths($classes)
+    {
+        if ( ! empty($classes) ) {
+            foreach($classes as $class) {
+                $this->load(new $class);
+            }
+        }
+    }
+        
+    public function boot()
+    {
+        foreach($this->extensions as $extension) {
+            $extension->boot();
+        }
+    }
+    
+    public function load(Extension $extension)
+    {   
+        $extension->register();
+        $this->extensions[] = $extension;
+    }
+    
     public function before()
     {
-        // foreach($this->extensions as $namespace => $extensions) {
-//             $this->app['twig']->addGlobal($namespace, $extensions);
-//             foreach($extensions as $ext) {
-//                 $extension->before();
-//             }
-//         }
+        foreach($this->extensions as $extension) {
+            $extension->before();
+        }
     }
     
     public function after()
     {
-        // foreach($this->extensions as $namespace => $extensions) {
-//             foreach($extensions as $ext) {
-//                 $extension->after();
-//             }
-//         }
+        foreach($this->extensions as $extension) {
+            $extension->after();
+        }
     }
     
-    public function registerPlugin($class, $key, $namespace)
+    protected function getExtensionClassName($path)
     {
-        
+        $dirName = basename($path);
+        return ucfirst($dirName) . 'Extension';
     }
     
-    protected function addExtension($ext, $name, $namespace = null)
+    protected function getExtensionClassPath($path)
     {
-        // if ( $namespace && !isset($this->extensions[$namespace]) ) {
-        //     $this->extensions[$namespace] = array();
-        // }
-        // $this->extensions[$namespace][] = $ext;
+        $fileName = $this->getExtensionClassName($path);
+        return $path . '/' . $fileName . '.php';
     }
+    
 }

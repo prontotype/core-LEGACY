@@ -160,17 +160,11 @@ Class Prontotype implements ServiceProviderInterface {
         });
 
         $app['pt.extensions'] = $app->share(function($app) {
-            $ext = new ExtensionManager($app);
-            $extensions = glob($app['pt.prototype.paths.extensions'] . '/*', GLOB_ONLYDIR);            
-            foreach($extensions as $extension) {
-                $ext->load($extension);
-            }
-            return $ext;
+            return new ExtensionManager($app, $app['pt.prototype.paths.extensions']);
         });
         
         $app->register(new SessionServiceProvider());
         $app->register(new UrlGeneratorServiceProvider());
-
         
         $app->register(new TwigServiceProvider(), array(
             'twig.path'         => array( $app['pt.prototype.paths.templates']),
@@ -194,7 +188,8 @@ Class Prontotype implements ServiceProviderInterface {
             return new Twig_Environment($loader);
         });
         
-        $app['pt.extensions']->loadPaths();
+        $app['pt.extensions']->boot();
+        
         $app['twig.loader.filesystem']->addPath($app['pt.core.paths.templates']);
     }
     
