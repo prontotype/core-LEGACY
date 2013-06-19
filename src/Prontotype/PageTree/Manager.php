@@ -15,7 +15,7 @@ Class Manager {
     public function __construct($app)
     {
         $this->app = $app;
-        $this->tree = new Directory(new \SPLFileInfo($app['pt.prototype.paths.pages']), $app);
+        $this->tree = new Directory(new \SPLFileInfo($app['pt.prototype.paths.templates']), $app);
     }
     
     public function getCurrent()

@@ -96,7 +96,6 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app['pt.prototype.paths.root'] = $ptDirPath;
         $app['pt.prototype.paths.templates'] = $app['pt.prototype.paths.root'] . '/templates';
-        $app['pt.prototype.paths.pages'] = $app['pt.prototype.paths.templates'];
         $app['pt.prototype.paths.data'] = $app['pt.prototype.paths.root'] . '/data';
         $app['pt.prototype.paths.config'] = $app['pt.prototype.paths.root'] . '/config';
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';

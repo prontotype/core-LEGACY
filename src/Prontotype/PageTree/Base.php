@@ -36,7 +36,7 @@ Class Base implements \RecursiveIterator
     {
         $this->app = $app;
         $this->fullPath = $file->getPath() . '/' .  $file->getBasename();
-        $this->relPath = str_replace($app['pt.prototype.paths.pages'], '', $this->fullPath);
+        $this->relPath = str_replace($app['pt.prototype.paths.templates'], '', $this->fullPath);
         $this->templatePath = str_replace($app['pt.prototype.paths.templates'], '', $this->fullPath);
         $this->pathInfo = pathinfo($this->fullPath);
     }
