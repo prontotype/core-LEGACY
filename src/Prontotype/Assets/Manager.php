@@ -12,19 +12,36 @@ Class Manager {
     
     protected $processors = array();
     
+    protected $loadPaths = array();
+    
+    protected $fallbackPath = null;
+    
     protected $aliases = array(
         'css' => array('less', 'scss')
     );
-    
-    protected $loadPaths = array();
 
-    public function __construct($app, $processors = array(), $loadPaths = array())
+    public function __construct($app, $processors = array(), $loadPaths = array(), $fallbackPath = null)
     {
         $this->app = $app;
         $this->loadPaths = $loadPaths;
+        $this->fallbackPath = $fallbackPath;
         foreach( $processors as $processor ) {
             $this->registerProcessor($processor);
         }
+    }
+    
+    public function addLoadPath($path)
+    {
+        $this->loadPaths[] = $path;
+    }
+    
+    public function getLoadPaths()
+    {
+        $paths = $this->loadPaths;
+        if ( $this->fallbackPath ) {
+            $paths[] = $this->fallbackPath;
+        }
+        return $paths;
     }
     
     public function generateAsset($assetPath)
@@ -75,8 +92,7 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        $loadPaths = $this->loadPaths;
-        $loadPaths[] = $this->app['pt.core.paths.assets']; // append core path
+        $loadPaths = $this->getLoadPaths();
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {

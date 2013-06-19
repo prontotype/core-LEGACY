@@ -44,9 +44,8 @@ Class Prontotype implements ServiceProviderInterface {
         $this->loadPrototype($app);
         $app['pt.config'] = $app->share(function($app) {
             return new ConfigManager($app, array(
-                $app['pt.core.paths.config'],
                 $app['pt.prototype.paths.config'],
-            ), $app['pt.prototype.environment']);
+            ), $app['pt.core.paths.config'], $app['pt.prototype.environment']);
         });
     }
     
@@ -111,23 +110,6 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.prototype.paths.cache.exports'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';
     }
     
-    // protected function loadConfig($app)
- //    {
- //        $config = array(
- //            $app['pt.core.paths.config'] . '/common.yml'    
- //        );
- //        $commonConfig = $app['pt.prototype.paths.config'] . '/common.yml';
- //        if ( file_exists($commonConfig) ) {
- //            $config[] = $commonConfig;
- //        }
- //        $envConfig = $app['pt.prototype.paths.config'] . '/' . $app['pt.prototype.environment'] . '.yml';
- //        if ( file_exists( $envConfig ) ) {
- //            $config[] = $envConfig;
- //        }
- //        $app->register(new YamlConfig($config));
- //        $app['pt.config'] = $app['config'];
- //    }
-    
     protected function registerServices($app)
     {        
         foreach( $this->sharedServices as $serviceName => $serviceClass ) {
@@ -165,7 +147,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new CsvParser($app)
             ), array(
                 $app['pt.prototype.paths.data']
-            ));
+            ), $app['pt.core.paths.data']);
         });
         
         $app['pt.assets'] = $app->share(function($app) {
@@ -174,7 +156,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new ScssProcessor($app),
             ), array(
                 $app['pt.prototype.paths.assets'],
-            ));
+            ), $app['pt.core.paths.assets']);
         });
 
         $app['pt.extensions'] = $app->share(function($app) {

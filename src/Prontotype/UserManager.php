@@ -18,11 +18,7 @@ Class UserManager {
 
     public function __construct($app)
     {
-        $this->app = $app;
-        echo '<pre>';
-        print_r($this->app['pt.config']->get());
-        echo '</pre>';
-        
+        $this->app = $app;        
         $this->users = $this->app['pt.data']->load('users') ? $this->app['pt.data']->load('users') : array();
         $this->identifyBy = $this->app['pt.config']->get('user.identify');
         $authConf = $this->app['pt.config']->get('user.auth');

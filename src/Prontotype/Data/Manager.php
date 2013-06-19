@@ -11,11 +11,14 @@ Class Manager {
     protected $parsed = array();
     
     protected $loadPaths = array();
+    
+    protected $fallbackPath = null;
 
-    public function __construct($app, $parsers = array(), $loadPaths = array())
+    public function __construct($app, $parsers = array(), $loadPaths = array(), $fallbackPath = null)
     {
         $this->app = $app;
         $this->loadPaths = $loadPaths;
+        $this->fallbackPath = $fallbackPath;
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
         }
@@ -24,6 +27,15 @@ Class Manager {
     public function addLoadPath($path)
     {
         $this->loadPaths[] = $path;
+    }
+    
+    public function getLoadPaths()
+    {
+        $paths = $this->loadPaths;
+        if ( $this->fallbackPath ) {
+            $paths[] = $this->fallbackPath;
+        }
+        return $paths;
     }
     
     public function get($location, $dataPath = null, $type = null) {
@@ -141,8 +153,7 @@ Class Manager {
     
     protected function findDataFile($filePath)
     {
-        $loadPaths = $this->loadPaths;
-        $loadPaths[] = $this->app['pt.core.paths.data']; // append core path
+        $loadPaths = $this->getLoadPaths();
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($filePath);
             if ( file_exists( $fullPath ) ) {

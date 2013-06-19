@@ -15,9 +15,9 @@ class DataController implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
         $triggers = $app['pt.config']->get('triggers');
          
-        $controllers->get('/' . $triggers['data'] . '/{data_path}', function ( $data_path ) use ( $app ) {
-            
-            $result = $app['pt.data']->find(str_replace('/','.',$data_path));
+        $controllers->get('/' . $triggers['data'] . '/{data_file}/{data_path}', function ( $data_file, $data_path ) use ( $app ) {
+        
+            $result = $app['pt.data']->load($data_file, str_replace('/','.',$data_path));
                     
             if ( ! $result ) {
                 $app->abort(404);

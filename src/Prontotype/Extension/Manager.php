@@ -16,7 +16,8 @@ class Manager
         
     public function load($path)
     {   
-        $this->app['pt.config']->addLoadPath($this->app['pt.prototype.paths.extensions'] .'/Test/config');
+        // $this->loadPaths()
+        // $this->app['pt.config']->addLoadPath($this->app['pt.prototype.paths.extensions'] .'/Test/config');
         
         if ( file_exists($path) ) {
     

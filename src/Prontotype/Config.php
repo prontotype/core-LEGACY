@@ -12,12 +12,15 @@ Class Config {
     
     protected $configs;
     
-    protected $loadPaths;
+    protected $loadPaths = array();
+    
+    protected $fallbackPath;
 
-    public function __construct($app, $loadPaths = array(), $env = 'live')
+    public function __construct($app, $loadPaths = array(), $fallbackPath = null, $env = 'live')
     {
         $this->app = $app;
         $this->env = $env;
+        $this->fallbackPath = $fallbackPath;
         foreach($loadPaths as $path) {
             $this->addLoadPath($path);
         }
@@ -27,10 +30,20 @@ Class Config {
     public function addLoadPath($path)
     {
         if ( file_exists($path) ) {
-            $this->loadPaths[] = $path . '/common.yml';
             $this->loadPaths[] = $path . '/' . $this->env . '.yml';
+            $this->loadPaths[] = $path . '/common.yml';
             $this->mergeConfig();
         }
+    }
+    
+    public function getLoadPaths()
+    {
+        $paths = $this->loadPaths;
+        if ( $this->fallbackPath ) {
+            array_push($paths, $this->fallbackPath . '/' . $this->env . '.yml');
+            array_push($paths, $this->fallbackPath . '/common.yml');
+        }
+        return array_reverse($paths);
     }
     
     public function get($path = null)
@@ -56,16 +69,10 @@ Class Config {
         return $config;
     }
     
-    
     protected function mergeConfig()
     {
         $config = array();
-        // $loadPaths = array_reverse($this->loadPaths);
-        $loadPaths = $this->loadPaths;
-        echo '<pre>';
-        print_r($loadPaths);
-        echo '</pre>';
-        
+        $loadPaths = $this->getLoadPaths();
         foreach($loadPaths as $loadPath) {
             if ( file_exists($loadPath)) {
                 if ( trim(file_get_contents($loadPath)) !== '' ) {
