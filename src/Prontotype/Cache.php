@@ -19,7 +19,7 @@ Class Cache {
     {
         $this->app = $app;
         $this->cacheInfo = $cacheInfo;
-        $this->defaultCacheExpiry = $this->app['pt.config']['system']['cache']['default_expiry'];
+        $this->defaultCacheExpiry = $this->app['pt.config']->get('system.cache.default_expiry');
     }
     
     public function set($type, $key, $content, $expiry = null)

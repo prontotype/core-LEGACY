@@ -18,10 +18,11 @@ Class UserManager {
 
     public function __construct($app)
     {
-        $this->app = $app;
+        $this->app = $app;        
         $this->users = $this->app['pt.data']->load('users') ? $this->app['pt.data']->load('users') : array();
-        $this->identifyBy = $this->app['pt.config']['user']['identify'];
-        $this->authBy = ! empty($this->app['pt.config']['user']['auth']) ? $this->app['pt.config']['user']['auth'] : null;
+        $this->identifyBy = $this->app['pt.config']->get('user.identify');
+        $authConf = $this->app['pt.config']->get('user.auth');
+        $this->authBy = ! empty($authConf) ? $authConf : null;
     }
     
     public function userIsLoggedIn()
@@ -40,7 +41,7 @@ Class UserManager {
                 return true;
             }
         }
-        $this->app['pt.notifications']->setFlash('error', $this->app['pt.config']['user']['login']['error']);
+        $this->app['pt.notifications']->setFlash('error', $this->app['pt.config']->get('user.login.error'));
         return false;
     }
     
@@ -88,7 +89,8 @@ Class UserManager {
         if ( $override ) {
             return $override;
         }
-        return ! empty($this->app['pt.config']['user']['login']['redirect']) ? $this->app['pt.config']['user']['login']['redirect'] : '/';
+        $rdir = $this->app['pt.config']->get('user.login.redirect');
+        return ! empty($rdir) ? $rdir : '/';
     }
     
     public function getLogoutRedirectUrlPath($override = null)
@@ -96,7 +98,8 @@ Class UserManager {
         if ( $override ) {
             return $override;
         }
-        return ! empty($this->app['pt.config']['user']['logout']['redirect']) ? $this->app['pt.config']['user']['logout']['redirect'] : '/';
+        $rdir = $this->app['pt.config']->get('user.logout.redirect');
+        return ! empty($rdir) ? $rdir : '/';
     }
     
 }

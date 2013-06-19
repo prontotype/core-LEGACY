@@ -23,7 +23,7 @@ Class CsvParser extends Parser {
         if ( ! is_string($content) ) {
             throw new \Exception('CSV data format error');
         }
-        $config = $this->app['pt.config']['data']['csv'];
+        $config = $this->app['pt.config']->get('data.csv');
         $data = $this->csvToArray($content, $config['escape'], $config['enclosure'],  $config['delimiter']);
         if ( $data && $config['headers'] ) {
             $indexedData = array();
@@ -104,57 +104,5 @@ Class CsvParser extends Parser {
         }
         return $lines;
     }
-    
-    // protected function parse_csv( $path )
- //    {
- //        $config = $this->app['pt.config']['data']['csv'];
- //        try {
- //            $row = 1;
- //            $data_array = array();
- //            $headers = array();
- //            $id_col = FALSE;
- //            
- //            if ( strpos($path,'http') === 0 ) {
- //                // external url
- //                $handle = fopen('php://temp', 'w+');
- //                $curl = curl_init();
- //                curl_setopt($curl, CURLOPT_URL, $path);
- //                curl_setopt($curl, CURLOPT_FILE, $handle);
- //                curl_exec($curl);
- //                curl_close($curl);
- //                rewind($handle);
- //            } else {
- //                // local file
- //                $handle = fopen($path, "r");
- //            }
- //            
- //            if ( $handle !== FALSE ) {
- //                while (($data = fgetcsv($handle, 0, $config['delimiter'], $config['enclosure'], $config['escape'] )) !== FALSE) {
- //                    $has_headers = $config['headers'];
- //                    if ( $row == 1 && $has_headers ) {
- //                        $headers = $data; // set headers
- //                        $id_col = array_search($config['id_header'], $headers );                        
- //                    } elseif ( $has_headers ) {
- //                        $row_data = array();
- //                        for ( $i = 0; $i < count( $data ); $i++ ) {
- //                            $row_data[$headers[$i]] = $data[$i];
- //                        }
- //                        if ( $id_col !== FALSE ) {
- //                            $data_array[$data[$id_col]] = $row_data;
- //                        } else {
- //                            $data_array[] = $row_data;
- //                        }
- //                    } else {
- //                        $data_array[] = $data;
- //                    }
- //                    $row++;
- //                }
- //                fclose($handle);
- //            }
- //            return $data_array;
- //        } catch( \Exception $e ) {           
- //            throw new \Exception('CSV data format error in ' . $path);
- //        }
- //    }
     
 }

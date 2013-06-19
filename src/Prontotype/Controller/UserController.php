@@ -17,8 +17,8 @@ class UserController implements ControllerProviderInterface
         
         $controllers->post('/login', function (Request $request) use ($app) {
             
-            $identifyBy = $app['pt.config']['user']['identify'];
-            $authBy = $app['pt.config']['user']['auth'];
+            $identifyBy = $app['pt.config']->get('user.identify');
+            $authBy = $app['pt.config']->get('user.auth');
             
             if ( $app['pt.user_manager']->attemptLogin($app['request']->get($identifyBy), $app['request']->get($authBy)) ) {
                 return $app->redirect($app['pt.user_manager']->getLoginRedirectUrlPath($request->get('redirect')));
