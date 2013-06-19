@@ -96,14 +96,14 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app['pt.prototype.paths.root'] = $ptDirPath;
         $app['pt.prototype.paths.templates'] = $app['pt.prototype.paths.root'] . '/templates';
-        $app['pt.prototype.paths.pages'] = $app['pt.prototype.paths.templates'] . '/pages';
+        $app['pt.prototype.paths.pages'] = $app['pt.prototype.paths.templates'];
         $app['pt.prototype.paths.data'] = $app['pt.prototype.paths.root'] . '/data';
         $app['pt.prototype.paths.config'] = $app['pt.prototype.paths.root'] . '/config';
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
         $app['pt.prototype.paths.assets'] = $app['pt.prototype.paths.root'] . '/assets';
         
         $app['pt.prototype.paths.cache.root'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
-        $app['pt.prototype.paths.cache.templates'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/views';
+        $app['pt.prototype.paths.cache.templates'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/templates';
         $app['pt.prototype.paths.cache.assets'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
         $app['pt.prototype.paths.cache.data'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
         $app['pt.prototype.paths.cache.requests'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
@@ -210,10 +210,10 @@ Class Prontotype implements ServiceProviderInterface {
             
             switch( $code ) {
                 case '404':
-                    $template = 'system/pages/404.twig';
+                    $template = '_system/404.twig';
                     break;
                 default:
-                    $template = 'system/pages/error.twig';
+                    $template = '_system/error.twig';
                     break;
             }
             

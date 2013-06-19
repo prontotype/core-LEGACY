@@ -4,7 +4,7 @@ namespace Prontotype\Snippets;
 
 Class Assets extends Base {
     
-    protected $templatePath = 'system/snippets/assets';
+    protected $templatePath = '_system/snippets/assets';
     
     protected $configKey = 'assets';
     

@@ -132,7 +132,7 @@ Class Base implements \RecursiveIterator
 
     protected function isValidFile(SPLFileInfo $item)
     {
-        return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 );
+        return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 && strpos($item->getBasename(), '_') !== 0 );
     }
         
     protected function parseFileName()

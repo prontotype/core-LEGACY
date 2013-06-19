@@ -37,7 +37,7 @@ Class Application {
     protected $relPaths = array(
         'config'    => '/../../config',
         'assets'    => '/../../assets',
-        'templates' => '/../../views',
+        'templates' => '/../../templates',
         'data'      => '/../../data',
     );
     

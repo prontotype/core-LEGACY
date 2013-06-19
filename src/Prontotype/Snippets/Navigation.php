@@ -4,7 +4,7 @@ namespace Prontotype\Snippets;
 
 Class Navigation extends Base {
     
-    protected $templatePath = 'system/snippets/navigation';
+    protected $templatePath = '_system/snippets/navigation';
     
     protected $configKey = 'navigation';
 
