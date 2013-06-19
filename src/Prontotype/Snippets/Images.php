@@ -4,7 +4,7 @@ namespace Prontotype\Snippets;
 
 Class Images extends Base {
     
-    protected $templatePath = 'system/snippets/images';
+    protected $templatePath = '_system/snippets/images';
     
     protected $configKey = 'images';
     

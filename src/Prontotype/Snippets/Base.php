@@ -6,7 +6,7 @@ Class Base {
 
     protected $app;
     
-    protected $templatePath = 'system/snippets';
+    protected $templatePath = '_system/snippets';
     
     protected $configKey = null;
     

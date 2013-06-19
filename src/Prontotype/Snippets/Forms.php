@@ -4,7 +4,7 @@ namespace Prontotype\Snippets;
 
 Class Forms extends Base {
     
-    protected $templatePath = 'system/snippets/forms';
+    protected $templatePath = '_system/snippets/forms';
     
     protected $configKey = 'forms';
     
