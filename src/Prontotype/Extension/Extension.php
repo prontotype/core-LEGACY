@@ -21,6 +21,11 @@ abstract class Extension
         $this->registerLoadPaths();
     }
     
+    public function getPlugins()
+    {
+        return array();
+    }
+    
     public function before()
     {
         // called before the request is processed

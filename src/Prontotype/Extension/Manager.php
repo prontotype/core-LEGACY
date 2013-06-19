@@ -8,6 +8,8 @@ class Manager
 {
     protected $extensions = array();
     
+    protected $plugins = array();
+    
     public function __construct($app, $extensionsPath)
     {
         $this->app = $app;
@@ -43,12 +45,14 @@ class Manager
         foreach($this->extensions as $extension) {
             $extension->boot();
         }
+        $this->loadPlugins();
     }
     
     public function load(Extension $extension)
     {   
         $extension->register();
         $this->extensions[] = $extension;
+        $this->plugins = array_merge($this->plugins, $extension->getPlugins());
     }
     
     public function before()
@@ -62,6 +66,27 @@ class Manager
     {
         foreach($this->extensions as $extension) {
             $extension->after();
+        }
+    }
+    
+    public function loadPlugins()
+    {
+        $plugins = array();
+        foreach($this->plugins as $plugin) {
+            if ( $plugin instanceof Plugin ) {
+                $namespace = $plugin->getNamespace();
+                if (strtolower($namespace) !== 'pt') {
+                    if ( ! isset( $plugins[$namespace] ) ) {
+                        $plugins[$namespace] = array();
+                    }
+                    if ( $plugin->getName() ) {
+                        $plugins[$namespace][$plugin->getName()] = $plugin;
+                    }
+                }
+            }
+        }    
+        foreach($plugins as $namespace => $pls) {
+            $this->app['twig']->addGlobal($namespace, $pls);
         }
     }
     
