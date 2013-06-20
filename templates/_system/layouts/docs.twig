@@ -1,12 +1,11 @@
 {% extends '_system/layouts/skeleton.twig' %}
 
 {% block styles %}
-{{ parent() }}
 {{ pt.snippets.assets.stylesheet('/_system/css/docs.css') }}
 {% endblock %}
 
 {% block title %}
-Prontotype Documentation
+Prontotype Documentation (v{{ pt.VERSION }})
 {% endblock title %}
 
 {% block body %}
@@ -15,7 +14,7 @@ Prontotype Documentation
       
       <div class="receptacle-inner">
           
-          <a href="/" class="branding">Prontotype Documentation</a>
+          <a href="/" class="branding">Prontotype Documentation (v{{ pt.VERSION }})</a>
           
       </div>
       
@@ -31,18 +30,18 @@ Prontotype Documentation
                   <ul>
                       <li class="top-level"><a href="{{ pt.urls.docs.root }}">Overview</a></li>
                       <li class="top-level">
-                          <a href="{{ pt.urls.docs.root }}/installation">Installation and Setup</a>
+                          <a href="{{ pt.urls.docs.root }}/installation">Installation and setup</a>
                           <ul>
-                              <li><a href="{{ pt.urls.docs.root }}/installation/installing">Downloading and Installing</a></li>
-                              <li><a href="{{ pt.urls.docs.root }}/installation/domains">Domains and Prototypes</a></li>
-                              <li><a href="{{ pt.urls.docs.root }}/installation/password-protection">Password Protection</a></li>
+                              <li><a href="{{ pt.urls.docs.root }}/installation/installing">Installing Prontotype</a></li>
+                              <li><a href="{{ pt.urls.docs.root }}/installation/prototypes">Prototypes and domains</a></li>
+                              <li><a href="{{ pt.urls.docs.root }}/installation/password-protection">Password protection</a></li>
                           </ul>
                       </li>
                       <li class="top-level">
                           <a href="#">Pages and URLs</a>
                           <ul>
-                              <li><a href="#">Mapping URLs to Templates</a></li>
-                              <li><a href="#">Custom Routes</a></li>
+                              <li><a href="#">Mapping URLs to templates</a></li>
+                              <li><a href="#">Custom routes</a></li>
                               <li><a href="#">Clean URLs</a></li>
                           </ul>
                       </li>

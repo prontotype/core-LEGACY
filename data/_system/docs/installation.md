@@ -7,4 +7,4 @@ Prontotype has the following requirements:
 * PHP version 5.3.3+
 * [Composer](http://getcomposer.org)
 
-If you've met all these then you can go to [Downloading and Installing &rarr;](installation/installing)
+If you've met all these then you can go on and [install Prontotype &rarr;](installation/installing)

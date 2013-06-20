@@ -1,30 +1,85 @@
-.receptacle {
-    max-width: 1200px;
-    margin: 0 auto;
+/* Basics */
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+body {
+    font-family: sans-serif;
+    color: #222;
+    font-size: 16px;
+    line-height: 1.4;
+    background: #EFEFEF;
+}
+a {
+    color: #417e98;
+}
+h1 {
+    font-size: 22px;
+    border-bottom: 1px solid #DDD;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.8em;
+}
+h2 {
+    font-size: 18px;
+    margin-bottom: 0.5em;
+    margin-top: 1.0em;
+    border-bottom: 1px dashed #DDD;
+    padding-bottom: 0.5em;
+}
+p {
+    font-size: 15px;
+    margin-top: 0.6em;
+    margin-bottom: 0.8em;
+}
+ul {
+    font-size: 15px;
+    margin-left: 20px;
 }
 .lead {
     font-size: 17px;
     color: #888;
 }
+p code,
+li code {
+    background: #FFFEEB;
+    font-family: monospace;
+    font-size: 0.85em;
+    color: #3B2300;
+    border-bottom: 1px solid #E6E6B0;
+    border-right: 1px solid #E6E6B0;
+    display: inline-block;
+    padding: 1px 4px;
+}
 
-/* header */
+/* Common */
+
+.receptacle-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
 
 .site-header {
-    border-bottom: 1px solid #DDD;
+    background: #E66F05;
 }
 .site-header .receptacle-inner {
-    padding: 0 0 20px 0;
+    padding: 10px 0;
 }
 .site-header .branding {
-    color: #222;
+    color: #FFF;
     text-decoration: none;
     font-size: 18px;
+/*    font-weight: bold;*/
 }
 
-/* body */
+/* Body */
 
 .site-body {
-    border-top: 1px solid #FFF;
     padding-top: 30px;
 }
 .site-body > .receptacle-inner {
@@ -38,7 +93,20 @@
     width: 100%;
 }
 
-/* nav */
+/* Content */
+
+.pt-content-block {
+    background: #FFF;
+    padding: 19px 20px 21px 20px;
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;    
+    border-bottom: 2px solid #CCC;
+}
+.pt-content-block :last-child {
+    margin-bottom: 0;
+}
+
+/* Nav */
 
 .nav--primary ul {
     list-style: none;
