@@ -2,6 +2,10 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+.lead {
+    font-size: 17px;
+    color: #888;
+}
 
 /* header */
 
@@ -30,6 +34,9 @@
     float: left;
     margin-left: -260px;
 }
+.site-body .main {
+    width: 100%;
+}
 
 /* nav */
 
@@ -40,12 +47,13 @@
 }
 .nav--primary ul ul {
     padding-left: 20px;
-    display: none;
+/*    display: none;*/
 }
 .nav--primary a {
     text-decoration: none;
     display: block;
     padding: 3px 10px;
+    color: #333;
 }
 .nav--primary a:hover {
     text-decoration: underline;

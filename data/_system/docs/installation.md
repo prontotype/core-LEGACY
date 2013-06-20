@@ -1,2 +1,10 @@
 # Installation and Setup
 
+Prontotype has the following requirements:
+
+* Linux-based web server
+* A web server like Apache (optionally with mod_rewrite or equivalent enabled) or Nginx
+* PHP version 5.3.3+
+* [Composer](http://getcomposer.org)
+
+If you've met all these then you can go to [Downloading and Installing &rarr;](installation/installing)

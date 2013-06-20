@@ -189,7 +189,11 @@ Class Prontotype implements ServiceProviderInterface {
             return new Twig_Environment($loader);
         });
         
-        $app->register(new \SilexMarkdown\MarkdownExtension());
+        $app->register(new \SilexMarkdown\MarkdownExtension(), array(
+            'markdown.features' => array(
+                'entities' => true,
+            )
+        ));
         
         $app['pt.extensions']->boot();
         
