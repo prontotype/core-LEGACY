@@ -44,7 +44,10 @@ class HelperExtension extends \Twig_Extension
                         'fetch' => $this->app['pt.utils']->generateUrlPath('export.run'),
                         'clear' => $this->app['pt.utils']->generateUrlPath('export.clear'),
                         'download' => $this->app['pt.utils']->generateUrlPath('export.download')
-                    )
+                    ),
+                    'docs' => array(
+                        'root' => $this->app['pt.utils']->generateUrlPath('docs.view')
+                    ),
                 )
             )
         );

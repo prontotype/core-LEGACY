@@ -3,15 +3,19 @@
 <head>
 	<meta charset="utf-8">
 	
+    {% block styles %}
     {{ pt.snippets.assets.stylesheet('/_system/css/system.css') }}
+    {% endblock %}
 
-	<title>{{ title }}</title>
+	<title>{% block title %}{% endblock title %}</title>
 </head>
 <body>
 	
+    {% block body %}
 	<div class="pt-body">
 	{% block content %}{% endblock content %}	
 	</div>	
+    {% endblock body %}
 	
 </body>	
 </html>

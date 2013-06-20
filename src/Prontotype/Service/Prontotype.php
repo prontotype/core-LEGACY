@@ -22,6 +22,7 @@ use Prontotype\Data\JsonParser;
 use Prontotype\Data\YamlParser;
 use Prontotype\Data\XmlParser;
 use Prontotype\Data\CsvParser;
+use Prontotype\Data\MarkdownParser;
 use Prontotype\Extension\Manager as ExtensionManager;
 use Prontotype\Assets\Manager as AssetManager;
 use Prontotype\Config as ConfigManager;
@@ -143,7 +144,8 @@ Class Prontotype implements ServiceProviderInterface {
                 new JsonParser($app),
                 new YamlParser($app),
                 new XmlParser($app),
-                new CsvParser($app)
+                new CsvParser($app),
+                new MarkdownParser($app)
             ), array(
                 $app['pt.prototype.paths.data']
             ), $app['pt.core.paths.data']);
@@ -187,6 +189,12 @@ Class Prontotype implements ServiceProviderInterface {
             return new Twig_Environment($loader);
         });
         
+        $app->register(new \SilexMarkdown\MarkdownExtension(), array(
+            'markdown.features' => array(
+                'entities' => true,
+            )
+        ));
+        
         $app['pt.extensions']->boot();
         
         $app['twig.loader.filesystem']->addPath($app['pt.core.paths.templates']);
@@ -224,12 +232,27 @@ Class Prontotype implements ServiceProviderInterface {
     
     protected function mountRoutes($app)
     {
-        $app->mount('/' . $app['pt.config']->get('triggers.auth'), new \Prontotype\Controller\AuthController());
-        $app->mount('/' . $app['pt.config']->get('triggers.data'), new \Prontotype\Controller\DataController());
-        $app->mount('/' . $app['pt.config']->get('triggers.user'), new \Prontotype\Controller\UserController());
-        $app->mount('/' . $app['pt.config']->get('triggers.assets'), new \Prontotype\Controller\AssetController());
-        $app->mount('/' . $app['pt.config']->get('triggers.shorturl'), new \Prontotype\Controller\RedirectController());
-        $app->mount('/' . $app['pt.config']->get('triggers.tools'), new \Prontotype\Controller\ToolsController());
+        if ($app['pt.config']->get('triggers.auth')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.auth'), new \Prontotype\Controller\AuthController());  
+        }
+        if ($app['pt.config']->get('triggers.data')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.data'), new \Prontotype\Controller\DataController());
+        }
+        if ($app['pt.config']->get('triggers.user')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.user'), new \Prontotype\Controller\UserController());  
+        } 
+        if ($app['pt.config']->get('triggers.assets')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.assets'), new \Prontotype\Controller\AssetController());  
+        } 
+        if ($app['pt.config']->get('triggers.shorturl')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.shorturl'), new \Prontotype\Controller\RedirectController());   
+        }
+        if ($app['pt.config']->get('triggers.tools')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.tools'), new \Prontotype\Controller\ToolsController());   
+        }
+        if ($app['pt.config']->get('triggers.docs')) {
+            $app->mount('/' . $app['pt.config']->get('triggers.docs'), new \Prontotype\Controller\DocsController());   
+        }
         $app->mount('/', new \Prontotype\Controller\MainController());
     }
     

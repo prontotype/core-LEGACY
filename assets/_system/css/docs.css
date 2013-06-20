@@ -1,0 +1,63 @@
+.receptacle {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.lead {
+    font-size: 17px;
+    color: #888;
+}
+
+/* header */
+
+.site-header {
+    border-bottom: 1px solid #DDD;
+}
+.site-header .receptacle-inner {
+    padding: 0 0 20px 0;
+}
+.site-header .branding {
+    color: #222;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* body */
+
+.site-body {
+    border-top: 1px solid #FFF;
+    padding-top: 30px;
+}
+.site-body > .receptacle-inner {
+    padding-left: 260px;
+}
+.site-body .aside {
+    float: left;
+    margin-left: -260px;
+}
+.site-body .main {
+    width: 100%;
+}
+
+/* nav */
+
+.nav--primary ul {
+    list-style: none;
+    margin-left: 0;
+    margin-bottom: 3px;
+}
+.nav--primary ul ul {
+    padding-left: 20px;
+/*    display: none;*/
+}
+.nav--primary a {
+    text-decoration: none;
+    display: block;
+    padding: 3px 10px;
+    color: #333;
+}
+.nav--primary a:hover {
+    text-decoration: underline;
+}
+.nav--primary .top-level > a {
+    font-weight: bold;
+}

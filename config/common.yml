@@ -33,6 +33,7 @@ triggers:
   auth: _auth
   assets: _assets
   user: _user
+  docs: _docs
 
 user:
   identify: username
