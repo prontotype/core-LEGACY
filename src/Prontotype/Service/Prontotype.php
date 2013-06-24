@@ -93,7 +93,7 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app['pt.prototype.label'] = $label;
         $app['pt.prototype.folder'] = $ptConfig['prototype'];
-        $app['pt.prototype.environment'] = $ptConfig['environment'];
+        $app['pt.prototype.environment'] = isset($ptConfig['environment']) ? $ptConfig['environment'] : 'live';
         
         $app['pt.prototype.paths.root'] = $ptDirPath;
         $app['pt.prototype.paths.templates'] = $app['pt.prototype.paths.root'] . '/templates';

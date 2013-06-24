@@ -24,7 +24,7 @@ At the root level of the Prontotype directory structure there is a `prototypes.y
   environment: live
 </code></pre>
 
-This configuration will result in Prontotype will trying and serve up the default prototype (i.e. the one in a folder named 'default') for *any* domain. It will also set the environment value to 'live' (see the [configuration section](#) for more detail on environments).
+This configuration will result in Prontotype will trying and serve up the default prototype (i.e. the one in a folder named 'default') for *any* domain. 
 
 If you wanted to serve up an additional prototype (one in a folder named **foo** within the `/prototypes` directory) at a different domain, you could amend the `prototypes.yml` file to look like this:
 
@@ -57,5 +57,20 @@ The value of the `matches` key uses a simple wildcard pattern to match URLs agai
 | *.foo.com | bar.foo.com, hello.foo.com etc |
 | \*.foo.\* | bar.foo.com, bar.foo.site, hello.foo.com, etc |
 
+### Environments {#environments}
 
+The `environments` key lets you specify an environment for each prototype match block. Using different environments is completely optional but lets you load different configuration files in for different matched domains if required (as discussed in the [configuration section](#)).
+
+So for example you could use the following `prontotypes.yml` file to serve up the same prototype but with a different environment value for the local **foo.dev** domain:
+
+<pre><code>local:
+  matches: 'foo.dev'
+  prototype: default
+  environment: local
+
+default:
+  matches: 'foo.com'
+  prototype: default
+  environment: live
+</code></pre>
 

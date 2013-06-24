@@ -38,15 +38,16 @@ Class Manager {
         return $paths;
     }
     
-    public function get($location, $dataPath = null, $type = null) {
+    public function get($location, $replacements = null, $dataPath = null, $type = null)
+    {
         if ( strpos($location, 'http') !== 0 ) {
-            return $this->load($location, $dataPath, $type);
+            return $this->load($location, $replacements, $dataPath, $type);
         } else {
-            return $this->fetch($location, $dataPath, $type);
+            return $this->fetch($location, $replacements, $dataPath, $type);
         }
     }
     
-    public function load($filePath, $dataPath = null, $type = null)
+    public function load($filePath, $replacements = null, $dataPath = null, $type = null)
     {
         if ( isset($this->parsed[$filePath]) ) {
             $data = $this->parsed[$filePath];
@@ -56,6 +57,9 @@ Class Manager {
                 $parts = pathinfo($filePath);
                 $extension = ! $type ? $parts['extension'] : $type;
                 $contents = file_get_contents($filePath);
+                if ( is_array($replacements) ) {
+                    $contents = $this->app['twig.stringloader']->render($contents, $replacements);
+                }
                 try {
                     $data = $this->parse($contents, $extension);
                 } catch ( \Exception $e ) {
@@ -69,7 +73,7 @@ Class Manager {
         return $this->find($data, $dataPath);
     }
     
-    public function fetch($url, $dataPath = null, $type = null)
+    public function fetch($url, $replacements = null, $dataPath = null, $type = null)
     {
         if ( isset($this->parsed[$url]) ) {
             $data = $this->parsed[$url];
