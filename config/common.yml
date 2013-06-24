@@ -11,7 +11,7 @@ system:
 
 
 
-clean_urls: false
+clean_urls: true
 
 timezone: Europe/London
 

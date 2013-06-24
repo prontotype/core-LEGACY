@@ -2,7 +2,7 @@
 
 <p class="lead">Prontotype is a lightweight, server-side, filesystem-based framework designed to help you quickly build high-fidelity, interactive and data-driven HTML prototypes.</p>
 
-## Prontotype lets you:
+## Prontotype features at a glance
 
 * Quickly build linked, multi-page prototypes with realistic URLs
 * Define reusable chunks of HTML to make prototype-wide updates quick and easy
