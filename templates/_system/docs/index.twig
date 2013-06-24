@@ -7,7 +7,12 @@ Welcome {{ parent() }}
 {% block main %}
 
 <div class="pt-content-block">
-{{ pt.data.get(dataPath) }}    
+{% set contents = pt.data.get(dataPath) %}
+{% if contents %}
+{{ contents }}
+{% else %}
+<p>Coming soon.</p>
+{% endif %}
 </div>
     
 {% endblock main %}
