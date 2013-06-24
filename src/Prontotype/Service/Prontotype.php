@@ -54,6 +54,9 @@ Class Prontotype implements ServiceProviderInterface {
         $ptDefinitionsPath = $app['pt.core.paths.root'] . '/prototypes.yml';
         $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
         $ptConfig = null;
+        echo '<pre>';
+        print_r($_SERVER['REQUEST_URI']);
+        echo '</pre>';
         
         $ptDefinitions = Yaml::parse($ptDefinitionsPath);        
         if (null === $ptDefinitions) {
@@ -61,13 +64,30 @@ Class Prontotype implements ServiceProviderInterface {
         }
         
         foreach( $ptDefinitions as $label => $definition ) {
-            $matches = is_array($definition['matches']) ? $definition['matches'] : array($definition['matches']);
+            $matches = is_array($definition['domain']) ? $definition['domain'] : array($definition['domain']);
             $regexp = '/^(';
             $regexp .= implode('|', array_map(function($value){
                 return str_replace(array('.','*'), array('\.','(.*)'), $value);
             }, $matches));
             $regexp .= ')/';
             if ( preg_match($regexp, $host, $matches) ) {
+                if ( isset($definition['path']) && $definition['path'] != '/' ) {
+                    // check the path
+                    $requestPath = trim(str_replace(array('/index.php'), '', $_SERVER['REQUEST_URI']),'/');
+                    $requestPathParts = explode('/', $requestPath);
+                    $definitionPathParts = explode('/',trim($definition['path'],'/'));
+                    if ( count($definitionPathParts) > count($requestPathParts) ) {
+                        continue;
+                    }
+                    for ( $i = 0; $i < count($definitionPathParts); $i++) {
+                        if ( $requestPathParts[$i] !== $definitionPathParts[$i] ) {
+                            continue 2;
+                        }
+                    }
+                    $definition['path'] = '/' . implode($definitionPathParts);
+                } else {
+                    $definition['path'] = '';
+                }
                 $replacements = array_slice($matches, 2);                
                 $ptConfig = $definition;
                 $replacementTokens = array();
@@ -92,6 +112,8 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app['pt.prototype.label'] = $label;
         $app['pt.prototype.folder'] = $ptConfig['prototype'];
+        $app['pt.prototype.domain'] = $ptConfig['domain'];
+        $app['pt.prototype.path'] = $ptConfig['path'];
         $app['pt.prototype.environment'] = $ptConfig['environment'];
         
         $app['pt.prototype.paths.root'] = $ptDirPath;
