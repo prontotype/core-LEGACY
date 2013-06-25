@@ -1,4 +1,4 @@
-clean_urls: true
+clean_urls: false
 
 timezone: Europe/London
 

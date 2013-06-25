@@ -4,3 +4,4 @@ vendor/*
 bin/*
 cache/*
 index.php
+.htaccess

@@ -144,7 +144,7 @@ pre {
 .nav--primary li {
     margin-bottom: 0;
 }
-.nav--primary ul ul {
+.nav--primary ul ul ul {
     padding-left: 20px;
 /*    display: none;*/
 }
@@ -157,7 +157,8 @@ pre {
 .nav--primary a:hover {
     text-decoration: underline;
 }
-.nav--primary .top-level > a {
+.nav--primary .level-0 > a,
+.nav--primary .level-1 > a {
     font-weight: bold;
 }
 
