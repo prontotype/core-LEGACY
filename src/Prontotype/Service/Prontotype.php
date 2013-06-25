@@ -117,7 +117,9 @@ Class Prontotype implements ServiceProviderInterface {
         ));
 
         $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-            $twig->addExtension(new Twig_Extension_Debug());
+            if ( $app['pt.config']->get('debug') ) {
+                $twig->addExtension(new Twig_Extension_Debug());  
+            } 
             $twig->addExtension(new TwigHelperExtension($app));
             return $twig;
         }));
