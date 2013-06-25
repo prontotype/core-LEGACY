@@ -68,7 +68,11 @@ Class Base implements \RecursiveIterator
             if ( $cleanSegments[count($cleanSegments)-1] == 'index' ) {
                 unset($cleanSegments[count($cleanSegments)-1]);
             }
-            $this->urlPath = $this->prefixUrl('/' . implode('/', $cleanSegments));
+            $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
+            if ( $up == '' ) {
+                $up = '/';
+            }
+            $this->urlPath = $this->prefixUrl($up);
         }
         return $this->urlPath;
     }
@@ -88,6 +92,7 @@ Class Base implements \RecursiveIterator
     {
         if ( ! $this->depth ) {
             $urlPath = $this->unPrefixUrl($this->getUrlPath());
+            $urlPath = str_replace($this->app['pt.prototype.path'], '', $urlPath);            
             if ( $urlPath == '/' ) {
                 $this->depth = 0;
             } else {
@@ -134,7 +139,7 @@ Class Base implements \RecursiveIterator
     {
         return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 && strpos($item->getBasename(), '_') !== 0 );
     }
-        
+    
     protected function parseFileName()
     {
         preg_match($this->nameFormatRegex, $this->pathInfo['filename'], $parts);
@@ -158,7 +163,11 @@ Class Base implements \RecursiveIterator
         $name = null;
         if ( count($this->app['pt.config']->get('name_overrides')) ) {
             foreach( $this->app['pt.config']->get('name_overrides') as $path => $niceName ) {
-                if ($this->unPrefixUrl($path) == $this->unPrefixUrl($this->getUrlPath())) {
+                $path = rtrim($this->app['pt.prototype.path'] . $this->unPrefixUrl($path),'/');
+                if ( $path == '' ) {
+                    $path = '/';
+                }
+                if ($path == $this->unPrefixUrl($this->getUrlPath())) {
                     $name = $niceName;
                     break;
                 }
