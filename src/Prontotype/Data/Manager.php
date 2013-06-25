@@ -53,7 +53,7 @@ Class Manager {
             $data = $this->parsed[$filePath];
         } else {
             $filePath = $this->findDataFile($filePath);          
-            if ( file_exists($filePath) ) {
+            if ( file_exists($filePath) && ! is_dir($filePath) ) {
                 $parts = pathinfo($filePath);
                 $extension = ! $type ? $parts['extension'] : $type;
                 $contents = file_get_contents($filePath);
