@@ -3,6 +3,4 @@ composer.lock
 vendor/*
 bin/*
 cache/*
-prototypes/*
-!prototypes/_system/*
 index.php
