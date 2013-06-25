@@ -49,7 +49,7 @@ Class Manager {
     public function getByRoute($route)
     {
         // lets see if we need to do any checking of custom routes
-        $plainRoutes = $this->app['pt.config']->get('routes') ? $this->app['pt.config']->get('routes') : array();
+        $plainRoutes = $this->app['pt.config']->get('pages.routes') ? $this->app['pt.config']->get('pages.routes') : array();
         $routes = array();
         $root = $this->app['pt.prototype.path'] . '/';
         foreach($plainRoutes as $spec => $r) {

@@ -1,4 +1,4 @@
-page_names:
-  '/' : 'Overview'
-  '[setup]' : 'Setup and Installation'
-  '[config]' : 'Setup and Installation'
+pages:
+  names:
+    '/' : 'Overview'
+    '[setup]' : 'Setup and Installation'

@@ -28,8 +28,11 @@ user:
   logout:
     redirect: /
 
-page_names:
-  '/' : 'Home'
+pages:
+  routes:
+    # "posts/(:all)" : "posts/post"
+  names:
+    '/' : 'Home'
 
 data:
   csv:
@@ -42,9 +45,6 @@ data:
 cache:
   requests:
     expiry: 18000 # 5 mins
-
-routes:
-  # "posts/(:all)" : "posts/post"
 
 extensions:
   # example: ExampleExtension

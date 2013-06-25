@@ -163,8 +163,8 @@ Class Base implements \RecursiveIterator
         $cleanName = $this->getCleanName();
         
         $name = null;
-        if ( count($this->app['pt.config']->get('page_names')) ) {
-            foreach( $this->app['pt.config']->get('page_names') as $path => $niceName ) {
+        if ( count($this->app['pt.config']->get('pages.names')) ) {
+            foreach( $this->app['pt.config']->get('pages.names') as $path => $niceName ) {
                 
                 if ( preg_match('/\[([^\]]*)\]/', $path, $matches) ) {
                     // is an ID
