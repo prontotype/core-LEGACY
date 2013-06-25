@@ -19,18 +19,35 @@ Class Assets extends Base {
             'href'  => $href,
             'media' => $media,
         ), $attrs);
-        
+            
         return $this->renderTemplate('stylesheet.twig', array(
             'attrs'  => $attrs,
         ));
     }
     
+    public function image($src, $attrs = array(), $appendAssetPath = true)
+    {
+        if ($appendAssetPath) {
+            $src = $this->prefixPath($src);
+        }
+        
+        $attrs = $this->mergeOpts(array(
+            'src' => $src,
+        ), $attrs);
+            
+        return $this->renderTemplate('image.twig', array(
+            'attrs'  => $attrs,
+        ));
+    }
+    
     public function prefixPath($path)
-    {        
-        $path = '/' . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
+    {   
+        $root = $this->app['pt.prototype.path'] . '/';     
+        $path = $root . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
         if ( ! $this->app['pt.config']->get('clean_urls') ) {
             $path = '/index.php' . $path;
         }
+        
         return $path;
     }
     

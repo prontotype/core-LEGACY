@@ -4,5 +4,5 @@ vendor/*
 bin/*
 cache/*
 prototypes/*
-prototypes.yml
+!prototypes/_system/*
 index.php
