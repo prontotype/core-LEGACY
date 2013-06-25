@@ -14,13 +14,13 @@ So the most basic prototypes directory might look like this:
 
 ![Minimal prototypes directory structure]({{ pt.assets.getUrl('img/prototype-minimal-structure.png') }})
 
-Here there is one prototype (called **default**) with just one page in it, which is the homepage file `index.twig` (in the later [Pages and URLs](#) section you'll learn how requests are routed to templates).
+Here there is one prototype (called **default**) with just one page in it, which is the homepage file `index.twig` (in the later [Pages and URLs]({{ pt.pages.getUrlById('pages') }}) section you'll learn how requests are routed to templates).
 
 Each prototype directory can also contain subdirectories with configuration settings, data files, assets and extensions - all of which are discussed in later sections.
 
 ## The prototypes.yml file
 
-At the root level of the Prontotype directory structure there is a `prototypes.yml` file, which handles deciding which domains match up to which prototype. The default contents of this file are as follows:
+The `/config/prototypes.yml` file handles deciding which domains match up to which prototype. The default contents of this file are as follows:
 
 <pre><code>default:
   domain: '*'

@@ -169,7 +169,8 @@ Class Base implements \RecursiveIterator
                 if ( preg_match('/\[([^\]]*)\]/', $path, $matches) ) {
                     // is an ID
                     if ( $this instanceof Page && $matches[1] == $this->getId() ) {
-                        $name = $this->titleCase($niceName);
+                        $name = $niceName;
+                        break;
                     }
                 } else {
                     // is a path
@@ -178,7 +179,7 @@ Class Base implements \RecursiveIterator
                         $path = '/';
                     }
                     if ($path == $this->unPrefixUrl($this->getUrlPath())) {
-                        $name = $this->titleCase($niceName);
+                        $name = $niceName;
                         break;
                     }
                 }
