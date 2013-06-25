@@ -27,6 +27,7 @@ class HelperExtension extends \Twig_Extension
                 'user'          => $this->app['pt.user_manager']->getCurrentUser(),
                 'data'          => $this->app['pt.data'],
                 'store'         => $this->app['pt.store'],
+                'assets'        => $this->app['pt.assets_helper'],
                 'notifications' => $this->app['pt.notifications'],
                 'snippets'      => $this->app['pt.snippets'],
                 'scraper'       => $this->app['pt.scraper'],

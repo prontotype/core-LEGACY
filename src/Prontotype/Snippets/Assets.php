@@ -8,10 +8,10 @@ Class Assets extends Base {
     
     protected $configKey = 'assets';
     
-    public function stylesheet($href, $media = 'all', $attrs = array(), $appendAssetPath = true)
+    public function stylesheet($href, $media = 'all', $attrs = array(), $rawPath = false)
     {
-        if ($appendAssetPath) {
-            $href = $this->prefixPath($href);
+        if ( ! $rawPath ) {
+            $href = $this->app['pt.assets_helper']->getUrl($href);
         }
         
         $attrs = $this->mergeOpts(array(
@@ -25,10 +25,10 @@ Class Assets extends Base {
         ));
     }
     
-    public function image($src, $attrs = array(), $appendAssetPath = true)
+    public function image($src, $attrs = array(), $rawPath = false)
     {
-        if ($appendAssetPath) {
-            $src = $this->prefixPath($src);
+        if ( ! $rawPath ) {
+            $src = $this->app['pt.assets_helper']->getUrl($src);
         }
         
         $attrs = $this->mergeOpts(array(
@@ -38,17 +38,6 @@ Class Assets extends Base {
         return $this->renderTemplate('image.twig', array(
             'attrs'  => $attrs,
         ));
-    }
-    
-    public function prefixPath($path)
-    {   
-        $root = $this->app['pt.prototype.path'] . '/';     
-        $path = $root . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
-        if ( ! $this->app['pt.env.clean_urls'] ) {
-            $path = '/index.php' . $path;
-        }
-        
-        return $path;
     }
     
 }
