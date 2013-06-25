@@ -168,17 +168,17 @@ Class Base implements \RecursiveIterator
                     $path = '/';
                 }
                 if ($path == $this->unPrefixUrl($this->getUrlPath())) {
-                    $name = $niceName;
+                    $name = $this->titleCase($niceName);
                     break;
                 }
             }
         }
         
-        if ( ! $name ) {
-            $name = $cleanName;
+        if ( $name ) {
+            $this->niceName = $name;
+        } else {
+            $this->niceName = $this->titleCase(str_replace(array('-','_'), ' ', $cleanName));
         }
-        
-        $this->niceName = $this->titleCase($name);
     }
 
     public function getItems()
