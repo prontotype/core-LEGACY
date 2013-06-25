@@ -31,7 +31,7 @@ Class Config {
     {
         if ( file_exists($path) ) {
             $this->loadPaths[] = $path . '/' . $this->env . '.yml';
-            $this->loadPaths[] = $path . '/common.yml';
+            $this->loadPaths[] = $path . '/config.yml';
             $this->mergeConfig();
         }
     }
@@ -41,7 +41,7 @@ Class Config {
         $paths = $this->loadPaths;
         if ( $this->fallbackPath ) {
             array_push($paths, $this->fallbackPath . '/' . $this->env . '.yml');
-            array_push($paths, $this->fallbackPath . '/common.yml');
+            array_push($paths, $this->fallbackPath . '/config.yml');
         }
         array_push($paths, $this->fallbackPath . '/_system/config.yml');
         return array_reverse($paths);
