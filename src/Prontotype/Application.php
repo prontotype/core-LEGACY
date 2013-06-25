@@ -53,6 +53,7 @@ Class Application {
         $this->app['pt.app.paths.cache.root'] = $this->paths['cache'];
         $this->app['pt.app.paths.vendor'] = $this->paths['vendor'];
         $this->app['pt.app.paths.prototypes'] = $this->paths['prototypes'];
+        $this->app['pt.app.paths.config'] = $this->paths['config'];
         
         foreach($this->srcPaths as $key => $path) {
             $this->app['pt.core.paths.' . $key] = realpath(__DIR__ . $path);
@@ -66,8 +67,8 @@ Class Application {
         $app = $this->app;
         
         $app->register(new Service\PrototypeFinder(array(
-            $app['pt.app.paths.root'],
-            $app['pt.core.paths.root'],
+            $app['pt.app.paths.config'],
+            $app['pt.core.paths.config'],
         ), array(
             $app['pt.app.paths.prototypes'],
             $app['pt.core.paths.prototypes'],
@@ -94,8 +95,8 @@ Class Application {
         if ( ! file_exists($this->app['pt.app.paths.prototypes']) ) {
             $errors[] = 'The prototypes directory (' . $this->app['pt.app.paths.prototypes'] . ') does not exist.';
         }
-        if ( ! file_exists($this->app['pt.app.paths.root'] . '/prototypes.yml') ) {
-            $errors[] = 'The required prototypes configuration file (' . $this->app['pt.app.paths.root'] . '/prototypes.yml' . ') does not exist.';
+        if ( ! file_exists($this->app['pt.app.paths.config'] . '/prototypes.yml') ) {
+            $errors[] = 'The required prototypes configuration file (' . $this->app['pt.app.paths.config'] . '/prototypes.yml' . ') does not exist.';
         }
         if ( ! is_writeable($this->app['pt.app.paths.cache.root']) ) {
             $errors[] = 'The cache directory (' . $this->app['pt.app.paths.cache.root'] . ') is not writeable or does not exist.';

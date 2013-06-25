@@ -43,6 +43,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.config'] = $app->share(function($app) {
             return new ConfigManager($app, array(
                 $app['pt.prototype.paths.config'],
+                $app['pt.app.paths.config'],    
             ), $app['pt.core.paths.config'], $app['pt.prototype.environment']);
         });
     }
