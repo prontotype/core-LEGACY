@@ -56,6 +56,8 @@ Class Application {
         foreach($this->srcPaths as $key => $path) {
             $this->app['pt.core.paths.' . $key] = realpath(__DIR__ . $path);
         }
+        
+        $this->app['pt.env.clean_urls'] = file_exists($this->app['pt.app.paths.root'] . '/.htaccess');
     }
     
     public function run()

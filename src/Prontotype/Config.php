@@ -81,7 +81,7 @@ Class Config {
                     if ($parsed !== null) {
                         $config = $this->merge($config, $parsed);
                     }
-                }                
+                }
             }
         }
         $this->configs = $config;
