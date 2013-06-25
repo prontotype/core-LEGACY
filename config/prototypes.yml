@@ -1,4 +1,3 @@
 _docs:
   domain: '*'
-  path: '_docs'
   prototype: '_system/docs'

@@ -28,6 +28,8 @@ Class Base implements \RecursiveIterator
     
     protected $position = 0;
     
+    protected $nameOverrides = null;
+    
     protected $nameFormatRegex = '/^((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
     
     protected $nameExtension = 'twig';
@@ -163,13 +165,22 @@ Class Base implements \RecursiveIterator
         $name = null;
         if ( count($this->app['pt.config']->get('name_overrides')) ) {
             foreach( $this->app['pt.config']->get('name_overrides') as $path => $niceName ) {
-                $path = rtrim($this->app['pt.prototype.path'] . $this->unPrefixUrl($path),'/');
-                if ( $path == '' ) {
-                    $path = '/';
-                }
-                if ($path == $this->unPrefixUrl($this->getUrlPath())) {
-                    $name = $this->titleCase($niceName);
-                    break;
+                
+                if ( preg_match('/\[([^\]]*)\]/', $path, $matches) ) {
+                    // is an ID
+                    if ( $this instanceof Page && $matches[1] == $this->getId() ) {
+                        $name = $this->titleCase($niceName);
+                    }
+                } else {
+                    // is a path
+                    $path = rtrim($this->app['pt.prototype.path'] . $this->unPrefixUrl($path),'/');
+                    if ( $path == '' ) {
+                        $path = '/';
+                    }
+                    if ($path == $this->unPrefixUrl($this->getUrlPath())) {
+                        $name = $this->titleCase($niceName);
+                        break;
+                    }
                 }
             }
         }

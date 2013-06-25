@@ -49,20 +49,35 @@ Class Manager {
     public function getByRoute($route)
     {
         // lets see if we need to do any checking of custom routes
-        $routes = $this->app['pt.config']->get('routes') ? $this->app['pt.config']->get('routes') : array();
+        $plainRoutes = $this->app['pt.config']->get('routes') ? $this->app['pt.config']->get('routes') : array();
+        $routes = array();
+        $root = $this->app['pt.prototype.path'] . '/';
+        foreach($plainRoutes as $spec => $r) {
+            $spec = $root . ltrim($spec, '/');
+            $r = $root . ltrim($r, '/');
+            $routes[$spec] = $r;
+        }
         $replacements = array();
         if ( count($routes) ) {
             foreach( $routes as $routeSpec => $endRoute ) {
                 // see if there are any page ID placeholders that need parsing out
                 $replacements = array();
-                if ( preg_match('/\(:id=([^\)]*)\)/', $routeSpec, $matches) ) {
+                if ( preg_match('/\[([^\]]*)\]/', $routeSpec, $matches) ) {
                     if ( $routePage = $this->getById($matches[1]) ) {
                         $replacements[] = trim($routePage->getUnPrefixedUrlPath(),'/');
-                        $routeSpec = str_replace(
-                            array($matches[0],'index.php'),
-                            array($routePage->getUrlPath(),''),
-                            $routeSpec
-                        );
+                        if ( $root == '/' ) {
+                            $routeSpec = str_replace(
+                                array($matches[0],'index.php'),
+                                array($routePage->getUrlPath(),''),
+                                $routeSpec
+                            );                            
+                        } else {
+                            $routeSpec = str_replace(
+                                array($matches[0],'index.php', $root),
+                                array($routePage->getUrlPath(),'', ''),
+                                $routeSpec
+                            );
+                        }
                     } else {
                         continue;
                     }
@@ -70,11 +85,12 @@ Class Manager {
                 $routeSpec = trim($routeSpec,'/');
                 // replace helper placeholders
                 $routeSpec = str_replace(
-                    array('(:any)','(:num)','(:all)','/'),
+                    array('{any}','{num}','{all}','/'),
                     array('([^/]*)','(\d*)','(.*)','\/'),
                     $routeSpec
                 );
-                $routeSpec = '/^' . $routeSpec . '$/';
+                $routeSpec = '/^' . str_replace('/','\/',ltrim($root,'/')) . $routeSpec . '$/';
+                
                 if ( preg_match( $routeSpec, $route, $matches ) ) {
                     // we have a match!
                     for( $i = 0; $i < count($matches); $i++ ) {
@@ -96,9 +112,14 @@ Class Manager {
             $route = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $route);
             
             // replace any page ID placeholders in the route itself
-            if ( preg_match('/\(:id=(.*)\)/', $route, $matches) ) {
-                $routePage = $this->getById($matches[1]);
-                $route = str_replace(array($matches[0],'index.php'), array($routePage->getUrlPath(),''), $route);
+            if ( preg_match('/\[([^\]]*)\]/', $route, $matches) ) {
+                if ( $routePage = $this->getById($matches[1]) ) {
+                    if ( $root == '/' ) {
+                        $route = $root . str_replace(array($matches[0],'index.php'), array($routePage->getUrlPath(),''), $route);    
+                    } else {
+                        $route = $root . str_replace(array($matches[0],'index.php',$root), array($routePage->getUrlPath(),'',''), $route);    
+                    }                    
+                }
             }
         }
         
