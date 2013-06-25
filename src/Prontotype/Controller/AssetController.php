@@ -13,7 +13,7 @@ class AssetController implements ControllerProviderInterface {
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
-        
+            
         $controllers->get('/{asset_path}', function ($asset_path) use ($app) {
             
             try {

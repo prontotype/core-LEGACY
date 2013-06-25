@@ -92,7 +92,7 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        $loadPaths = $this->getLoadPaths();
+        $loadPaths = $this->getLoadPaths();        
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {

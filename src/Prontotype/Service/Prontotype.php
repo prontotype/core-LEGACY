@@ -28,85 +28,22 @@ use Prontotype\Config as ConfigManager;
 use Prontotype\Assets\LessProcessor;
 use Prontotype\Assets\ScssProcessor;
 
-use Silextend\Config\YamlConfig;
-
 Class Prontotype implements ServiceProviderInterface {
     
     protected $sharedServices = array();
     
-    public function __construct( $sharedServices )
+    public function __construct($sharedServices)
     {
         $this->sharedServices = $sharedServices;
     }
           
-    public function register( SilexApp $app )
+    public function register(SilexApp $app)
     {
-        $this->loadPrototype($app);
         $app['pt.config'] = $app->share(function($app) {
             return new ConfigManager($app, array(
                 $app['pt.prototype.paths.config'],
             ), $app['pt.core.paths.config'], $app['pt.prototype.environment']);
         });
-    }
-    
-    protected function loadPrototype($app)
-    {
-        $ptDefinitionsPath = $app['pt.core.paths.root'] . '/prototypes.yml';
-        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-        $ptConfig = null;
-        
-        $ptDefinitions = Yaml::parse($ptDefinitionsPath);        
-        if (null === $ptDefinitions) {
-            throw new \Exception(sprintf("The config file '%s' appears to be invalid YAML.", $filename));
-        }
-        
-        foreach( $ptDefinitions as $label => $definition ) {
-            $matches = is_array($definition['matches']) ? $definition['matches'] : array($definition['matches']);
-            $regexp = '/^(';
-            $regexp .= implode('|', array_map(function($value){
-                return str_replace(array('.','*'), array('\.','(.*)'), $value);
-            }, $matches));
-            $regexp .= ')/';
-            if ( preg_match($regexp, $host, $matches) ) {
-                $replacements = array_slice($matches, 2);                
-                $ptConfig = $definition;
-                $replacementTokens = array();
-                for ( $j = 0; $j < count($replacements); $j++ ) {
-                    $replacementTokens['$' . ($j+1)] = $replacements[$j];
-                }
-                $ptLabel = $label;
-                $ptConfig['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $ptConfig['prototype']);
-                break;
-            }
-        }
-        
-        if ( ! $ptConfig ) {
-            throw new \Exception(sprintf("Could not find matching prototype definition for '%s'.", $host));
-        }
-        
-        $ptDirPath = $app['pt.core.paths.prototypes'] . '/' . $ptConfig['prototype'];
-        
-        if ( ! file_exists($ptDirPath) ) {
-            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $ptDirPath));
-        }
-        
-        $app['pt.prototype.label'] = $label;
-        $app['pt.prototype.folder'] = $ptConfig['prototype'];
-        $app['pt.prototype.environment'] = $ptConfig['environment'];
-        
-        $app['pt.prototype.paths.root'] = $ptDirPath;
-        $app['pt.prototype.paths.templates'] = $app['pt.prototype.paths.root'] . '/templates';
-        $app['pt.prototype.paths.data'] = $app['pt.prototype.paths.root'] . '/data';
-        $app['pt.prototype.paths.config'] = $app['pt.prototype.paths.root'] . '/config';
-        $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
-        $app['pt.prototype.paths.assets'] = $app['pt.prototype.paths.root'] . '/assets';
-        
-        $app['pt.prototype.paths.cache.root'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
-        $app['pt.prototype.paths.cache.templates'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/templates';
-        $app['pt.prototype.paths.cache.assets'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
-        $app['pt.prototype.paths.cache.data'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
-        $app['pt.prototype.paths.cache.requests'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
-        $app['pt.prototype.paths.cache.exports'] = $app['pt.core.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';
     }
     
     protected function registerServices($app)
@@ -224,12 +161,13 @@ Class Prontotype implements ServiceProviderInterface {
     
     protected function mountRoutes($app)
     {
-        $app->mount('/' . $app['pt.config']->get('triggers.auth'), new \Prontotype\Controller\AuthController());
-        $app->mount('/' . $app['pt.config']->get('triggers.data'), new \Prontotype\Controller\DataController());
-        $app->mount('/' . $app['pt.config']->get('triggers.user'), new \Prontotype\Controller\UserController());
-        $app->mount('/' . $app['pt.config']->get('triggers.assets'), new \Prontotype\Controller\AssetController());
-        $app->mount('/' . $app['pt.config']->get('triggers.shorturl'), new \Prontotype\Controller\RedirectController());
-        $app->mount('/' . $app['pt.config']->get('triggers.tools'), new \Prontotype\Controller\ToolsController());
+        $root = $app['pt.prototype.path'] . '/';
+        $app->mount($root . $app['pt.config']->get('triggers.auth'), new \Prontotype\Controller\AuthController());
+        $app->mount($root . $app['pt.config']->get('triggers.data'), new \Prontotype\Controller\DataController());
+        $app->mount($root . $app['pt.config']->get('triggers.user'), new \Prontotype\Controller\UserController());
+        $app->mount($root . $app['pt.config']->get('triggers.assets'), new \Prontotype\Controller\AssetController());
+        $app->mount($root . $app['pt.config']->get('triggers.shorturl'), new \Prontotype\Controller\RedirectController());
+        $app->mount($root . $app['pt.config']->get('triggers.tools'), new \Prontotype\Controller\ToolsController());
         $app->mount('/', new \Prontotype\Controller\MainController());
     }
     

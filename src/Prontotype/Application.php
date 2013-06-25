@@ -34,11 +34,13 @@ Class Application {
         'pt.snippets'      => '\Prontotype\Snippets\Manager',
     );
     
-    protected $relPaths = array(
-        'config'    => '/../../config',
-        'assets'    => '/../../assets',
-        'templates' => '/../../templates',
-        'data'      => '/../../data',
+    protected $srcPaths = array(
+        'root'       => '/../../',
+        'data'       => '/../../data',
+        'config'     => '/../../config',
+        'assets'     => '/../../assets',
+        'templates'  => '/../../templates',
+        'prototypes' => '/../../prototypes',
     );
     
 	public function __construct($paths)
@@ -46,23 +48,29 @@ Class Application {
         $this->paths = $paths;
         $this->app = $app = new SilexApp();
         
-        $this->app['pt.core.paths.root'] = $this->paths['root'];
-        $this->app['pt.core.paths.cache.root'] = $this->paths['cache'];
-        $this->app['pt.core.paths.vendor'] = $this->paths['vendor'];
-        $this->app['pt.core.paths.prototypes'] = $this->paths['prototypes'];
-        $this->app['pt.core.paths.prototype_config'] = $this->paths['root'] . '/prototypes.yml';
+        $this->app['pt.app.paths.root'] = $this->paths['root'];
+        $this->app['pt.app.paths.cache.root'] = $this->paths['cache'];
+        $this->app['pt.app.paths.vendor'] = $this->paths['vendor'];
+        $this->app['pt.app.paths.prototypes'] = $this->paths['prototypes'];
         
-        foreach($this->relPaths as $key => $path) {
+        foreach($this->srcPaths as $key => $path) {
             $this->app['pt.core.paths.' . $key] = realpath(__DIR__ . $path);
         }
-        
     }
     
     public function run()
     {
         $app = $this->app;
         
-        $this->app->register(new Service\Prontotype($this->sharedServices));
+        $app->register(new Service\PrototypeFinder(array(
+            $app['pt.app.paths.root'],
+            $app['pt.core.paths.root'],
+        ), array(
+            $app['pt.app.paths.prototypes'],
+            $app['pt.core.paths.prototypes'],
+        )));
+        
+        $app->register(new Service\Prontotype($this->sharedServices));
         
         $this->doHealthCheck();
         
@@ -80,14 +88,14 @@ Class Application {
     public function doHealthCheck()
     {
         $errors = array();
-        if ( ! file_exists($this->app['pt.core.paths.prototypes']) ) {
-            $errors[] = 'The prototypes directory (' . $this->app['pt.core.paths.prototypes'] . ') does not exist.';
+        if ( ! file_exists($this->app['pt.app.paths.prototypes']) ) {
+            $errors[] = 'The prototypes directory (' . $this->app['pt.app.paths.prototypes'] . ') does not exist.';
         }
-        if ( ! file_exists($this->app['pt.core.paths.prototype_config']) ) {
-            $errors[] = 'The required prototypes configuration file (' . $this->app['pt.core.paths.prototype_config'] . ') does not exist.';
+        if ( ! file_exists($this->app['pt.app.paths.root'] . '/prototypes.yml') ) {
+            $errors[] = 'The required prototypes configuration file (' . $this->app['pt.app.paths.root'] . '/prototypes.yml' . ') does not exist.';
         }
-        if ( ! is_writeable($this->app['pt.core.paths.cache.root']) ) {
-            $errors[] = 'The cache directory (' . $this->app['pt.core.paths.cache.root'] . ') is not writeable or does not exist.';
+        if ( ! is_writeable($this->app['pt.app.paths.cache.root']) ) {
+            $errors[] = 'The cache directory (' . $this->app['pt.app.paths.cache.root'] . ') is not writeable or does not exist.';
         }
         if ( count($errors) ) {
             throw new \Exception(implode('<br>', $errors));
