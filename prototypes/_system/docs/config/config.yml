@@ -1,3 +1,4 @@
-name_overrides:
+page_names:
   '/' : 'Overview'
   '[setup]' : 'Setup and Installation'
+  '[config]' : 'Setup and Installation'

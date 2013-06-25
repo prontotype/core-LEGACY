@@ -28,7 +28,7 @@ user:
   logout:
     redirect: /
 
-name_overrides:
+page_names:
   '/' : 'Home'
 
 data:
