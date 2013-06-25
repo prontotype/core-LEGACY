@@ -17,7 +17,7 @@ class DataController implements ControllerProviderInterface
          
         $controllers->get('/{data_file}/{data_path}', function ( $data_file, $data_path ) use ( $app ) {
         
-            $result = $app['pt.data']->load($data_file, str_replace('/','.',$data_path));
+            $result = $app['pt.data']->load($data_file, null, str_replace('/','.',$data_path));
                     
             if ( ! $result ) {
                 $app->abort(404);

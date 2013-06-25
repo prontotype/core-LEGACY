@@ -1,18 +1,3 @@
-system:
-  cache:
-    default_expiry: 18000
-  snippets:
-    images:
-      placeholder:
-        services:
-          dummyimage: http://dummyimage.com/{{ width }}x{{ height }}/{{ bgcolor }}/{{ fgcolor }}/{{ format }}&text={{ text }}
-          placeholdit: http://placehold.it/{{ width }}x{{ height }}/{{ bgcolor }}/{{ fgcolor }}/{{ format }}&text={{ text }}
-          lorempixel: http://lorempixel.com/{{ width }}/{{ height }}/{{ category }}/{{ text }}
-
-
-
-clean_urls: false
-
 timezone: Europe/London
 
 debug: false

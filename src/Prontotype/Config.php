@@ -43,6 +43,7 @@ Class Config {
             array_push($paths, $this->fallbackPath . '/' . $this->env . '.yml');
             array_push($paths, $this->fallbackPath . '/common.yml');
         }
+        array_push($paths, $this->fallbackPath . '/_system/config.yml');
         return array_reverse($paths);
     }
     
@@ -80,7 +81,7 @@ Class Config {
                     if ($parsed !== null) {
                         $config = $this->merge($config, $parsed);
                     }
-                }                
+                }
             }
         }
         $this->configs = $config;

@@ -13,11 +13,15 @@ Class Utils {
     
     public function generateUrlPath($route, $params = array())
     {
-        $url = $this->app['url_generator']->generate($route, $params);
-        if ( ! $this->app['pt.config']->get('clean_urls') && strpos( $url, 'index.php' ) === false ) {
-            $url = '/index.php' . $url;
+        try {
+            $url = $this->app['url_generator']->generate($route, $params);
+            if ( ! $this->app['pt.env.clean_urls'] && strpos( $url, 'index.php' ) === false ) {
+                $url = '/index.php' . $url;
+            }
+            return $url;            
+        } catch (\Exception $e) {
+            return '#';
         }
-        return $url;
     }
     
     public function fetchFromUrl($url, $ignoreCache = false)

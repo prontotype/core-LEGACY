@@ -44,7 +44,7 @@ Class Assets extends Base {
     {   
         $root = $this->app['pt.prototype.path'] . '/';     
         $path = $root . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
-        if ( ! $this->app['pt.config']->get('clean_urls') ) {
+        if ( ! $this->app['pt.env.clean_urls'] ) {
             $path = '/index.php' . $path;
         }
         

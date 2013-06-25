@@ -1,6 +1,9 @@
 {% extends "_system/layouts/skeleton.twig" %}
 
-{% set title = 'You must be logged in to access this content' %}
+{% block title %}
+You must be logged in to access this content
+{% endblock title %}
+
 {% set error = pt.notifications.get('error') %}
 
 {% block content %}

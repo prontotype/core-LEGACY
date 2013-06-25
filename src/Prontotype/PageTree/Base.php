@@ -121,7 +121,7 @@ Class Base implements \RecursiveIterator
     protected function prefixUrl($url)
     {
         $prefix = '';
-        if ( ! $this->app['pt.config']->get('clean_urls') ) {
+        if ( ! $this->app['pt.env.clean_urls'] ) {
             $prefix = '/index.php';
         }
         return $prefix . $url;
@@ -129,7 +129,7 @@ Class Base implements \RecursiveIterator
     
     protected function unPrefixUrl($url)
     {
-        if ( ! $this->app['pt.config']->get('clean_urls') ) {
+        if ( ! $this->app['pt.env.clean_urls'] ) {
             return str_replace('/index.php', '', $url);
         }
         return $url;
@@ -168,17 +168,17 @@ Class Base implements \RecursiveIterator
                     $path = '/';
                 }
                 if ($path == $this->unPrefixUrl($this->getUrlPath())) {
-                    $name = $niceName;
+                    $name = $this->titleCase($niceName);
                     break;
                 }
             }
         }
         
-        if ( ! $name ) {
-            $name = $cleanName;
+        if ( $name ) {
+            $this->niceName = $name;
+        } else {
+            $this->niceName = $this->titleCase(str_replace(array('-','_'), ' ', $cleanName));
         }
-        
-        $this->niceName = $this->titleCase($name);
     }
 
     public function getItems()

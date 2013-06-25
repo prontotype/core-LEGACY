@@ -6,7 +6,7 @@
 
     {% for item in pages %}
     
-    <li{% if item.isCurrent or item.isParentOfCurrent %} class="{% if item.isCurrent %}{{ opts.currentClass }} {% endif %}{% if item.isParentOfCurrent %}{{ opts.parentClass }}{% endif %}"{% endif %}>
+    <li class="level-{{ level }}{% if item.isCurrent %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent %} {{ opts.parentClass }}{% endif %}">
         {% if item.isPage %}
         <a href="{{ item.urlPath }}">{{ item.niceName }}</a>
         {% else %}
