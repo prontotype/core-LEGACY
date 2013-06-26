@@ -5,4 +5,4 @@ pages:
     '[setup-prototypes]' : Prototypes and domains
     '[pages]' : Pages and URLs
     '[pages-order-ids]' : Ordering and assigning IDs
-    '[pages-routing]' : Mapping URLs to Templates
+    '[pages-routing]' : Routing URLs to pages

@@ -1,0 +1,19 @@
+{% extends "_layouts/skeleton.twig" %}
+
+{% set content %}
+
+# Routing URLs to pages
+
+Prontotype handles requests for pages by attempting to map a URL to a `.twig` file in the prototype's template directory, `/prototypes/{my-prototype-name}/templates`.
+
+At it's simplest, it will map a URL to a template in much the same way that 'standard' URL to HTML page directory routing works.
+
+**So for example**, given a URL such as `http://example.com/index.php/foo/bar`, Prontotype will look for the templates in the following locations, stopping when it finds one:
+
+1. `/prototypes/{my-prototype-name}/templates/foo/bar.twig`
+2. `/prototypes/{my-prototype-name}/templates/foo/bar/index.twig`
+
+If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required. 
+
+
+{% endset %}
