@@ -12,13 +12,33 @@ Both ordering and IDs are applied using specific **patterns in the file names** 
 
 ## Ordering pages
 
-To keep your files ordered nicely in your directories (and to control the order that they are output from things like the [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }})), you can also prefix the filename with a number, followed by a dash, underscore or full stop (period). For example:
+To keep your files and directories ordered nicely in your filesystem (and to control the order that they are output from things like the [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }})), you can also prefix the filename with a number, followed by a dash, underscore or full stop (period). For example:
 
 <pre><code>/foo/bar/<strong>1-</strong>example.twig
 /foo/bar/<strong>2.</strong>widget.twig
 /foo/<strong>3-</strong>example/test.twig
 </code></pre>
 
-This ordering information will be removed for URL routing and will not feature in the generated page names.
+This ordering information will be removed for URL routing and will not feature in the generated [page titles]({{ pt.pages.getUrlById('pages-titles') }}).
+
+## Assigning IDs to pages
+
+You can give a page an ID by adding an alphanumeric string (underscores and dashes are ok in there too) surrounded by square brackets into the filename. You can also follow this by a dash, underscore or full stop (period) to help seperate it from the rest of the filename, if you wish.
+
+The ID string, like the ordering prefix, will not show up in the URL. Below are a couple of examples of filenames with IDs included in them:
+
+<pre><code>/foo/bar/<strong>[example-page]-</strong>example.twig <span class="comment"># ID => example-page</span> 
+/foo/bar/<strong>[widget-1]-</strong>widget.twig <span class="comment"># ID => widget-1</span> 
+</code></pre>
+
+Note that unlike ordering prefixes (see above), page IDs can only be applied to files, not folders.
+
+## Bringing it all together
+
+You can of course mix ordering with pages IDs - so combining the examples above we would have:
+
+<pre><code>/foo/bar/<strong>1-[example-page]-</strong>example.twig
+/foo/bar/<strong>2-[widget-1]-</strong>widget.twig
+</code></pre>
 
 {% endset %}

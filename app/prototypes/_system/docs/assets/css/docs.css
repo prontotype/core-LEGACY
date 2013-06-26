@@ -82,6 +82,9 @@ pre code strong {
     color: #000;
     font-weight: bold;
 }
+pre code .comment {
+    color: #999;
+}
 
 /* Common */
 

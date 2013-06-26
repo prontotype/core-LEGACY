@@ -12,13 +12,28 @@ So a file name such as `1-[my-id]-all-about-my-kangaroos.twig` would result in a
 
 ## Custom page titles
 
-You can also override any of the auto-generated page titles from within [your configuration file]({{ pt.pages.getUrlById('config') }}). To do this you need to add a configuration block like the following into your chosen config file:
+You can also override any of the auto-generated page titles from within [your configuration file]({{ pt.pages.getUrlById('config') }}). To do this you need to add a `pages` configuration block like the following into your chosen config file (if you already have a `pages` config block then just append the `titles` section beneath it):
 
 <pre><code>pages:
-  names:
+  titles:
     '/': Home
-    '/example': My Example Page
+    '/zebras': My Zebras Page
+    '/monkeys': A page about Monkeys
+</code></pre>
+
+Under the `titles` section is a hash of **key**:**value** pairs. The key on the right is a URL for a page, and the value on the left is the desired custom page title.
+
+If you have **assigned IDs to your pages** you can use them instead of the URL of a page as the reference key. This is less brittle because if you move your pages around then the custom page titles reference keys won't need updating.
+
+You can use a page ID by wrapping it in square brackets as follows:
+
+<pre><code>pages:
+  titles:
+    '[home]': Home
+    '[zebras]': My Zebras Page
     '[monkeys]': A page about Monkeys
 </code></pre>
+
+It's also perfectly acceptible to use a mix of page URLs and IDs as references for your custom page titles.
 
 {% endset %}
