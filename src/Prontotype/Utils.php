@@ -14,9 +14,16 @@ Class Utils {
     public function generateUrlPath($route, $params = array())
     {
         try {
-            $url = $this->app['url_generator']->generate($route, $params);
-            if ( ! $this->app['pt.env.clean_urls'] && strpos( $url, 'index.php' ) === false ) {
-                $url = '/index.php' . $url;
+            if ( $route == 'home' ) {
+                $url = ! empty($this->app['pt.prototype.path']) ? $this->app['pt.prototype.path'] : '/';
+                if ( ! $this->app['pt.env.clean_urls'] ) {
+                    $url = '/index.php' . $url;
+                }
+            } else {
+                $url = $this->app['url_generator']->generate($route, $params);
+                if ( ! $this->app['pt.env.clean_urls'] && strpos( $url, 'index.php' ) === false ) {
+                    $url = '/index.php' . $url;
+                }                
             }
             return $url;            
         } catch (\Exception $e) {

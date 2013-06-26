@@ -17,7 +17,7 @@ class AuthController implements ControllerProviderInterface {
         $controllers->get('/login', function() use ($app) {
             
             if ( $app['pt.auth']->isAuthed() ) {
-                return $app->redirect('/');
+                return $app->redirect($app['pt.utils']->generateUrlPath('home'));
             }
             
             return $app['twig']->render('_system/authenticate.twig');
@@ -28,7 +28,7 @@ class AuthController implements ControllerProviderInterface {
         $controllers->post('/login', function() use ($app) {
             
             if ( $app['pt.auth']->attemptLogin($app['request']->get('password')) ) {
-                return $app->redirect('/');
+                return $app->redirect($app['pt.utils']->generateUrlPath('home'));
             } else {
                 return $app->redirect($app['pt.utils']->generateUrlPath('auth.login'));
             }

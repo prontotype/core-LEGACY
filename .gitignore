@@ -3,5 +3,7 @@ composer.lock
 vendor/*
 bin/*
 cache/*
+config/*
+prototypes/*
 index.php
 .htaccess
