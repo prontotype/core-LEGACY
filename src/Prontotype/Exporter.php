@@ -29,7 +29,7 @@ Class Exporter {
         $exportHtml = $exportTag . '/html';
         
         if ( ! $startPaths ) {
-            $startPaths = array('/');
+            $startPaths = array($this->app['pt.utils']->generateUrlPath('home'));
         }
         foreach( $startPaths as $path ) {
             $this->processPath($path, $exportHtml);
@@ -95,6 +95,8 @@ Class Exporter {
                 $links = $crawler->filter('a[href]');
                 $replacements = array();
                 
+                // TODO: strip out # segments, at the moment they are creating duplicate pages!
+                
                 foreach($links as $link) {
                     $href = $link->getAttribute('href');  
                     if ( ! empty($href) ) {
@@ -113,7 +115,7 @@ Class Exporter {
                 
                 $quotedReplacements = array();
                 foreach($replacements as $key => $replacement) {
-                    $replacement = str_replace('index.php', '',$replacement);
+                    $replacement = str_replace(array('index.php', $this->app['pt.prototype.path']), '',$replacement);
                     $replacement = str_replace('//','/', $replacement);
                     $quotedReplacements['"' . $key] = '"' . $replacement;
                     $quotedReplacements['=' . $key] = '=' . $replacement;
@@ -133,7 +135,7 @@ Class Exporter {
     
     protected function stripIndex($path)
     {
-        $path = str_replace('index.php', '',$path);
+        $path = str_replace(array('index.php', $this->app['pt.prototype.path']), '',$path);
         $path = str_replace('//','/', $path);
         return $path;
     }
@@ -222,7 +224,7 @@ Class Exporter {
     
     protected function isValidPath($urlPath)
     {   
-        if ( strpos($urlPath, 'http') === 0 ) {
+        if ( strpos($urlPath, 'http') === 0 || strpos($urlPath, '#') === 0 ) {
             return false;
         } 
         return true;
