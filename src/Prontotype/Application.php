@@ -37,11 +37,11 @@ Class Application {
     
     protected $srcPaths = array(
         'root'       => '/../../',
-        'data'       => '/../../data',
-        'config'     => '/../../config',
-        'assets'     => '/../../assets',
-        'templates'  => '/../../templates',
-        'prototypes' => '/../../prototypes',
+        'data'       => '/../../app/data',
+        'config'     => '/../../app/config',
+        'assets'     => '/../../app/assets',
+        'templates'  => '/../../app/templates',
+        'prototypes' => '/../../app/prototypes',
     );
     
 	public function __construct($paths)
@@ -49,17 +49,17 @@ Class Application {
         $this->paths = $paths;
         $this->app = $app = new SilexApp();
         
-        $this->app['pt.app.paths.root'] = $this->paths['root'];
-        $this->app['pt.app.paths.cache.root'] = $this->paths['cache'];
-        $this->app['pt.app.paths.vendor'] = $this->paths['vendor'];
-        $this->app['pt.app.paths.prototypes'] = $this->paths['prototypes'];
-        $this->app['pt.app.paths.config'] = $this->paths['config'];
+        $this->app['pt.install.paths.root'] = $this->paths['root'];
+        $this->app['pt.install.paths.cache.root'] = $this->paths['cache'];
+        $this->app['pt.install.paths.vendor'] = $this->paths['vendor'];
+        $this->app['pt.install.paths.prototypes'] = $this->paths['prototypes'];
+        $this->app['pt.install.paths.config'] = $this->paths['config'];
         
         foreach($this->srcPaths as $key => $path) {
-            $this->app['pt.core.paths.' . $key] = realpath(__DIR__ . $path);
+            $this->app['pt.app.paths.' . $key] = realpath(__DIR__ . $path);
         }
         
-        $this->app['pt.env.clean_urls'] = file_exists($this->app['pt.app.paths.root'] . '/.htaccess');
+        $this->app['pt.env.clean_urls'] = file_exists($this->app['pt.install.paths.root'] . '/.htaccess');
     }
     
     public function run()
@@ -67,11 +67,11 @@ Class Application {
         $app = $this->app;
         
         $app->register(new Service\PrototypeFinder(array(
+            $app['pt.install.paths.config'],
             $app['pt.app.paths.config'],
-            $app['pt.core.paths.config'],
         ), array(
+            $app['pt.install.paths.prototypes'],
             $app['pt.app.paths.prototypes'],
-            $app['pt.core.paths.prototypes'],
         )));
         
         $app->register(new Service\Prontotype($this->sharedServices));
@@ -92,14 +92,13 @@ Class Application {
     public function doHealthCheck()
     {
         $errors = array();
-        if ( ! file_exists($this->app['pt.app.paths.prototypes']) ) {
-            $errors[] = 'The prototypes directory (' . $this->app['pt.app.paths.prototypes'] . ') does not exist.';
+        if ( $this->app['pt.prototype.environment'] !== '_system' ) {
+            if ( ! file_exists($this->app['pt.install.paths.prototypes']) ) {
+                $errors[] = 'The prototypes directory (' . $this->app['pt.install.paths.prototypes'] . ') does not exist.';
+            }
         }
-        if ( ! file_exists($this->app['pt.app.paths.config'] . '/prototypes.yml') ) {
-            $errors[] = 'The required prototypes configuration file (' . $this->app['pt.app.paths.config'] . '/prototypes.yml' . ') does not exist.';
-        }
-        if ( ! is_writeable($this->app['pt.app.paths.cache.root']) ) {
-            $errors[] = 'The cache directory (' . $this->app['pt.app.paths.cache.root'] . ') is not writeable or does not exist.';
+        if ( ! is_writeable($this->app['pt.install.paths.cache.root']) ) {
+            $errors[] = 'The cache directory (' . $this->app['pt.install.paths.cache.root'] . ') is not writeable or does not exist.';
         }
         if ( count($errors) ) {
             throw new \Exception(implode('<br>', $errors));

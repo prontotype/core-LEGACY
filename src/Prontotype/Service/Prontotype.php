@@ -43,8 +43,8 @@ Class Prontotype implements ServiceProviderInterface {
         $app['pt.config'] = $app->share(function($app) {
             return new ConfigManager($app, array(
                 $app['pt.prototype.paths.config'],
-                $app['pt.app.paths.config'],    
-            ), $app['pt.core.paths.config'], $app['pt.prototype.environment']);
+                $app['pt.install.paths.config'],    
+            ), $app['pt.app.paths.config'], $app['pt.prototype.environment']);
         });
     }
     
@@ -86,7 +86,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new MarkdownParser($app)
             ), array(
                 $app['pt.prototype.paths.data']
-            ), $app['pt.core.paths.data']);
+            ), $app['pt.app.paths.data']);
         });
         
         $app['pt.assets'] = $app->share(function($app) {
@@ -95,7 +95,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new ScssProcessor($app),
             ), array(
                 $app['pt.prototype.paths.assets'],
-            ), $app['pt.core.paths.assets']);
+            ), $app['pt.app.paths.assets']);
         });
 
         $app['pt.extensions'] = $app->share(function($app) {
@@ -137,7 +137,7 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app['pt.extensions']->boot();
         
-        $app['twig.loader.filesystem']->addPath($app['pt.core.paths.templates']);
+        $app['twig.loader.filesystem']->addPath($app['pt.app.paths.templates']);
     }
     
     protected function bindMiddleware($app)

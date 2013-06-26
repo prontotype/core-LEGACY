@@ -82,12 +82,12 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
         $app['pt.prototype.paths.assets'] = $app['pt.prototype.paths.root'] . '/assets';
 
-        $app['pt.prototype.paths.cache.root'] = $app['pt.app.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
-        $app['pt.prototype.paths.cache.templates'] = $app['pt.app.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/templates';
-        $app['pt.prototype.paths.cache.assets'] = $app['pt.app.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
-        $app['pt.prototype.paths.cache.data'] = $app['pt.app.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
-        $app['pt.prototype.paths.cache.requests'] = $app['pt.app.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
-        $app['pt.prototype.paths.cache.exports'] = $app['pt.app.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';        
+        $app['pt.prototype.paths.cache.root'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
+        $app['pt.prototype.paths.cache.templates'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/templates';
+        $app['pt.prototype.paths.cache.assets'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
+        $app['pt.prototype.paths.cache.data'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
+        $app['pt.prototype.paths.cache.requests'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
+        $app['pt.prototype.paths.cache.exports'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';        
     }
         
     public function boot(SilexApp $app) {}
@@ -97,11 +97,13 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $defs = array();
         foreach($this->defPaths as $loadPath) {
             $loadPath = $loadPath . '/prototypes.yml';
-            $ptDefinitions = Yaml::parse($loadPath);       
-            if (null === $ptDefinitions) {
-                throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
+            if ( file_exists($loadPath) ) {
+                $ptDefinitions = Yaml::parse($loadPath);       
+                if (null === $ptDefinitions) {
+                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
+                }
+                $defs = array_merge($ptDefinitions, $defs);                
             }
-            $defs = array_merge($ptDefinitions, $defs);
         }
         return $defs;
     }
