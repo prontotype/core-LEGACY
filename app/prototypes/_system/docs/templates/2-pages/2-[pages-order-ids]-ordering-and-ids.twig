@@ -4,6 +4,21 @@
 
 # Page Ordering and IDs
 
+Prontotype supports the ordering of pages (useful when using the generated [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }})) and assigning IDs to pages (useful for creating links to pages that don't break when you move pages around).
 
+Both ordering and IDs are applied using specific **patterns in the file names** of the templates.
+
+<p class="note">Note that any ordering information or IDs that are present in the template filename will be <strong>stripped out</strong> when routing URLs to those templates, so <strong>will not show up</strong> in any URLs.</p>
+
+## Ordering pages
+
+To keep your files ordered nicely in your directories (and to control the order that they are output from things like the [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }})), you can also prefix the filename with a number, followed by a dash, underscore or full stop (period). For example:
+
+<pre><code>/foo/bar/<strong>1-</strong>example.twig
+/foo/bar/<strong>2.</strong>widget.twig
+/foo/<strong>3-</strong>example/test.twig
+</code></pre>
+
+This ordering information will be removed for URL routing and will not feature in the generated page names.
 
 {% endset %}

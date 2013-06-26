@@ -15,5 +15,10 @@ At it's simplest, it will map a URL to a template in much the same way that 'sta
 
 If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required. 
 
+## 'Hidden' templates
+
+Any directories or templates whose names start with an **underscore** (`_`) will be 'hidden' from the URL routing mechanism, and so will not accessible as pages. This is useful if you want to use one or more directories to contain template partials or layouts but don't want to risk them accidentally being exposed via a URL.
+
+Any templates within these 'underscore-prefixed' directories can be used for extending or including as any other [Twig]({{ pt.pages.getUrlById('templating-twig') }}) template would be.
 
 {% endset %}

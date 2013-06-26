@@ -29,10 +29,10 @@ user:
     redirect: /
 
 pages:
-  routes:
-    # custom routes go here
   names:
     '/' : 'Home'
+  routes:
+    # custom routes go here
 
 data:
   csv:

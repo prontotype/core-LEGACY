@@ -10,6 +10,12 @@ They live in the prototype-specific templates directory - `/prototypes/{my-proto
 
 Pages can be [ordered]({{ pt.pages.getUrlById('pages-order-ids') }}#ordering) and can have a [reference ID]({{ pt.pages.getUrlById('pages-order-ids') }}#ids) assigned to them, should you wish. Pages with an ID can be moved anywhere within the templates directory and and generated links to them will remain valid, so you'll never need to update a whole bunch of links when you move a page around.
 
-Go to the [mapping URLs to templates]({{ pt.pages.getUrlById('pages-routing') }}) section to learn about how Prontotype decides which template should get served up for a particular URL.
+The [mapping URLs to templates]({{ pt.pages.getUrlById('pages-routing') }}) section contains more specific information about how Prontotype decides which template should get served up for a particular URL.
+
+## Accessing page data within templates
+
+Each page will have a set metadata automatically generated for it, including it's URL, short URL, a ['pretty' page title]({{ pt.pages.getUrlById('pages-titles') }}) and more. An object representing the current page is available within each template, and information about other pages can also be fetched.
+
+You can read more about accessing page data from within your templates in the [pages section of the templating reference]({{ pt.pages.getUrlById('template-ref-pages') }}) guide.
 
 {% endset %}

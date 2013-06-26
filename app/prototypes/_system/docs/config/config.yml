@@ -6,3 +6,6 @@ pages:
     '[pages]' : Pages and URLs
     '[pages-order-ids]' : Ordering and assigning IDs
     '[pages-routing]' : Routing URLs to pages
+    '[pages-titles]' : Page titles
+    '[pages-clean-urls]' : "Enabling 'clean' URLs"
+    

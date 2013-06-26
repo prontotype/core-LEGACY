@@ -1,0 +1,24 @@
+{% extends "_layouts/skeleton.twig" %}
+
+{% set content %}
+
+# Page titles
+
+Prontotype will automatically generate titles for all the pages in the system, which can be [accessed in templates]({{ pt.pages.getUrlById('template-ref-pages') }}) and which will be used in any [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }}) within the prototype.
+
+By default, Prontotype will attempt to create the page title by taking the template file name, stripping out all ordering and ID information and removing the file extension, converting underscores and dashes to spaces, and title-casing the individual words.
+
+So a file name such as `1-[my-id]-all-about-my-kangaroos.twig` would result in a page title of **All About my Kangaroos**.
+
+## Custom page titles
+
+You can also override any of the auto-generated page titles from within [your configuration file]({{ pt.pages.getUrlById('config') }}). To do this you need to add a configuration block like the following into your chosen config file:
+
+<pre><code>pages:
+  names:
+    '/': Home
+    '/example': My Example Page
+    '[monkeys]': A page about Monkeys
+</code></pre>
+
+{% endset %}
