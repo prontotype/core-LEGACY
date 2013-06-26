@@ -112,6 +112,11 @@ Class Base implements \RecursiveIterator
         return $this->niceName;
     }
     
+    public function getTitle()
+    {
+        return $this->getNiceName();
+    }
+    
     public function getCleanName()
     {
         if ( $this->cleanName === null ) {
@@ -163,8 +168,8 @@ Class Base implements \RecursiveIterator
         $cleanName = $this->getCleanName();
         
         $name = null;
-        if ( count($this->app['pt.config']->get('pages.names')) ) {
-            foreach( $this->app['pt.config']->get('pages.names') as $path => $niceName ) {
+        if ( count($this->app['pt.config']->get('pages.titles')) ) {
+            foreach( $this->app['pt.config']->get('pages.titles') as $path => $niceName ) {
                 
                 if ( preg_match('/\[([^\]]*)\]/', $path, $matches) ) {
                     // is an ID

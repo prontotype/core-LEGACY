@@ -85,6 +85,7 @@ Class Page extends Base {
             'depth'     => $this->getDepth(),
             'shortUrl'  => $this->getShortUrl(),
             'niceName'  => $this->getNiceName(),
+            'title'     => $this->getTitle(),
             'name'      => $this->getCleanName(),
             'urlPath'   => $this->getUrlPath(),
             'relPath'   => $this->getRelPath(),

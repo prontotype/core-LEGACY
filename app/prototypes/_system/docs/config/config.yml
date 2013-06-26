@@ -1,5 +1,5 @@
 pages:
-  names:
+  titles:
     '/' : Overview
     '[setup]' : Setup and Installation
     '[setup-prototypes]' : Prototypes and domains

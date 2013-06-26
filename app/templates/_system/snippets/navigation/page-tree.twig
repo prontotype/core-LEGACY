@@ -8,9 +8,9 @@
     
     <li class="level-{{ level }}{% if item.isCurrent %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent %} {{ opts.parentClass }}{% endif %}">
         {% if item.isPage %}
-        <a href="{{ item.urlPath }}">{{ item.niceName }}</a>
+        <a href="{{ item.urlPath }}">{{ item.title }}</a>
         {% else %}
-        <span>{{ item.niceName }}</span>
+        <span>{{ item.title }}</span>
         {% endif %}
         {% if item.children and (not opts.maxDepth or opts.maxDepth > level + 1) %}
         {{ pt.snippets.navigation.pageTree(opts, item.children, level + 1 ) }}

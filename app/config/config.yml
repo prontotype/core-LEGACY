@@ -29,7 +29,7 @@ user:
     redirect: /
 
 pages:
-  names:
+  titles:
     '/' : 'Home'
   routes:
     # custom routes go here

@@ -39,6 +39,7 @@ Class Directory extends Base {
         $output = array(
             'depth'    => $this->getDepth(),
             'niceName' => $this->getNiceName(),
+            'title'    => $this->getTitle(),
             'name'     => $this->getCleanName(),
             "relPath"  => $this->getRelPath(),
             "fullPath" => $this->getFullPath(),
