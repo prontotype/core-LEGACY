@@ -18,7 +18,7 @@ Here there is one prototype (called **default**) with just one page in it, which
 
 Each prototype directory can also contain subdirectories with configuration settings, data files, assets and extensions - all of which are discussed in later sections.
 
-## The prototypes.yml file
+## Multiple prototypes, domains and environments
 
 The `/config/prototypes.yml` file handles deciding which domains match up to which prototype. The default contents of this file are as follows:
 
@@ -49,9 +49,9 @@ The value of the `prototype` key should be the name of the prototype folder that
 
 <p class="note">Note that the more specific URL patterns should be specified first in the file - Prontotype will stop looking as soon as it finds a domain to match.</p>
 
-### URL matching patterns
+### Domain matching patterns
 
-The value of the `domain` key uses a simple wildcard pattern to match URLs against. Below are some examples of patterns and the resulting URLs that would be matched:
+The value of the `domain` key uses a simple wildcard pattern to match domains against. Below are some examples of patterns and the resulting domains that would be matched:
 
 | Pattern | URL matches |
 | ----- | ----- |
@@ -63,7 +63,7 @@ The value of the `domain` key uses a simple wildcard pattern to match URLs again
 
 ### Environments {{ '{#' }}environments}
 
-The `environments` key lets you specify an environment for each prototype match block. Using different environments is completely optional but lets you load different configuration files in for different matched domains if required (as discussed in the [configuration section]({{ pt.pages.getUrlById('config') }})).
+The `environment` key lets you specify an environment for each prototype match block. Using different environments is completely optional but lets you load different configuration files in for different matched domains if required (as discussed in the [configuration section]({{ pt.pages.getUrlById('config') }})).
 
 So for example you could use the following `prontotypes.yml` file to serve up the same prototype but with a different environment value for the local **foo.dev** domain:
 

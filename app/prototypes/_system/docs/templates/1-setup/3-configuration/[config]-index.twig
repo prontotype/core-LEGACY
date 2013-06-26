@@ -8,27 +8,30 @@ Each prototype can have it's own set of configuration files to override the defa
 
 All Prontotype configuration is done via [YAML](http://www.yaml.org/) files, so it's worth [familiarising yourself](https://readtapestry.com/s/un7wJiJiD/) with the language if you haven't come across it before.
 
-## Global configuration
+Below is an overview of how Prontotype configuration works - configuration of specific features is discussed in more detail later.
 
+## Configuration file types
 
+Prontotype supports both **global configuration files** (which affect all prototypes served by the Prontotype install) and **prototype-specific configuration files** (which override any global configuration provided).
 
-## Per-prototype configuration files
+**Global configuration** files are kept in the `/config` directory, whilst **prototype-specific** files are stored within the individual prototype's directory at `/prototypes/{my-prototype-name}/config`.
 
-The default configuration file for your prototype should be located at `/prototypes/my-prototype-name/config/config.yml` - if it doesn't exist then you will need to create it. Within that you can then add the appropriate configuration settings and overrides for your prototype.
+**Common configuration** files are named `config.yml`. These will be loaded regardless of the [specified environment]({{ pt.pages.getUrlById('setup-prototypes') }}#environments).
 
 You can also create **environment-specific configuration** files. These can take the place of the `config.yml` file, or they can be used in addition to it - so shared configuration settings can go into `config.yml` and environment-specific tweaks can go in the appropriate environment config file.
 
 To create an environment-specific configuration file, you need to create a YAML file with a name that matches the [value of your environment key]({{ pt.pages.getUrlById('setup-prototypes') }}#environments) set in your `prototypes.yml` file. So when the environment is set to `live` the Prontotype will look for a config file called `live.yml`.
 
-## Per-extension configuration files
-
-Prototype also allows extensions to specify their own configuration files. These behave in exactly the same way as the per-prototype config files above, but are contained within the 
+All configuration files are optional and the system falls back to sensible defaults without them.
 
 ## Configuration cascade
 
-When considering your configuration strategy it's worth understanding how configuration files are loaded in Prontotype:
+When considering your configuration strategy it's worth understanding how configuration files are loaded in Prontotype. There is effectively a configuration 'cascade' - files are merged together so that later configuration items overwrite earlier ones, if specified.
 
-1. The default (system) configuration file is loaded
-1. If it exists, the prototype-specific config/config.yml is loaded. Anything specified in this 
+1. The system configuration file is loaded. This is not directly editable.
+1. The global, shared `/config/config.yml` file is loaded.
+1. The global, environment-specific `/config/{environment}.yml` file is loaded.
+1. The prototype-specific, common `/prototypes/{my-prototype-name}/config/config.yml` is loaded.
+1. The prototype-specific, environment-specific `/prototypes/{my-prototype-name}/config/{environment}.yml` is loaded.
 
 {% endset %}

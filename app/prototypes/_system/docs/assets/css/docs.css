@@ -60,11 +60,9 @@ li code {
     background: #FFFEEB;
     font-family: monospace;
     font-size: 0.85em;
-    color: #3B2300;
-    border-bottom: 1px solid #E6E6B0;
-    border-right: 1px solid #E6E6B0;
+    color: #222;
     display: inline-block;
-    padding: 1px 4px;
+    padding: 0 2px;
 }
 pre code {
     display: block;
