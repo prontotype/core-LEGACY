@@ -30,7 +30,7 @@ user:
 
 pages:
   routes:
-    # "posts/(:all)" : "posts/post"
+    # custom routes go here
   names:
     '/' : 'Home'
 
@@ -45,9 +45,6 @@ data:
 cache:
   requests:
     expiry: 18000 # 5 mins
-
-extensions:
-  # example: ExampleExtension
   
 snippets:
   images:

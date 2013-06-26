@@ -70,6 +70,15 @@ Class Config {
         return $config;
     }
     
+    public function getDefaultConfigs($raw = false)
+    {
+        $config = file_get_contents($this->fallbackPath . '/config.yml');        
+        if ( ! $raw ) {
+            $config = Yaml::parse($config);
+        }
+        return $config;
+    }
+    
     protected function mergeConfig()
     {
         $config = array();

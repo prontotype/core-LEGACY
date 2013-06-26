@@ -102,8 +102,10 @@
               </div>
           
               <div class="main">
-                  <div class="pt-content-block">    
+                  <div class="pt-content-block"> 
+                      {% block content %}
                       {{ content|markdown }}
+                      {% endblock %}
                   </div>
               </div>
           
