@@ -78,10 +78,15 @@ Class Application {
         
         $this->doHealthCheck();
         
-        // redirect if there is a trailing slash
         $this->app->before(function() use ($app){
+            // redirect if there is a trailing slash
             if ( $app['pt.request']->urlPathHasTrailingSlash() ) {
                 return $app->redirect($app['pt.request']->getRawUrlPath());
+                exit();
+            }
+            // remove index.php if clean URLs are enabled
+            if ( $app['pt.env.clean_urls'] && strpos($app['pt.request']->getRawUrlPath(), '/index.php') === 0 ) {
+                return $app->redirect(str_replace('/index.php', '', $app['pt.request']->getRawUrlPath()));
                 exit();
             }
         });
