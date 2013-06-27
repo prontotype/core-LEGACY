@@ -16,7 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 
 use Prontotype\Cache;
-use Prontotype\Twig\HelperExtension as TwigHelperExtension;
+use Prontotype\Twig\HelperExtension;
+use Prontotype\Twig\GeshiExtension;
 use Prontotype\Data\Manager as DataManager;
 use Prontotype\Data\JsonParser;
 use Prontotype\Data\YamlParser;
@@ -120,7 +121,8 @@ Class Prontotype implements ServiceProviderInterface {
             if ( $app['pt.config']->get('debug') ) {
                 $twig->addExtension(new Twig_Extension_Debug());  
             } 
-            $twig->addExtension(new TwigHelperExtension($app));
+            $twig->addExtension(new HelperExtension($app));
+            $twig->addExtension(new GeshiExtension());
             return $twig;
         }));
         

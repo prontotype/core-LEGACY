@@ -19,8 +19,13 @@
         "behat/mink-extension": "*",
         "behat/mink-goutte-driver": "*",
         "fzaninotto/faker" : "1.1.*",
-        "mheap/Silex-Markdown": "*"
+        "mheap/Silex-Markdown": "*",
+        "easybook/geshi" : "*"
     },
+    "repositories" : [{
+        "type": "vcs",
+        "url": "https://github.com/prontotype/geshi"
+    }],
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
