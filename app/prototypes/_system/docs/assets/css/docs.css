@@ -64,7 +64,7 @@ li code {
     display: inline-block;
     padding: 0 2px;
 }
-pre code {
+pre {
     display: block;
     background: #FFFEEB;
     font-family: monospace;
@@ -72,18 +72,15 @@ pre code {
     color: #5e3d0e;
     border-bottom: 1px solid #E6E6B0;
     border-right: 1px solid #E6E6B0;
-    padding: 13px 10px 10px 10px;
+    padding: 13px 10px 0 10px;
     line-height: 1.6;
 }
 pre {
     margin-bottom: 15px;
 }
-pre code strong {
-    color: #000;
+pre.yaml .co4,
+pre.yaml .co3 {
     font-weight: bold;
-}
-pre code .comment {
-    color: #999;
 }
 
 /* Common */
