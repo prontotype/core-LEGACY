@@ -160,8 +160,12 @@ li code {
     font-weight: bold;
 }
 .nav--primary .is-current > a {
-/*    font-weight: bold;*/
     color: #e66f1d;
+}
+
+.nav-inpage ul {
+    list-style: none;
+    margin: 0;
 }
 
 /* notes */
