@@ -72,7 +72,7 @@ pre {
     color: #5e3d0e;
     border-bottom: 1px solid #E6E6B0;
     border-right: 1px solid #E6E6B0;
-    padding: 13px 10px 0 10px;
+    padding: 13px 10px 10px 10px;
     line-height: 1.6;
 }
 pre {
@@ -82,6 +82,14 @@ pre.yaml .co4,
 pre.yaml .co3 {
     font-weight: bold;
 }
+pre.yaml .co1 {
+    color: #999;
+}
+pre.yaml .br0 {
+    color: #d60000;
+    font-weight: bold;
+}
+
 
 /* Common */
 

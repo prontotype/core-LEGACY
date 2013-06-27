@@ -34,14 +34,6 @@ pages:
   routes:
     # custom routes go here
 
-data:
-  csv:
-    headers: true
-    delimiter: ','
-    enclosure: '"'
-    escape: '\'
-    id_header: id
-
 cache:
   requests:
     expiry: 18000 # 5 mins
@@ -52,3 +44,12 @@ snippets:
       service: dummyimage
       width: 200
       height: 200
+      
+data:
+  csv:
+    headers: true
+    id_header: id
+    escape: '\'
+    delimiter: ','
+    enclosure: '"'
+    

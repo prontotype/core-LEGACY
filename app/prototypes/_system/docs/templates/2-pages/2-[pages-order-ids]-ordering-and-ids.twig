@@ -14,10 +14,9 @@ Both ordering and IDs are applied using specific **patterns in the file names** 
 
 To keep your files and directories ordered nicely in your filesystem (and to control the order that they are output from things like the [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }})), you can also prefix the filename with a number, followed by a dash, underscore or full stop (period). For example:
 
-<pre class="brush: yaml">/foo/bar/<strong>1-</strong>example.twig
+<pre>/foo/bar/<strong>1-</strong>example.twig
 /foo/bar/<strong>2.</strong>widget.twig
-/foo/<strong>3-</strong>example/test.twig
-</pre>
+/foo/<strong>3-</strong>example/test.twig</pre>
 
 This ordering information will be removed for URL routing and will not feature in the generated [page titles]({{ pt.pages.getUrlById('pages-titles') }}).
 
@@ -27,9 +26,8 @@ You can give a page an ID by adding an alphanumeric string (underscores and dash
 
 The ID string, like the ordering prefix, will not show up in the URL. Below are a couple of examples of filenames with IDs included in them:
 
-<pre class="brush: yaml">/foo/bar/<strong>[example-page]-</strong>example.twig <span class="comment"># ID => example-page</span> 
-/foo/bar/<strong>[widget-1]-</strong>widget.twig <span class="comment"># ID => widget-1</span> 
-</pre>
+<pre>/foo/bar/<strong>[example-page]-</strong>example.twig <span class="comment"># ID => example-page</span> 
+/foo/bar/<strong>[widget-1]-</strong>widget.twig <span class="comment"># ID => widget-1</span></pre>
 
 Note that unlike ordering prefixes (see above), page IDs can only be applied to files, not folders.
 
@@ -37,8 +35,7 @@ Note that unlike ordering prefixes (see above), page IDs can only be applied to 
 
 You can of course mix ordering with pages IDs - so combining the examples above we would have:
 
-<pre class="brush: yaml">/foo/bar/<strong>1-[example-page]-</strong>example.twig
-/foo/bar/<strong>2-[widget-1]-</strong>widget.twig
-</pre>
+<pre>/foo/bar/<strong>1-[example-page]-</strong>example.twig
+/foo/bar/<strong>2-[widget-1]-</strong>widget.twig</pre>
 
 {% endset %}

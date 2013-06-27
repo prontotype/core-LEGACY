@@ -25,8 +25,7 @@ The `/config/prototypes.yml` file handles deciding which domains match up to whi
 <pre class="brush: yaml">default:
   domain: '*'
   prototype: default
-  environment: live
-</pre>
+  environment: live</pre>
 
 This configuration will result in Prontotype will trying and serve up the default prototype (i.e. the one in a folder named 'default') for *any* domain. 
 
@@ -40,8 +39,7 @@ If you wanted to serve up an additional prototype (one in a folder named **foo**
 default:
   domain: '*'
   prototype: default
-  environment: live
-</pre>
+  environment: live</pre>
 
 This would serve up the **foo** prototype to all **foo.com** URLs, and the default prototype for all other URLs. Note that the reference name (e.g. 'foo_prototype') can be anything you like - it has no bearing on which prototype is served up.
 
@@ -75,7 +73,6 @@ So for example you could use the following `prontotypes.yml` file to serve up th
 default:
   domain: 'foo.com'
   prototype: default
-  environment: live
-</pre>
+  environment: live</pre>
 
 {% endset %}
