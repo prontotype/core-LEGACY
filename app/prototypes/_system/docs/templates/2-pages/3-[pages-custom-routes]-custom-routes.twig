@@ -4,6 +4,124 @@
 
 # Defining custom routes
 
+Prontotype has a custom routing system that lets you use a simple pattern matching syntax to effectively 'rewrite' (not redirect!) URLs.
 
+Custom routing definitions can be defined in the 'pages > routes' section in your [configuration file]({{ pt.pages.getUrlById('config') }}), and take the format:
+
+<pre class="brush: yaml">pages:
+  routes:
+    "url/path/to/match" : "url/path/of/page/to/display"</pre>
+
+You can define as many custom routes as you like; the first matched route (working from top to bottom) is the one that will be used.
+
+Note if you already have a 'pages' section within your config file (i.e. for [defining custom page titles under]({{ pt.pages.getUrlById('pages-titles') }})) you will need to append the `routes` section under that - for example:
+
+<pre class="brush: yaml">pages:
+  title:
+    '/' : 'Example title'
+  routes:
+    "url/path/to/match" : "url/path/of/page/to/display"</pre>
+
+## Pattern matching
+
+Just matching one URL and rendering a different page is probably not terribly useful. But Prontotype lets you use a number of wildcard tokens in your routing definitions that make this a much more powerful proposition.
+
+The following tokens are available to use in the 'match' side of your route definitions:
+
+
+| Token | Description |
+| ----- | ----- |
+| {any} | Matches any string of characters apart from those containing a slash (/) - i.e. will match any string within a single URL 'segment' |
+| {num} | Matches any string of numbers |
+| {all} | Matches all characters, including slashes, so will match multiple URL segments |
+| [pageID] | Matches the URL path for the page identified by the id `pageID` ([More on page IDs here]({{ pt.pages.getUrlById('pages-order-ids') }})). This token (unlike the others above) can also be used in the right-hand (the 'page to display') side of your routing definition. |
+
+You can use as many or as few of these as you like in each of the 'match' (left hand) side part of your routing definitions. Some examples might look like:
+
+<pre class="brush: yaml">pages:
+  routes:
+    # --------------------------------------
+    # Matches: posts/this-is-a-post
+    # Doesn't match: posts/this-is-a-post/edit
+    # --------------------------------------
+    "posts/{any}" : "posts/example"
+
+    # --------------------------------------
+    # Matches: pages/example/test/123/hello
+    # --------------------------------------
+    "pages/{all}" : "pages/hello-world"
+
+    # --------------------------------------
+    # Matches: people/1234/details
+    # Doesn't match: people/bob/details
+    # --------------------------------------
+    "people/{num}/{any}" : "people/profile"
+
+    # --------------------------------------
+    # Matches: url/for/page/with/id/tweetpage
+    # --------------------------------------
+    "[tweetpage]" : "people/tweets"</pre>
+   
+    
+## Backreferences
+
+You can also use a simple <strong>backreference syntax</strong> to reference the url fragments matched by the wildcard tokens in the 'page to route to' (i.e. right hand side) part of your routing definitions. The URL fragment matched by each token can be referenced by a dollar sign ($) followed by its index number. So the fragemnt matched by first token can be referenced by `$1`, the second by `$2` etc. As an example:
+
+<pre class="brush: yaml">pages:
+  routes:
+    # --------------------------------------
+    # Matches: posts/123/tags/unicorn and displays the page at: tags/unicorn
+    # --------------------------------------
+    "posts/{num}/tags/{any}" : "tags/$2"</pre>
+
+
+## An example
+
+As an example of what you can do with this, let's image that you've got a [YAML data file]({{ pt.pages.getUrlById('pages-order-ids') }}) set up that contains an array of blog posts data within it. It might look a bit like this:
+
+### Blog posts data file:
+<pre class="brush: yaml">posts:
+  post-1:
+    title: A blog post
+    body: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  post-2:
+    title: Another blog post
+    body: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pre>
+
+You've also got a page set up to display blog posts. That might look a bit like this:
+
+### Blog post display page:
+{% raw %}
+<pre class="brush: twig"><!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My blog post</title>
+</head>
+<body>
+
+{% post = pt.data.get('blog.yml').posts[pt.request.getUrlSegment(2)] %}
+{% if post %}
+  <div class="content">
+    <h1>{{ post.title }}</h1>
+    <div class="body">
+      {{ post.body }}
+    </div>
+  </div>
+{% else %}
+  <p>No blog post found, sorry!</p>
+{% endif %}
+
+</body>
+</html></pre>
+{% endraw %}
+
+Now all we need to do is set up a custom route to route all requests for a blog post into our blog post display page, and then our page will automagically go and fetch the data for the appropriate post from the YAML file and display it in our page.
+
+### Route definition:
+<pre class="brush: yaml">pages:
+  routes:
+    "posts/{any}" : "blog/post"</pre>
+
+**And that's it!** Now requests like `http://example.com/posts/post-1` will result in our `/templates/blog/post.twig` page being rendered, which will then dynamically pull in data for the **post-1** post (as defined in our YAML file) and display it!
 
 {% endset %}

@@ -72,8 +72,9 @@ pre {
     color: #5e3d0e;
     border-bottom: 1px solid #E6E6B0;
     border-right: 1px solid #E6E6B0;
-    padding: 13px 10px 10px 10px;
+    padding: 10px 10px 11px 10px;
     line-height: 1.6;
+    overflow-x: scroll;
 }
 pre {
     margin-bottom: 15px;
