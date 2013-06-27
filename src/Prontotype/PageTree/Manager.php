@@ -145,7 +145,7 @@ Class Manager {
     public function getChildrenById($id)
     {
         if ( $page = $this->getById($id) ) {
-            return $this->getAllUnderUrlPath($page->getUrlPath());
+            return $this->getChildrenByUrlPath($page->getUrlPath());
         }
         return null;
     }

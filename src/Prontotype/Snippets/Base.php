@@ -23,7 +23,8 @@ Class Base {
     
     protected function mergeOpts($defaults, $opts)
     {
-        if ( ! $opts ) $opts = array();
+        if ( ! is_array($defaults) ) $defaults = array();
+        if ( ! is_array( $opts ) ) $opts = array();
         return array_merge($defaults, $opts);
     }
     
