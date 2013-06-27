@@ -10,7 +10,7 @@ Custom routing definitions can be defined in the 'pages > routes' section in you
 
 <pre class="brush: yaml">pages:
   routes:
-    "url/path/to/match" : "url/path/of/page/to/display"</pre>
+    "url/path/to/match": "url/path/of/page/to/display"</pre>
 
 You can define as many custom routes as you like; the first matched route (working from top to bottom) is the one that will be used.
 
@@ -18,9 +18,9 @@ Note if you already have a 'pages' section within your config file (i.e. for [de
 
 <pre class="brush: yaml">pages:
   title:
-    '/' : 'Example title'
+    '/': 'Example title'
   routes:
-    "url/path/to/match" : "url/path/of/page/to/display"</pre>
+    "url/path/to/match": "url/path/of/page/to/display"</pre>
 
 ## Pattern matching
 
@@ -44,23 +44,23 @@ You can use as many or as few of these as you like in each of the 'match' (left 
     # Matches: posts/this-is-a-post
     # Doesn't match: posts/this-is-a-post/edit
     # --------------------------------------
-    "posts/{any}" : "posts/example"
+    "posts/{any}": "posts/example"
 
     # --------------------------------------
     # Matches: pages/example/test/123/hello
     # --------------------------------------
-    "pages/{all}" : "pages/hello-world"
+    "pages/{all}": "pages/hello-world"
 
     # --------------------------------------
     # Matches: people/1234/details
     # Doesn't match: people/bob/details
     # --------------------------------------
-    "people/{num}/{any}" : "people/profile"
+    "people/{num}/{any}": "people/profile"
 
     # --------------------------------------
     # Matches: url/for/page/with/id/tweetpage
     # --------------------------------------
-    "[tweetpage]" : "people/tweets"</pre>
+    "[tweetpage]": "people/tweets"</pre>
    
     
 ## Backreferences
@@ -88,7 +88,7 @@ As an example of what you can do with this, let's image that you've got a [YAML 
     title: Another blog post
     body: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pre>
 
-You've also got a page set up to display blog posts. That might look a bit like this:
+You've also got a page set up to display blog posts. That might look a bit like this (you might want to read the [template reference guide]({{ pt.pages.getUrlById('templating-reference') }}) to help understand what the various template tags do!):
 
 ### Blog post display page:
 {% raw %}
