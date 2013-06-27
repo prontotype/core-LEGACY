@@ -4,6 +4,20 @@
 
 # Templating
 
-Documentation coming soon.
+Prontotype uses a powerful templating language called **Twig** to generate it's HTML output.
+
+Twig provides a set of standard template tags and filters, and Prontotype builds on this to expose a number of custom variables and functions to access Prontotype-specific functionality. The [templating reference guide]({{ pt.pages.getUrlById('templating-reference') }}) details all the custom variables and tags you have access to in your templates.
+
+<p class="note">To learn more about Twig, check out the short <a href="{{ pt.pages.getUrlById('templating-twig') }}">Twig primer</a> or head over to the <a href="http://twig.sensiolabs.org">Twig website</a> for a more comprehensive overview.</p>
+
+## Organising templates
+
+The templates for a prototype live within that prototypes' `/templates` directory - for example at `/prototypes/{my-prototype-name}/templates` - and are files with a `.twig` extension.
+
+Templates are <strong>served up as pages</strong> according to Prontotype's [URL routing process]({{ pt.pages.getUrlById('pages-routing') }}), and so should be organised in appropriate directories accordingly.
+
+[Hidden templates]({{ pt.pages.getUrlById('pages-routing') }}#hidden-templates) (i.e. files or directories whose names begin with an underscore) are ommitted from any URL routing requirements so can be organised however you see fit.
+
+It's worth noting that any include paths within Twig (i.e. for including or extending other templates) should be specified <strong>relative to the root of the templates directory</strong> or else they won't work!. 
 
 {% endset %}
