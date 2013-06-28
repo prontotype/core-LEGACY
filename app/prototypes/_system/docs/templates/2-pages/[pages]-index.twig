@@ -18,4 +18,14 @@ Each page will have a set metadata automatically generated for it, including it'
 
 You can read more about accessing page data from within your templates in the [pages section of the templating reference]({{ pt.pages.getUrlById('template-ref-pages') }}) guide.
 
+## Linking to other pages
+
+Whilst you can certainly hard-code links to other pages within your prototype, this can often cause issues when pages get moved around within the filesystem - as often happens while prototyping!
+
+So instead, for any page in the prototype that has an ID you can generate the URL as follows:
+
+{% raw %}<pre class="brush: twig"><a href="{{ pt.pages.getUrlById('my-page-id') }}">Read this page</a></pre>{% endraw %}
+
+See the [pages section of the templating reference]({{ pt.pages.getUrlById('template-ref-pages') }}) guide for more information on other handy page-related variables and methods.
+
 {% endset %}

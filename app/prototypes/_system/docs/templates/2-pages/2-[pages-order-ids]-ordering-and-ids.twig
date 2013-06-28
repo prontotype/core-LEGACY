@@ -10,24 +10,24 @@ Both ordering and IDs are applied using specific **patterns in the file names** 
 
 <p class="note">Note that any ordering information or IDs that are present in the template filename will be <strong>stripped out</strong> when routing URLs to those templates, so <strong>will not show up</strong> in any URLs.</p>
 
-## Ordering pages
+## Ordering pages {{ '{#' }}ordering}
 
 To keep your files and directories ordered nicely in your filesystem (and to control the order that they are output from things like the [navigation snippets]({{ pt.pages.getUrlById('snippets-nav') }})), you can also prefix the filename with a number, followed by a dash, underscore or full stop (period). For example:
 
-<pre>/foo/bar/<strong>1-</strong>example.twig
-/foo/bar/<strong>2.</strong>widget.twig
-/foo/<strong>3-</strong>example/test.twig</pre>
+<pre class="brush: xml">/foo/bar/1-example.twig
+/foo/bar/2.widget.twig
+/foo/3-example/test.twig</pre>
 
 This ordering information will be removed for URL routing and will not feature in the generated [page titles]({{ pt.pages.getUrlById('pages-titles') }}).
 
-## Assigning IDs to pages
+## Assigning IDs to pages {{ '{#' }}assigning-ids}
 
 You can give a page an ID by adding an alphanumeric string (underscores and dashes are ok in there too) surrounded by square brackets into the filename. You can also follow this by a dash, underscore or full stop (period) to help seperate it from the rest of the filename, if you wish.
 
 The ID string, like the ordering prefix, will not show up in the URL. Below are a couple of examples of filenames with IDs included in them:
 
-<pre>/foo/bar/<strong>[example-page]-</strong>example.twig <span class="comment"># ID => example-page</span> 
-/foo/bar/<strong>[widget-1]-</strong>widget.twig <span class="comment"># ID => widget-1</span></pre>
+<pre class="brush: xml">/foo/bar/[example-page]-example.twig    <!-- ID: example-page -->
+/foo/bar/[widget-1]-widget.twig         <!-- # ID: widget-1 --></pre>
 
 Note that unlike ordering prefixes (see above), page IDs can only be applied to files, not folders.
 
@@ -35,7 +35,7 @@ Note that unlike ordering prefixes (see above), page IDs can only be applied to 
 
 You can of course mix ordering with pages IDs - so combining the examples above we would have:
 
-<pre>/foo/bar/<strong>1-[example-page]-</strong>example.twig
-/foo/bar/<strong>2-[widget-1]-</strong>widget.twig</pre>
+<pre class="brush: xml">/foo/bar/1-[example-page]-example.twig
+/foo/bar/2-[widget-1]-widget.twig</pre>
 
 {% endset %}

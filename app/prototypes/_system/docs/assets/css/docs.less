@@ -16,16 +16,16 @@ body {
     padding-bottom: 50px;
 }
 a {
-    color: #417e98;
+    color: #0562a8;
 }
 h1 {
     font-size: 23px;
     background-color: #F7F7F7;
-    border-bottom: 1px solid #DDD;
-    padding: 0.6em 15px 0.4em 15px;
+/*    border-bottom: 1px solid #DDD;*/
+    padding: 0.45em 15px 0.4em 15px;
     margin-bottom: 0.8em;
     margin: -10px -10px 0.8em -10px;
-    color: #111;
+    color: #023962;
 }
 h2 {
     font-size: 19px;
@@ -33,13 +33,13 @@ h2 {
     margin-top: 1.0em;
     border-bottom: 1px solid #DDD;
     padding-bottom: 0.3em;
-    color: #111;
+    color: #023962;
 }
 h3 {
     font-size: 17px;
     margin-bottom: 0.6em;
     margin-top: 1.2em;
-    color: #111;
+    color: #023962;
 }
 p {
     font-size: 16px;
@@ -80,7 +80,7 @@ li code {
 /* Header */
 
 .site-header {
-    background: #E66F05;
+    background: #023962;
 }
 .site-header .receptacle-inner {
     padding: 8px 0 10px 0;
@@ -160,7 +160,7 @@ li code {
     font-weight: bold;
 }
 .nav--primary .is-current > a {
-    color: #e66f1d;
+    color: #0562a8;
 }
 
 .nav-inpage ul {
@@ -217,8 +217,54 @@ th {
 
 .method-ref {
     .method {
+        padding: 1px 0 15px 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #EEE;
+    }   
+    .method p {
+        font-size: 16px;
+        color: #666;
+        margin: 0 0 8px 0;
+    }
+    .method ul {
+        margin-left: 0;
+    }
+    .method .hint {
+        color: #999;
+        font-size: 15px;
+    }
+    .method .hint a {
+        color: #777;
+    }
+    .method ul li {
+        font-size: 16px;
+        color: #666;
+        list-style: none;
+    }
+    .method pre {
+        margin-top: 14px;
+    }
+    .method-title {
+        margin-top: -1px;
+        margin-bottom: 16px;
+        margin-left: -19px;
+        font-family: monospace;
+        font-weight: normal;
+        padding: 5px 10px 7px 19px;
+        color: #999;
         background: #EEE;
-        padding: 15px;
+        
+    }
+    .method-title .name {
+        font-weight: bold;
+        color: #222;
+    }
+    .method-title .var {
+        font-weight: normal;
+        color: #666;
+    }
+    pre > ol {
+        border-left: 0;
     }
 }
 
