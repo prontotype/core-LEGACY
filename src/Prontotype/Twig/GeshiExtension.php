@@ -32,6 +32,7 @@ class GeshiExtension extends \Twig_Extension
         $output = preg_replace_callback($pattern, function($matches) {
             $geshi = new \GeSHi($matches[2], $matches[1]);
             $geshi->enable_classes();
+            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);
             return $geshi->parse_code();
         }, $string);
         return $output; 

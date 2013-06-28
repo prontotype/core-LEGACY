@@ -1,53 +1,105 @@
+@orange: #FF8400;
+@green: #56DB3A;
+@fuchsia: #D623A2;
+
 pre {
     display: block;
-    background: #F9F9F9;
     font-family: monospace;
-    border-top: 1px solid #DDD;
-    border-bottom: 1px solid #DDD;
-    font-size: 0.85em;
-    color: #222;
-    padding: 10px 15px 11px 15px;
+    padding: 0;
     line-height: 1.6;
     overflow-x: scroll;
     margin-bottom: 15px;
+/*    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+    background: #F9F9F9;
+    color: #222;*/
+    background: #232125;
+}
+
+pre > ol {
+    margin: 0 0 0 0;
+    padding: 10px 0 14px 0;
+    border-left: 36px solid #EEE;
+    counter-reset: item;
+    list-style-type: none;
+}
+pre .li1 {
+    display: block;
+    font-size: 0.85em;
+    margin-bottom: 0;
+    color: #888;
+    margin-left: 10px;
+    display: block;
+    &:before { 
+        content: counter(item) "  "; 
+        counter-increment: item; 
+        float: left;
+        margin-left: -36px;
+    }
+}
+pre .de1 {
+    color: #CCC;
 }
 
 pre.yaml {
     .co4,
     .co3 {
-        color: #D623A2;
+        color: @orange;
     }
     .sy2 {
-        color: #666;
+/*        color: #666;*/
     }
     .st0 {
     /*    color: #2362ab;*/
     }
     .co1 {
-        color: #999;
+        color: #666;
     }
     .br0 {
-        color: #d60000;
+        color: @green;
         font-weight: bold;
-    }    
+    }
 }
 
 pre.twig {
-    color: #666;
+    .de1 {
+        color: #999;
+    }
+    a {
+        text-decoration: none;
+    }
     .kw6 {
-        color: #D623A2;
+        color: #999;
         .br0 {
             font-weight: normal;
-            color: #D623A2;    
+            color: #999;
         }
+    }
+    .st0 {
+        color: @green;
+    }
+    .nu0 {
+        color: @green;
+    }
+    .kw1 {
+        color: @orange;
+        text-decoration: underline;
+    }
+    .kw1,
+    .kw2 {
+/*        text-decoration: underline;*/
+    }
+    .sy0 {
+        color: #FFF;
     }
     .re0,
     .re1,
-    .re2 {
-        color: #2362ab;
+    .re2,
+    .kw2 {
+        color: #DDD;
     }
     .br0 {
-        color: #d60000;
+        color: #FFF;
         font-weight: bold;
     }   
 }

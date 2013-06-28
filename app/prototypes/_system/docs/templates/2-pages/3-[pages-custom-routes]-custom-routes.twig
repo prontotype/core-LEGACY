@@ -99,7 +99,7 @@ You've also got a page set up to display blog posts. That might look a bit like 
 </head>
 <body>
 
-{% post = pt.data.get('blog.yml').posts[pt.request.getUrlSegment(2)] %}
+{% post = pt.data.get('blog.yml').posts[ pt.request.getUrlSegment(2) ] %}
 {% if post %}
   <div class="content">
     <h1>{{ post.title }}</h1>
