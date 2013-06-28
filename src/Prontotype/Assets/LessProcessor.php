@@ -11,9 +11,10 @@ Class LessProcessor extends Processor {
         );
     }
     
-    public function process($content)
+    public function process($content, $loadPaths = array())
     {
         $less = new \lessc;
+        $less->setImportDir($loadPaths);
         return $less->compile($content);
     }
     

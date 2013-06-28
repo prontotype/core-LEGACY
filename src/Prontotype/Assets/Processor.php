@@ -16,7 +16,7 @@ Class Processor {
         return array();
     }
     
-    public function process($content)
+    public function process($content, $loadPaths = array())
     {
         
     }

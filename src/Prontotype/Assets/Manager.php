@@ -82,7 +82,7 @@ Class Manager {
         }
         foreach( $this->processors[$extension] as $parser ) {
             try {
-                $contents = $parser->process($contents);
+                $contents = $parser->process($contents, $this->getLoadPaths());
             } catch ( \Exception $e ) {
                 throw new \Exception(sprintf('Error processing file'));
             }

@@ -11,9 +11,10 @@ Class ScssProcessor extends Processor {
         );
     }
     
-    public function process($content)
+    public function process($content, $loadPaths = array())
     {
         $scss = new \scssc();
+        $scss->setImportPaths($loadPaths);
         return $scss->compile($content);
     }
     
