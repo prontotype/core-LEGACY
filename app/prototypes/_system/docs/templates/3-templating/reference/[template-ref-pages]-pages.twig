@@ -1,9 +1,36 @@
 {% extends "_layouts/skeleton.twig" %}
 
+{% set pageobjref = '<a href="#page-objects">page object representation</a>' %}
+
 {% set content %}
 
 # Pages template reference
 
-Documentation coming soon.
+You can access information about the pages in your prototype via the `pt.pages` variable.
+
+Many of the methods available available on the `pt.pages` variable will return a [page object](#page-objects) representation of a page, which will give you access to metadata about that page.
+
+## Available methods
+
+<div class="method-ref">
+    
+    <div class="method">
+        <h3 class="method-title" id="pages-getcurrent">pt.pages.getCurrent()</h3>
+        <p>Returns a {{ pageobjref }} of the current page.</p>
+        {% raw %}<pre class="brush: twig">{% set thisPage = pt.pages.getCurrent() %}</pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="pages-getcurrent">pt.pages.getById( <span class="var">id</span> )</h3>
+        <p>Returns a {{ pageobjref }} of a page specified by it's ID.</p>
+        {% raw %}<pre class="brush: twig">{{ pt.pages.getById( 'monkey-page' ) }}</pre>{% endraw %}
+    </div>
+    
+</div>
+
+
+## Page objects {{ '{#' }}page-objects}
+
+
 
 {% endset %}

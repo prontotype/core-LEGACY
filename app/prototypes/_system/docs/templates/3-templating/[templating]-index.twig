@@ -8,7 +8,23 @@ Prontotype uses a powerful templating language called **Twig** to generate it's 
 
 Twig provides a set of standard template tags and filters, and Prontotype builds on this to expose a number of custom variables and functions to access Prontotype-specific functionality. The [templating reference guide]({{ pt.pages.getUrlById('templating-reference') }}) details all the custom variables and tags you have access to in your templates.
 
-<p class="note">To learn more about Twig, check out the short <a href="{{ pt.pages.getUrlById('templating-twig') }}">Twig primer</a> or head over to the <a href="http://twig.sensiolabs.org">Twig website</a> for a more comprehensive overview.</p>
+Note that **all Prontotype-provided template variables and methods** are available under the **'`pt`' namespace**. For example:
+
+{% raw %}
+<pre class="brush: twig">{{ pt.pages.getPageById('my-page') }}
+{{ pt.data.get('animals.json').zebras }}
+{{ pt.snippets.forms.label('This is a label') }}</pre>
+{% endraw %}
+
+<nav class="nav-inpage">
+    <ul>
+        <li><a href="{{ pt.pages.getUrlById('templating-reference') }}">Templating reference guide</a></li>
+        <li><a href="{{ pt.pages.getUrlById('templating-twig') }}">Twig Primer</a></li>
+        <li><a href="{{ pt.pages.getUrlById('templating-twig') }}">Twig Website and documentation</a></li>
+    </ul> 
+</nav>
+
+
 
 ## Organising templates
 
