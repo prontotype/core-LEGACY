@@ -13,13 +13,17 @@ Class Manager {
     protected $loadPaths = array();
     
     protected $fallbackPath = null;
+        
+    protected $defaultFaker;
+    
+    protected $seededFakers = array();
 
     public function __construct($app, $parsers = array(), $loadPaths = array(), $fallbackPath = null)
     {
         $this->app = $app;
         $this->loadPaths = $loadPaths;
         $this->fallbackPath = $fallbackPath;
-        $this->faker = \Faker\Factory::create();
+        $this->defaultFaker = $this->createFaker();
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
         }
@@ -93,13 +97,16 @@ Class Manager {
         return $this->find($data, $dataPath);
     }
     
-    public function fake($key)
+    public function fake($seed = null)
     {
-        try {
-            return $this->faker->$key;    
-        } catch (\Exception $e) {
-            return null;
+        if ($seed === null) {
+            return $this->defaultFaker;
+        } elseif ( isset($this->seededFakers[$seed]) ) {
+            return $this->seededFakers[$seed];
         }
+        $faker = $this->createFaker($seed);
+        $this->seededFakers[$seed] = $faker;
+        return $this->seededFakers[$seed];
     }
         
     public function registerParser(Parser $parser)
@@ -111,6 +118,22 @@ Class Manager {
             }
             $this->parsers[$extension][] = $parser;
         }
+    }
+    
+    protected function createFaker($seed = null)
+    {
+        $faker = \Faker\Factory::create($this->app['pt.config']->get('data.faker.locale'));
+        if ( $seed === null ) {
+            $seed = $this->app['pt.config']->get('data.faker.seed');
+            if ( empty($seed) ) {
+                $seed = null;
+            }
+        }
+        if ( $seed ) {
+            $faker->seed($seed); 
+        }
+        $faker->addProvider(new \Prontotype\Faker\Prontotype($faker));
+        return $faker;
     }
     
     protected function find($data, $path)

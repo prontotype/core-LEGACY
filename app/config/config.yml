@@ -46,6 +46,9 @@ snippets:
       height: 200
       
 data:
+  faker:
+    locale: en_EN
+    seed: 
   csv:
     headers: true
     id_header: id
