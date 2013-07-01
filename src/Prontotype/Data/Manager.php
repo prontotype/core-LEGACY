@@ -19,6 +19,7 @@ Class Manager {
         $this->app = $app;
         $this->loadPaths = $loadPaths;
         $this->fallbackPath = $fallbackPath;
+        $this->faker = \Faker\Factory::create();
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
         }
@@ -90,6 +91,15 @@ Class Manager {
             $this->parsed[$url] = $data;
         }
         return $this->find($data, $dataPath);
+    }
+    
+    public function fake($key)
+    {
+        try {
+            return $this->faker->$key;    
+        } catch (\Exception $e) {
+            return null;
+        }
     }
         
     public function registerParser(Parser $parser)
