@@ -83,6 +83,22 @@ Class Page extends Base {
         return true;
     }
     
+    public function hasSubPages()
+    {
+        $subPageArray = $this->app['pt.pagetree']->getSubPagesByUrlPath($this->getUrlPath());
+        return !! count($subPageArray);
+    }
+    
+    public function getSubPages()
+    {
+        $subPageArray = $this->app['pt.pagetree']->getSubPagesByUrlPath($this->getUrlPath());        
+        $subPageObjects = array();
+        foreach( $subPageArray as $subPage ) {
+            $subPageObjects[] = $this->app['pt.pagetree']->getByUrlPath($subPage['urlPath']);
+        }
+        return $subPageObjects;
+    }
+    
     public function toArray()
     {
         return array(

@@ -160,15 +160,15 @@ Class Manager {
     
     public function getSubPagesByUrlPath($urlPath)
     {
-        if ( $urlPath == '/' || $urlPath == '/index.php/' ) {
+        if ( $urlPath == '/' || $urlPath == '/index.php/' || str_replace('/index.php', '', rtrim($urlPath, '/')) == $this->app['pt.prototype.path'] ) {
             $data = $this->getAll();
-            return isset($data[0]['children']) ? $data[0]['children'] : null;
+            return isset($data[0]['subPages']) ? $data[0]['subPages'] : null;
         }
         $fullTree = new \RecursiveIteratorIterator($this->tree, true);
         foreach( $fullTree as $item ) {
             if ( $item instanceof Directory && $item->matchesUrlPath($urlPath) ) {
                 $data = $item->toArray();
-                return $data['children'] ? $data['children'] : array();
+                return $data['subPages'] ? $data['subPages'] : array();
             }
         }
         return array();

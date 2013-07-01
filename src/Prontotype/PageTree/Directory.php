@@ -35,7 +35,7 @@ Class Directory extends Base {
     
     public function toArray($siblings = null)
     {
-        $children = array();
+        $subPages = array();
         $output = array(
             'depth'    => $this->getDepth(),
             'niceName' => $this->getNiceName(),
@@ -52,7 +52,7 @@ Class Directory extends Base {
                 $hasIndex = true;
                 $output = $item->toArray();
             } else {
-                $children[] = $item->toArray($this->getItems());
+                $subPages[] = $item->toArray($this->getItems());
             }
         }
         if ( ! $hasIndex && $siblings ) {
@@ -64,20 +64,20 @@ Class Directory extends Base {
             }
         }
         $filteredChildren = array();
-        foreach( $children as $child ) {
+        foreach( $subPages as $child ) {
             if ( ! isset($filteredChildren[$child['urlPath']]) ) {
                 $filteredChildren[$child['urlPath']] = $child;
             } else {
-                if ( ! isset($filteredChildren[$child['urlPath']]['children']) || ! count($filteredChildren[$child['urlPath']]['children']) ) {
+                if ( ! isset($filteredChildren[$child['urlPath']]['subPages']) || ! count($filteredChildren[$child['urlPath']]['subPages']) ) {
                     $filteredChildren[$child['urlPath']] = $child;
                 }
             }
         }
-        $children = $filteredChildren;
-        uasort($children, function( $a, $b ){          
+        $subPages = $filteredChildren;
+        uasort($subPages, function( $a, $b ){          
             return strnatcasecmp($a['relPath'], $b['relPath']);
         });
-        $output['children'] = array_values($children);
+        $output['subPages'] = array_values($subPages);
         return $output;
     }
 }

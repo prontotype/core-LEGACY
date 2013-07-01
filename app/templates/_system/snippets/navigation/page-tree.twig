@@ -12,8 +12,8 @@
         {% else %}
         <span>{{ item.title }}</span>
         {% endif %}
-        {% if item.children and (not opts.maxDepth or opts.maxDepth > level + 1) %}
-        {{ pt.snippets.navigation.pageTree(opts, item.children, level + 1 ) }}
+        {% if item.subPages and (not opts.maxDepth or opts.maxDepth > level + 1) %}
+        {{ pt.snippets.navigation.pageTree(opts, item.subPages, level + 1 ) }}
         {% endif %}
     </li>
     

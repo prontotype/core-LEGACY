@@ -55,14 +55,14 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
     </div>
 
     <div class="method">
-        <h3 class="method-title" id="pages-getchildrenbyid">pt.pages.<span class="name">getSubPagesById(<span class="var">id</span>)</span></h3>
+        <h3 class="method-title" id="pages-getsubpagesbyid">pt.pages.<span class="name">getSubPagesById(<span class="var">id</span>)</span></h3>
         <p>Returns a {{ pagehieref }} of all the sub-pages of a page specified by it's ID. <strong>Does not</strong> include the page itself.</p>
         {% raw %}<pre class="brush: twig">{% set dogBreedPages = pt.pages.getSubPagesById('dogs') %}</pre>{% endraw %}
         <p class="hint">This can be used to generate page-specific navigation lists; the output can be passed to the <a href="{{ pt.pages.getUrlById('snippets-nav') }}#snippets-nav-pagetree">page tree snippet</a> to make this even easier!</p>
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="pages-getchildrenbyurlpath">pt.pages.<span class="name">getSubPagesByUrlPath(<span class="var">urlPath</span>)</span></h3>
+        <h3 class="method-title" id="pages-getsubpagesbyurlpath">pt.pages.<span class="name">getSubPagesByUrlPath(<span class="var">urlPath</span>)</span></h3>
         <p>Returns a {{ pagehieref }} of all the sub-pages of a page specified by it's (root-relative) URL path. <strong>Does not</strong> include the page itself.</p>
         {% raw %}<pre class="brush: twig">{% set catTypePages = pt.pages.getSubPagesByUrlPath('/animals/domestic/cats') %}</pre>{% endraw %}
         <p class="hint">This can be used to generate page-specific navigation lists; the output can be passed to the <a href="{{ pt.pages.getUrlById('snippets-nav') }}#snippets-nav-pagetree">page tree snippet</a> to make this even easier!</p>
@@ -152,6 +152,6 @@ In the following examples we'll assume that the `myPage` variable has been first
 
 ## Page hierarchies {{ '{#' }}page-hierarchies}
 
-A **page hierarchy** is a static, nested array of pages representing all or part of your prototype's pages structure.
+A **page hierarchy** is a static, nested array of pages representing all or part of your prototype's pages structure. They are great for iterating over to build navigation lists, and in fact 
 
 {% endset %}
