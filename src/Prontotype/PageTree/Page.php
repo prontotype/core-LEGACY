@@ -32,7 +32,7 @@ Class Page extends Base {
         return empty($this->id) ? null : $this->id;
     }
     
-    public function shortUrlPath()
+    public function getShortUrlPath()
     {
         if ( $id = $this->getId() ) {
             $this->shortUrlPath = $this->prefixUrl('/' . $this->app['pt.config']->get('triggers.shorturl') . '/' . $id);
@@ -40,6 +40,11 @@ Class Page extends Base {
             $this->shortUrlPath = $this->getUrlPath();
         }
         return $this->shortUrlPath;
+    }
+    
+    public function getShortUrl()
+    {
+        return $this->app['pt.request']->getUriForPath($this->getShortUrlPath());
     }
     
     public function isIndex()
@@ -83,7 +88,8 @@ Class Page extends Base {
         return array(
             'id'        => $this->getId(),
             'depth'     => $this->getDepth(),
-            'shortUrlPath'  => $this->shortUrlPath(),
+            'shortUrlPath'  => $this->getShortUrlPath(),
+            'shortUrl'  => $this->getShortUrl(),
             'niceName'  => $this->getNiceName(),
             'title'     => $this->getTitle(),
             'name'      => $this->getCleanName(),

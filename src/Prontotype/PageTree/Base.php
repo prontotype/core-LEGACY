@@ -79,6 +79,11 @@ Class Base implements \RecursiveIterator
         return $this->urlPath;
     }
     
+    public function getUrl()
+    {
+        return $this->app['pt.request']->getUriForPath($this->getUnPrefixedUrlPath());
+    }
+    
     public function getUnPrefixedUrlPath()
     {
         return $this->unPrefixUrl($this->getUrlPath());
