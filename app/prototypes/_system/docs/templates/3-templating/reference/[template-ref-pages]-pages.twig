@@ -34,10 +34,17 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
     </div>
     
     <div class="method">
+        <h3 class="method-title" id="pages-geturlpathbyid">pt.pages.<span class="name">getUrlPathById(<span class="var">id</span>)</span></h3>
+        <p>A shortcut method to return the root-relative URL (no domain, as a string) of the page specified by the ID, or <code>#</code> if it's not found.</p>
+        {% raw %}<pre class="brush: twig">{{ pt.pages.getUrlById('hamsters') }} <!-- /animals/hamsters --></pre>{% endraw %}
+        <p class="hint">This or the corresponding method<strong>.getUrlById()</strong> can be useful for linking to other pages within the prototype in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
+    </div>
+    
+    <div class="method">
         <h3 class="method-title" id="pages-geturlbyid">pt.pages.<span class="name">getUrlById(<span class="var">id</span>)</span></h3>
-        <p>A shortcut method to return the URL (as a string) of the page specified by the ID, or <code>#</code> if it's not found.</p>
-        {% raw %}<pre class="brush: twig"><a href="{{ pt.pages.getUrlById('hamsters') }}">All about Hamsters</a></pre>{% endraw %}
-        <p class="hint">This can be useful for linking to other pages within the prototype in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
+        <p>A shortcut method to return the full URL (as a string) of the page specified by the ID, or <code>#</code> if it's not found.</p>
+        {% raw %}<pre class="brush: twig">{{ pt.pages.getUrlById('hamsters') }} <!-- http://example.com/animals/hamsters --></pre>{% endraw %}
+        <p class="hint">This or the corresponding method<strong>.getUrlPathById()</strong> can be useful for linking to other pages within the prototype in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
     </div>
     
     <div class="method">
@@ -81,10 +88,30 @@ In the following examples we'll assume that the `myPage` variable has been first
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getid">myPage.<span class="name">getShortUrlPath()</span></h3>
-        <p>Return the <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL path</a> of the page.</p>
-        {% raw %}<pre class="brush: twig">Shortlink to this page: http://example.com{{ myPage.getShortUrlPath() }}</pre>{% endraw %}
+        <h3 class="method-title" id="page-getid">myPage.<span class="name">getUrlPath()</span></h3>
+        <p>Return the <strong>URL path</strong> of the page (i.e. root relative URL, without the domain part).</p>
+        {% raw %}<pre class="brush: twig">{{ myPage.getUrlPath() }} <!-- /animals/hamsters --></pre>{% endraw %}
     </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="page-getid">myPage.<span class="name">getUrl()</span></h3>
+        <p>Return the <strong>full URL</strong> of the page (including domain).</p>
+        {% raw %}<pre class="brush: twig">{{ myPage.getUrl() }}  <!-- http://example.com/animals/hamsters --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="page-getid">myPage.<span class="name">getShortUrlPath()</span></h3>
+        <p>Return the <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL path</a> of the page (i.e. root relative URL, without the domain part).</p>
+        {% raw %}<pre class="brush: twig">{{ myPage.getShortUrlPath() }} <!-- /_p/hmstrs --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="page-getid">myPage.<span class="name">getShortUrl()</span></h3>
+        <p>Return the full <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL</a> of the page (including domain).</p>
+        {% raw %}<pre class="brush: twig">{{ myPage.getShortUrl() }} <!-- http://example.com/_p/hmstrs --></pre>{% endraw %}
+    </div>
+    
+    
     
 </div>
 

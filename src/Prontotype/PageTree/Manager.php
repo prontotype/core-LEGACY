@@ -129,6 +129,14 @@ Class Manager {
     public function getUrlById($id)
     {
         if ( $page = $this->getById($id) ) {
+            return $page->getUrl();
+        }
+        return '#';
+    }
+    
+    public function getUrlPathById($id)
+    {
+        if ( $page = $this->getById($id) ) {
             return $page->getUrlPath();
         }
         return '#';
