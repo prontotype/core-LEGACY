@@ -16,7 +16,7 @@ class RedirectController implements ControllerProviderInterface
         
         $controllers->get('/{page_id}', function ( $page_id ) use ( $app ) {
                     
-            if ( ! $page = $app['pt.pagetree']->getById($page_id) ) {
+            if ( ! $page = $app['pt.pages']->getById($page_id) ) {
                 $app->abort(404);
             }
             return $app->redirect($page->getUrlPath(), 301);

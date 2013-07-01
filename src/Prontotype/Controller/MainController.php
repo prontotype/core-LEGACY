@@ -16,7 +16,7 @@ class MainController implements ControllerProviderInterface
         
         $controllers->match('/{route}', function ( $route ) use ( $app ) {
             
-            if ( ! $page = $app['pt.pagetree']->getByRoute($route) ) {
+            if ( ! $page = $app['pt.pages']->getByRoute($route) ) {
                 $app->abort(404);
             }
                             

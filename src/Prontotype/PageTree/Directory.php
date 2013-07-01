@@ -33,6 +33,16 @@ Class Directory extends Base {
         $this->items = $items;
     }
     
+    public function hasSubPages()
+    {
+        return false;
+    }
+    
+    public function getSubPages()
+    {
+        return array();
+    }
+    
     public function toArray($siblings = null)
     {
         $subPages = array();

@@ -130,6 +130,11 @@ Class Base implements \RecursiveIterator
         return $this->cleanName;
     }
     
+    public function isPage()
+    {
+        return $this instanceof Page;
+    }
+    
     protected function prefixUrl($url)
     {
         $prefix = '';

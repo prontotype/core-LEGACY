@@ -8,7 +8,7 @@ Class Navigation extends Base {
     
     protected $configKey = 'navigation';
 
-    public function pageTree($opts = array(), $tree = null, $level = 0)
+    public function pageTree($opts = array(), $parentPage = null, $includeParent = true, $level = 0)
     {
         $opts = $this->mergeOpts(array(
             'type'         => 'ul',
@@ -18,14 +18,22 @@ Class Navigation extends Base {
             'parentClass'  => 'is-parent',
         ), $opts);
         
-        if ( $tree === null ) {
-            $tree = $this->app['pt.pagetree']->getAll();
+        if ( $parentPage === null ) {
+            // get the homepage
+            $parentPage = $this->app['pt.pages']->getByUrlPath('/' . $this->app['pt.prototype.path']);
         }
-        if ( ! count($tree) ) {
+        
+        if ( ! $parentPage->hasSubPages() && ! $includeParent ) {
             return null;
         }
+        if ( $includeParent ) {
+            $pages = array($parentPage);
+        } else {
+            $pages = $parentPage->getSubPages();
+        }
+    
         return $this->renderTemplate('page-tree.twig', array(
-            'pages' => $tree,
+            'pages' => $pages,
             'level' => $level,
             'opts' => $opts
         ));

@@ -23,7 +23,7 @@ Class Application {
     
     protected $sharedServices = array(
         'pt.request'       => '\Prontotype\Request',
-        'pt.pagetree'      => '\Prontotype\PageTree\Manager',
+        'pt.pages'      => '\Prontotype\PageTree\Manager',
         'pt.store'         => '\Prontotype\Store',
         'pt.auth'          => '\Prontotype\Auth',
         'pt.notifications' => '\Prontotype\Notifications',
