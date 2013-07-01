@@ -150,15 +150,15 @@ Class Manager {
         return $this->treeArray;
     }
     
-    public function getChildrenById($id)
+    public function getSubPagesById($id)
     {
         if ( $page = $this->getById($id) ) {
-            return $this->getChildrenByUrlPath($page->getUrlPath());
+            return $this->getSubPagesByUrlPath($page->getUrlPath());
         }
         return null;
     }
     
-    public function getChildrenByUrlPath($urlPath)
+    public function getSubPagesByUrlPath($urlPath)
     {
         if ( $urlPath == '/' || $urlPath == '/index.php/' ) {
             $data = $this->getAll();
