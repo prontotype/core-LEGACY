@@ -199,7 +199,7 @@ Class Base implements \RecursiveIterator
         if ( $name ) {
             $this->niceName = $name;
         } else {
-            $this->niceName = $this->titleCase(str_replace(array('-','_'), ' ', $cleanName));
+            $this->niceName = $this->app['pt.utils']->titleCase(str_replace(array('-','_'), ' ', $cleanName));
         }
     }
 
@@ -243,19 +243,6 @@ Class Base implements \RecursiveIterator
 
     public function key() {
         return $this->position;
-    }
-    
-    public function titleCase($title)
-    { 
-        $smallwordsarray = array('of','a','the','and','an','or','nor','but','is','if','then','else','when','at','from','by','on','off','for','in','out','over','to','into','with');
-        $words = explode(' ', $title); 
-        foreach ($words as $key => $word) { 
-            if ($key == 0 or !in_array($word, $smallwordsarray)) {
-                $words[$key] = ucwords(strtolower($word)); 
-            }
-        }
-        $newtitle = implode(' ', $words); 
-        return $newtitle; 
     }
     
     // public function __get($name)

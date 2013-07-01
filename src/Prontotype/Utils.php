@@ -59,6 +59,19 @@ Class Utils {
         return file_exists($this->app['pt.prototype.paths.templates'] . '/' . $templatePath);
     }
     
+    public function titleCase($title)
+    { 
+        $smallwordsarray = array('of','a','the','and','an','or','nor','but','is','if','then','else','when','at','from','by','on','off','for','in','out','over','to','into','with');
+        $words = explode(' ', $title); 
+        foreach ($words as $key => $word) { 
+            if ($key == 0 or !in_array($word, $smallwordsarray)) {
+                $words[$key] = ucwords(strtolower($word)); 
+            }
+        }
+        $newtitle = implode(' ', $words); 
+        return $newtitle; 
+    }
+    
     public function forcefileContents($path, $contents)
     {
         $file = basename($path);
