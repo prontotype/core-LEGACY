@@ -88,27 +88,33 @@ In the following examples we'll assume that the `myPage` variable has been first
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getid">myPage.<span class="name">getUrlPath()</span></h3>
+        <h3 class="method-title" id="page-geturlpath">myPage.<span class="name">getUrlPath()</span></h3>
         <p>Return the <strong>URL path</strong> of the page (i.e. root relative URL, without the domain part).</p>
         {% raw %}<pre class="brush: twig">{{ myPage.getUrlPath() }} <!-- /animals/hamsters --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getid">myPage.<span class="name">getUrl()</span></h3>
+        <h3 class="method-title" id="page-geturl">myPage.<span class="name">getUrl()</span></h3>
         <p>Return the <strong>full URL</strong> of the page (including domain).</p>
         {% raw %}<pre class="brush: twig">{{ myPage.getUrl() }}  <!-- http://example.com/animals/hamsters --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getid">myPage.<span class="name">getShortUrlPath()</span></h3>
+        <h3 class="method-title" id="page-getshorturlpath">myPage.<span class="name">getShortUrlPath()</span></h3>
         <p>Return the <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL path</a> of the page (i.e. root relative URL, without the domain part).</p>
         {% raw %}<pre class="brush: twig">{{ myPage.getShortUrlPath() }} <!-- /_p/hmstrs --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getid">myPage.<span class="name">getShortUrl()</span></h3>
+        <h3 class="method-title" id="page-getshorturl">myPage.<span class="name">getShortUrl()</span></h3>
         <p>Return the full <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL</a> of the page (including domain).</p>
         {% raw %}<pre class="brush: twig">{{ myPage.getShortUrl() }} <!-- http://example.com/_p/hmstrs --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="page-gettemplatepath">myPage.<span class="name">getTemplatePath()</span></h3>
+        <p>Return the template-directory relative filesystem path for the page.</p>
+        {% raw %}<pre class="brush: twig">{{ myPage.getTemplatePath() }} <!-- /2-animals/3-[hmstrs]-hamsters.twig --></pre>{% endraw %}
     </div>
     
 </div>

@@ -101,7 +101,7 @@ Class Utils {
         }
     }
     
-    function zipDir($source, $destination)
+    public function zipDir($source, $destination)
     {
         if (!extension_loaded('zip') || !file_exists($source)) {
             return false;
