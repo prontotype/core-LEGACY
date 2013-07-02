@@ -80,6 +80,9 @@
               </div>
           
               <div class="main">
+                  
+                  {{ pt.snippets.navigation.breadcrumb() }}
+                  
                   <div class="pt-content-block"> 
                       {% block content %}
                       {{ content|markdown|geshiPre }}
