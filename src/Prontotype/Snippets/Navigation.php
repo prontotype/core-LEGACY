@@ -8,34 +8,44 @@ Class Navigation extends Base {
     
     protected $configKey = 'navigation';
 
-    public function pageTree($opts = array(), $parentPage = null, $includeParent = true, $level = 0)
+    public function pageTree($startPage = null, $opts = array(), $attrs = array(), $level = 0)
     {
+        if ( ! $opts ) {
+            $opts = array();
+        }
+        
         $opts = $this->mergeOpts(array(
+            'includeParent' => true,
             'type'         => 'ul',
-            'attrs'        => array(),
             'maxDepth'     => null,
             'currentClass' => 'is-current',
             'parentClass'  => 'is-parent',
         ), $opts);
         
-        if ( $parentPage === null ) {
+        if ( $startPage === null ) {
             // get the homepage
-            $parentPage = $this->app['pt.pages']->getByUrlPath('/' . $this->app['pt.prototype.path']);
+            $startPage = $this->app['pt.pages']->getByUrlPath('/' . $this->app['pt.prototype.path']);
+        } elseif ( is_string($startPage) ) {
+            // start page is an ID?
+            if ( ! $startPage = $this->app['pt.pages']->getById($startPage) ) {
+                return null;
+            }
         }
         
-        if ( ! $parentPage->hasSubPages() && ! $includeParent ) {
+        if ( ! $startPage->hasSubPages() && ! $opts['includeParent'] ) {
             return null;
         }
-        if ( $includeParent ) {
-            $pages = array($parentPage);
+        if ( $opts['includeParent'] ) {
+            $pages = array($startPage);
         } else {
-            $pages = $parentPage->getSubPages();
+            $pages = $startPage->getSubPages();
         }
     
         return $this->renderTemplate('page-tree.twig', array(
             'pages' => $pages,
             'level' => $level,
-            'opts' => $opts
+            'opts' => $opts,
+            'attrs' => $attrs
         ));
     }
     

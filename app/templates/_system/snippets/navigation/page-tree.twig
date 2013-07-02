@@ -1,5 +1,5 @@
 {% if level == 0 %}
-<{{ opts.type }}{% for attr, val in opts.attrs %} {{ attr }}="{{ val }}"{% endfor %}>
+<{{ opts.type }}{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 {% else %}
 <{{ opts.type }}>
 {% endif %}
@@ -15,7 +15,7 @@
         {% if item.hasSubPages() and (not opts.maxDepth or opts.maxDepth > level + 1) %}
         {% for page in item.getSubPages() %}
         {% if page.isPage() %}
-        {{ pt.snippets.navigation.pageTree(opts, page, true, level + 1 ) }}
+        {{ pt.snippets.navigation.pageTree(page, attrs, opts, level + 1) }}
         {% else %}
         {{ page.getTitle() }}
         {% endif %}
