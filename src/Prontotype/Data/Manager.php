@@ -43,16 +43,16 @@ Class Manager {
         return $paths;
     }
     
-    public function get($location, $replacements = null, $dataPath = null, $type = null)
+    public function get($location, $replacements = null, $type = null, $dataPath = null)
     {
         if ( strpos($location, 'http') !== 0 ) {
-            return $this->load($location, $replacements, $dataPath, $type);
+            return $this->load($location, $replacements, $type, $dataPath);
         } else {
-            return $this->fetch($location, $replacements, $dataPath, $type);
+            return $this->fetch($location, $replacements, $type, $dataPath);
         }
     }
     
-    public function load($filePath, $replacements = null, $dataPath = null, $type = null)
+    public function load($filePath, $replacements = null, $type = null, $dataPath = null)
     {
         if ( isset($this->parsed[$filePath]) ) {
             $data = $this->parsed[$filePath];
@@ -78,7 +78,7 @@ Class Manager {
         return $this->find($data, $dataPath);
     }
     
-    public function fetch($url, $replacements = null, $dataPath = null, $type = null)
+    public function fetch($url, $replacements = null, $type = null, $dataPath = null)
     {
         if ( isset($this->parsed[$url]) ) {
             $data = $this->parsed[$url];

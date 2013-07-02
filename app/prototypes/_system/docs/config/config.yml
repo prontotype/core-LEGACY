@@ -12,5 +12,6 @@ pages:
     '[pages-clean-urls]' : "Enabling 'clean' URLs"
     '[data-external]' : Using external sources
     '[data-local]' : Local data files
+    '[data-formats]' : Data formats
     '[data-fake]' : "Generating 'fake' data"
     

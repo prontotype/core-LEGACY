@@ -13,13 +13,21 @@ You can access the [data]({{ pt.pages.getUrlById('data') }}) methods in your pro
 
 <div class="method-ref">
     
-    {# <div class="method">
-        <h3 class="method-title" id="pages-getcurrent">pt.pages.<span class="name">getCurrent()</span></h3>
-        <p>Returns a {{ pageobjref }} of the current page, or <code>null</code> if it's not found.</p>
-        {% raw %}<pre class="brush: twig">{% set thisPage = pt.pages.getCurrent() %}</pre>{% endraw %}
-    </div> #}
-    
+    <div class="method">
+        <h3 class="method-title" id="pages-getcurrent">pt.data.<span class="name">get(location, [replacements, [format]])</span></h3>
+        <p>Fetch, parse and return the contents of a data file, optionally supplying variables for template parsing.</p>
+        <h4 class="sub-title">Variables:</h4>
+        <ul class="variables">
+            <li><code>location</code>: <a href="{{ pt.pages.getUrlById('data-local') }}">Data path</a> or <a href="{{ pt.pages.getUrlById('data-external') }}">external URL</a> of data source</li>
+            <li><code>replacements</code>: <em>(optional)</em> Array of template variables</li>
+            <li><code>format</code>: <em>(optional)</em> The <a href="{{ pt.pages.getUrlById('data-formats') }}">format</a> of the file. This will be guessed by the system if not explicitly set here.</li>
+        </ul>
+{% raw %}<pre class="brush: twig">{# Fetch a list of kangaroos from a local data file #}
+{% set kangaroos = pt.data.get('animals/kangaroos.json') %}
 
+{# Fetch a list of monkeys from an external source #}
+{% set monkeys = pt.data.get('http://api.animal-db.com/monkeys') %}</pre>{% endraw %}
+    </div>
     
 </div>
 
