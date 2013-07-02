@@ -4,6 +4,18 @@
 
 # Short URLs
 
-Documentation coming soon.
+Any pages that you have [assigned an ID]({{ pt.pages.getUrlById('pages-order-id') }}) to can be linked to via a short URL. The short URLs will take the following form:
+
+<pre>http://example.com/<shorturl_trigger>/<page_id></pre>
+
+Where <shorturl_trigger> is as defined in your [config file]({{ pt.pages.getUrlById('config') }}) (defaults to `_p`) and <page_id> is the ID you've given to your page.
+
+So (using the default configuration settings) an example short url for a page would be:
+
+<pre>/structure/pages/about/[comp]-company.twig  ==>  http://example.com/index.php/_p/comp</pre>
+
+Sharing these short links as opposed to the full page URLs is useful because even if you move the page around while the prototype is being constructed, <strong>the short URL will always route to the correct page</strong>. And obviously the links are shorter and so (probably!) easier to remember.
+
+Don't forget your URLs will be even shorter if you use an .htaccess file to [enable clean URLs]({{ pt.pages.getUrlById('pages-clean-urls') }}) and remave the index.php from the URL.
 
 {% endset %}
