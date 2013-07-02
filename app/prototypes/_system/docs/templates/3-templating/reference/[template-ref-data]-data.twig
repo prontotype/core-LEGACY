@@ -42,7 +42,6 @@ You can access the [data]({{ pt.pages.getUrlById('data') }}) methods in your pro
             <p>Returns a <a href="{{ pt.pages.getUrlById('data-fake') }}">faker instance</a>, optionally seeded with <code>seed</code>.</p>            
         </div>
 {% raw %}<pre class="brush: twig">{% set faker = pt.data.faker() %}
-
 Name: {{ faker.firstName }} {{ faker.lastName }}
 Address: {{ faker.address }}
 Tel: {{ faker.phoneNumber }}</pre>{% endraw %}
