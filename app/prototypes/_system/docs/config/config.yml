@@ -10,4 +10,7 @@ pages:
     '[pages-routing]' : Routing URLs to pages
     '[pages-titles]' : Page titles
     '[pages-clean-urls]' : "Enabling 'clean' URLs"
+    '[data-external]' : Using external sources
+    '[data-local]' : Local data files
+    '[data-fake]' : "Generating 'fake' data"
     

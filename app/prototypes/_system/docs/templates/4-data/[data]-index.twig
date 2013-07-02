@@ -1,0 +1,19 @@
+{% extends "_layouts/skeleton.twig" %}
+
+{% set content %}
+
+# Working with data
+
+Prontotype provides a simple but powerful set of tools for including and working with data in your prototypes.
+
+It's possible to parse and use data in [YAML, JSON, XML, CSV and Markdown]({{ pt.pages.getUrlById('data-formats') }}) formats. You can either use [local data files]({{ pt.pages.getUrlById('data-local') }}) or retrieve data from [external sources]({{ pt.pages.getUrlById('data-external') }}) via HTTP requests.
+
+Prontotype also provides a simple way of [auto-generating 'fake' data]({{ pt.pages.getUrlById('data-fake') }}) to help populate your prototype quickly and easily.
+
+Lastly, all data files are also parsed through the [Twig template parser]({{ pt.pages.getUrlById('templating-twig') }}) so you can use loops, logic, includes and so on within them, if required. 
+
+## Accessing data within your templates
+
+There are a number of methods available to access your data from you templates. Full details of these are covered in the [data templating reference]({{ pt.pages.getUrlById('template-ref-data') }}).
+
+{% endset %}

@@ -1,0 +1,26 @@
+{% extends "_layouts/skeleton.twig" %}
+
+{% set pageobjref = '<a href="#page-objects">page object representation</a>' %}
+{% set pagehieref = '<a href="#page-hierarchies">page hierarchy</a>' %}
+
+{% set content %}
+
+# Data template reference
+
+You can access the [data]({{ pt.pages.getUrlById('data') }}) methods in your prototype via the `pt.data` variable.
+
+## Available methods
+
+<div class="method-ref">
+    
+    {# <div class="method">
+        <h3 class="method-title" id="pages-getcurrent">pt.pages.<span class="name">getCurrent()</span></h3>
+        <p>Returns a {{ pageobjref }} of the current page, or <code>null</code> if it's not found.</p>
+        {% raw %}<pre class="brush: twig">{% set thisPage = pt.pages.getCurrent() %}</pre>{% endraw %}
+    </div> #}
+    
+
+    
+</div>
+
+{% endset %}
