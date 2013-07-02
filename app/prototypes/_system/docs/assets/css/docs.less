@@ -1,3 +1,5 @@
+@linkcolor: #0562a8;
+
 /* Basics */
 
 * {
@@ -16,7 +18,7 @@ body {
     padding-bottom: 50px;
 }
 a {
-    color: #0562a8;
+    color: @linkcolor;
 }
 h1 {
     font-size: 23px;
@@ -224,6 +226,32 @@ th {
         margin-bottom: 8px;
         padding-bottom: 3px;
     }
+    .method-links {
+        list-style: none;
+        margin: 0 0 20px 0;
+        font-family: monospace;
+        font-size: 15px;
+        li a {
+            color: #888;
+            text-decoration: none;
+        }
+        li a:hover {
+            text-decoration: underline;
+        }
+        li .name {
+            color: #333;
+            font-weight: bold;
+        }
+        li a:before {
+            content: "→";
+            font-family: sans-serif;
+            display: inline-block;
+            margin-right: 5px;
+            color: #999;
+            position: relative;
+            top: 1px;
+        }
+    }
     .method p {
         font-size: 16px;
         color: #666;
@@ -231,6 +259,22 @@ th {
     }
     .method ul {
         margin-left: 0;
+    }
+    .method .variables em {
+        color: #AAA;
+    }
+    .method-desc {
+        background: #f0f7f9;
+        padding: 10px;
+        border-top: 1px solid #d6ecf2;
+        border-bottom: 1px solid #d6ecf2;
+        padding: 5px 10px;
+        p {
+            color: #1f859b;
+            &:last-child {
+                margin-bottom: 0
+            }        
+        }
     }
     .method .hint {
         color: #999;

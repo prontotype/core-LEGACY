@@ -19,7 +19,7 @@ Class UserManager {
     public function __construct($app)
     {
         $this->app = $app;        
-        $this->users = $this->app['pt.data']->load('users') ? $this->app['pt.data']->load('users') : array();
+        $this->users = $this->app['pt.data']->get('users.yml') ? $this->app['pt.data']->get('users.yml') : array();
         $this->identifyBy = $this->app['pt.config']->get('user.identify');
         $authConf = $this->app['pt.config']->get('user.auth');
         $this->authBy = ! empty($authConf) ? $authConf : null;

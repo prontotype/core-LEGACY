@@ -14,21 +14,40 @@ You can access the [data]({{ pt.pages.getUrlById('data') }}) methods in your pro
 <div class="method-ref">
     
     <div class="method">
-        <h3 class="method-title" id="pages-getcurrent">pt.data.<span class="name">get(location, [replacements, [format]])</span></h3>
-        <p>Fetch, parse and return the contents of a data file, optionally supplying variables for template parsing.</p>
-        <h4 class="sub-title">Variables:</h4>
+        <h3 class="method-title" id="data-get">pt.data.<span class="name">get(location, [templateVars, [format]])</span></h3>
         <ul class="variables">
             <li><code>location</code>: <a href="{{ pt.pages.getUrlById('data-local') }}">Data path</a> or <a href="{{ pt.pages.getUrlById('data-external') }}">external URL</a> of data source</li>
-            <li><code>replacements</code>: <em>(optional)</em> Array of template variables</li>
+            <li><code>templateVars</code>: <em>(optional)</em> Array of template variables for use in the data file</li>
             <li><code>format</code>: <em>(optional)</em> The <a href="{{ pt.pages.getUrlById('data-formats') }}">format</a> of the file. This will be guessed by the system if not explicitly set here.</li>
         </ul>
+        <div class="method-desc">
+            <p>Fetch, parse and return the contents of a data file, optionally supplying variables for template parsing.</p>            
+        </div>
 {% raw %}<pre class="brush: twig">{# Fetch a list of kangaroos from a local data file #}
 {% set kangaroos = pt.data.get('animals/kangaroos.json') %}
 
 {# Fetch a list of monkeys from an external source #}
-{% set monkeys = pt.data.get('http://api.animal-db.com/monkeys') %}</pre>{% endraw %}
+{% set monkeys = pt.data.get('http://api.animalz.com/monkeys') %}
+
+{# Fetch a list of otters from a local data file, supplying some variables #}
+{% set otters = pt.data.get('animals/otters.yml', {"includeBreedInfo": false, "maxLogsPerOtter": 4} ) %}
+
+{# Fetch a list of pigs from an external source, forcing the format parsing type to xml #}
+{% set pigs = pt.data.get('http://api.animalz.com/pigs', null, 'xml') %}</pre>{% endraw %}
     </div>
     
+    <div class="method">
+        <h3 class="method-title" id="data-fake">pt.data.<span class="name">faker([seed])</span></h3>
+        <div class="method-desc">
+            <p>Returns a <a href="{{ pt.pages.getUrlById('data-fake') }}">faker instance</a>, optionally seeded with <code>seed</code>.</p>            
+        </div>
+{% raw %}<pre class="brush: twig">{% set faker = pt.data.faker() %}
+
+Name: {{ faker.firstName }} {{ faker.lastName }}
+Address: {{ faker.address }}
+Tel: {{ faker.phoneNumber }}</pre>{% endraw %}
+        <p class="hint">For more information on generating fake data in templates (including the use of seeds), see the documentation on <a href="{{ pt.pages.getUrlById('data-fake') }}">auto-generating data</a>.</p>
+    </div>
 </div>
 
 {% endset %}

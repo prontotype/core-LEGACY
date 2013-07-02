@@ -52,7 +52,19 @@ Class Manager {
         }
     }
     
-    public function load($filePath, $replacements = null, $type = null, $dataPath = null)
+    public function faker($seed = null)
+    {
+        if ($seed === null) {
+            return $this->defaultFaker;
+        } elseif ( isset($this->seededFakers[$seed]) ) {
+            return $this->seededFakers[$seed];
+        }
+        $faker = $this->createFaker($seed);
+        $this->seededFakers[$seed] = $faker;
+        return $this->seededFakers[$seed];
+    }
+    
+    protected function load($filePath, $replacements = null, $type = null, $dataPath = null)
     {
         if ( isset($this->parsed[$filePath]) ) {
             $data = $this->parsed[$filePath];
@@ -78,7 +90,7 @@ Class Manager {
         return $this->find($data, $dataPath);
     }
     
-    public function fetch($url, $replacements = null, $type = null, $dataPath = null)
+    protected function fetch($url, $replacements = null, $type = null, $dataPath = null)
     {
         if ( isset($this->parsed[$url]) ) {
             $data = $this->parsed[$url];
@@ -95,18 +107,6 @@ Class Manager {
             $this->parsed[$url] = $data;
         }
         return $this->find($data, $dataPath);
-    }
-    
-    public function fake($seed = null)
-    {
-        if ($seed === null) {
-            return $this->defaultFaker;
-        } elseif ( isset($this->seededFakers[$seed]) ) {
-            return $this->seededFakers[$seed];
-        }
-        $faker = $this->createFaker($seed);
-        $this->seededFakers[$seed] = $faker;
-        return $this->seededFakers[$seed];
     }
         
     public function registerParser(Parser $parser)
