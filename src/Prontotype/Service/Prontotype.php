@@ -85,9 +85,7 @@ Class Prontotype implements ServiceProviderInterface {
                 new XmlParser($app),
                 new CsvParser($app),
                 new MarkdownParser($app)
-            ), array(
-                $app['pt.prototype.paths.data']
-            ), $app['pt.app.paths.data']);
+            ));
         });
         
         $app['pt.assets'] = $app->share(function($app) {
@@ -129,6 +127,35 @@ Class Prontotype implements ServiceProviderInterface {
         $app['twig.stringloader'] = $app->share(function($app) {
             $loader = new Twig_Loader_String();
             return new Twig_Environment($loader);
+        });
+        
+        $app['twig.dataloader'] = $app->share(function ($app) {
+            
+            $paths = array();
+            foreach( array(
+                $app['pt.prototype.paths.data'],
+                $app['pt.app.paths.data']
+            ) as $path ) {
+                if ( is_dir($path) ) {
+                    $paths[] = $path;
+                }
+            }
+            $twig = new \Twig_Environment(
+                new \Twig_Loader_Filesystem($paths),
+                array(
+                    'strict_variables'  => false,
+                    'cache'             => $app['pt.prototype.paths.cache.data'],
+                    'auto_reload'       => true,
+                    'debug'             => $app['pt.config']->get('debug'),
+                    'autoescape'        => false
+                )
+            );
+            $twig->addGlobal('app', $app);
+            $twig->addExtension(new \Silex\Provider\TwigCoreExtension());
+            if ( $app['pt.config']->get('debug') ) {
+                $twig->addExtension(new Twig_Extension_Debug());  
+            }
+            return $twig;
         });
         
         $app->register(new \SilexMarkdown\MarkdownExtension(), array(

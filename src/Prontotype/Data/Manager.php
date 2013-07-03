@@ -18,11 +18,9 @@ Class Manager {
     
     protected $seededFakers = array();
 
-    public function __construct($app, $parsers = array(), $loadPaths = array(), $fallbackPath = null)
+    public function __construct($app, $parsers = array())
     {
         $this->app = $app;
-        $this->loadPaths = $loadPaths;
-        $this->fallbackPath = $fallbackPath;
         $this->defaultFaker = $this->createFaker();
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
@@ -66,24 +64,21 @@ Class Manager {
     
     protected function load($filePath, $replacements = null, $type = null, $dataPath = null)
     {
+        if ( ! $replacements ) {
+            $replacements = array();
+        }
         if ( isset($this->parsed[$filePath]) ) {
             $data = $this->parsed[$filePath];
         } else {
-            $filePath = $this->findDataFile($filePath);          
-            if ( file_exists($filePath) && ! is_dir($filePath) ) {
+            try {
                 $parts = pathinfo($filePath);
                 $extension = ! $type ? $parts['extension'] : $type;
-                $contents = file_get_contents($filePath);
-                if ( is_array($replacements) ) {
-                    $contents = $this->app['twig.stringloader']->render($contents, $replacements);
-                }
-                try {
-                    $data = $this->parse($contents, $extension);
-                } catch ( \Exception $e ) {
-                    throw new \Exception(sprintf('Error parsing data file %s', $filePath));
-                }
-            } else {
-                $data = null;
+                $contents = $this->app['twig.dataloader']->render($filePath, $replacements);
+                $data = $this->parse($contents, $extension);
+            } catch( \InvalidArgumentException $e ) {
+                return null;
+            } catch ( \Exception $e ) {
+                throw new \Exception(sprintf('Error parsing data file %s', $filePath));
             }
             $this->parsed[$filePath] = $data;
         }
@@ -186,32 +181,6 @@ Class Manager {
             return $old . $new;
         }
         throw new \Exception('Could not merge data');
-    }
-    
-    protected function findDataFile($filePath)
-    {
-        $loadPaths = $this->getLoadPaths();
-        foreach($loadPaths as $loadPath) {            
-            $fullPath = $loadPath . '/' . strtolower($filePath);
-            if ( file_exists( $fullPath ) ) {
-                break;
-            }
-        }
-        
-        if ( ! file_exists($fullPath) ) {
-            foreach($this->loadPaths as $loadPath) {
-                if ( is_dir($loadPath) ) {
-                    $fullPath = $loadPath . '/' . strtolower($filePath);
-                    $matches = glob( $fullPath . '.*' );
-                    if ( count($matches) ) {
-                        $fullPath = $matches[0];
-                        return $fullPath;
-                    }                    
-                }
-            }
-        }
-        
-        return $fullPath;
     }
     
     protected function getExtensionFromMimeType($mime)
