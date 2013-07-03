@@ -179,6 +179,35 @@ li code {
     }
 }
 
+/* Breadcrumb */
+
+.breadcrumb {
+    font-size: 0;
+    list-style: none;
+    margin: 0 0 12px 0;
+    color: #888;
+    li {
+        font-size: 14px;
+        display: inline-block;
+        &:after {
+            content: "→";
+            display: inline-block;
+            margin-right: 5px;
+            color: #999;
+            position: relative;
+            top: 1px;
+        }
+        &:last-child {
+            &:after {
+                display: none;
+            }   
+        }
+    }
+    a {
+        color: #777;
+    }
+}
+
 /* notes */
 
 .note {
