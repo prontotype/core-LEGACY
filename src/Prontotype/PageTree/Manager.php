@@ -18,6 +18,11 @@ Class Manager {
         $this->tree = new Directory(new \SPLFileInfo($app['pt.prototype.paths.templates']), $app);
     }
     
+    public function getHomeUrlPath()
+    {
+        return empty($this->app['pt.prototype.path']) ? '/' : $this->app['pt.prototype.path'];
+    }
+    
     public function getCurrent()
     {
         if ( ! $this->current ) {
@@ -145,14 +150,6 @@ Class Manager {
         return '#';
     }
     
-    public function getAll()
-    {
-        if ( $this->treeArray === null ) {
-            $this->treeArray = array($this->tree->toArray());
-        }
-        return $this->treeArray;
-    }
-    
     public function getSubPagesById($id)
     {
         if ( $page = $this->getById($id) ) {
@@ -163,7 +160,7 @@ Class Manager {
     
     public function getSubPagesByUrlPath($urlPath)
     {
-        if ( $urlPath == '/' || $urlPath == '/index.php/' || str_replace('/index.php', '', rtrim($urlPath, '/')) == $this->app['pt.prototype.path'] ) {
+        if ( $urlPath == '/' || $urlPath == '/index.php/' || str_replace('/index.php', '', rtrim($urlPath, '/')) == $this->getHomeUrlPath() ) {
             $data = $this->getAll();
             return isset($data[0]['subPages']) ? $data[0]['subPages'] : null;
         }
@@ -175,6 +172,14 @@ Class Manager {
             }
         }
         return array();
+    }
+    
+    public function getAll()
+    {
+        if ( $this->treeArray === null ) {
+            $this->treeArray = array($this->tree->toArray());
+        }
+        return $this->treeArray;
     }
     
     protected function getRecursivePagesIterator()

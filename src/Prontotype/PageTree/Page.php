@@ -57,8 +57,7 @@ Class Page extends Base {
     
     public function isHome()
     {
-        $root = empty($this->app['pt.prototype.path']) ? '/' : $this->app['pt.prototype.path'];
-        if ( $this->matchesUrlPath($root) ) {
+        if ( $this->matchesUrlPath($this->app['pt.pages']->getHomeUrlPath()) ) {
             return true;
         }
     }
