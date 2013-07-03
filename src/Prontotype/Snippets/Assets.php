@@ -11,7 +11,7 @@ Class Assets extends Base {
     public function stylesheet($href, $media = 'all', $attrs = array(), $rawPath = false)
     {
         if ( ! $rawPath ) {
-            $href = $this->app['pt.assets_helper']->getUrl($href);
+            $href = $this->app['pt.assets_helper']->getUrlPath($href);
         }
         
         $attrs = $this->mergeOpts(array(
@@ -28,7 +28,7 @@ Class Assets extends Base {
     public function image($src, $attrs = array(), $rawPath = false)
     {
         if ( ! $rawPath ) {
-            $src = $this->app['pt.assets_helper']->getUrl($src);
+            $src = $this->app['pt.assets_helper']->getUrlPath($src);
         }
         
         $attrs = $this->mergeOpts(array(

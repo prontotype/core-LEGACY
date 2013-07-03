@@ -17,12 +17,16 @@ Class Helper {
     
     public function getUrl($path)
     {
+        return $this->app['pt.request']->getUriForPath($this->getUrl($path));
+    }
+    
+    public function getUrlPath($path)
+    {
         $root = $this->app['pt.prototype.path'] . '/';     
         $path = $root . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
         if ( ! $this->app['pt.env.clean_urls'] ) {
             $path = '/index.php' . $path;
-        }
-        
+        }   
         return $path;
     }
     
