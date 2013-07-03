@@ -72,11 +72,16 @@ Class Manager {
         } else {
             try {
                 $parts = pathinfo($filePath);
-                $extension = ! $type ? $parts['extension'] : $type;
+                $extension = ! $type ? @$parts['extension'] : $type;
+                if ( ! $extension ) {
+                    return null;
+                }
                 $contents = $this->app['twig.dataloader']->render($filePath, $replacements);
-                $data = $this->parse($contents, $extension);
-            } catch( \InvalidArgumentException $e ) {
+            } catch ( \Exception $e ) {
                 return null;
+            }
+            try {
+                $data = $this->parse($contents, $extension);
             } catch ( \Exception $e ) {
                 throw new \Exception(sprintf('Error parsing data file %s', $filePath));
             }
