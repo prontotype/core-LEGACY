@@ -1,9 +1,21 @@
 <{{ opts.type }}{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 {% for page in pages %}
 {% if not loop.last %}
-    <li><a href="{{ page.getUrl() }}">{{ page.getTitle() }}</a></li>
+    <li>
+        {% if page.isPage() %}
+        <a href="{{ page.getUrl() }}">{{ page.getTitle() }}</a>
+        {% else %}
+        <a href="{{ page.url }}">{{ page.title }}</a>
+        {% endif %}
+    </li>
 {% else %}
-    <li><span>{{ page.getTitle() }}</span></li>
+    <li>
+        {% if page.isPage() %}
+        <span>{{ page.getTitle() }}</span>
+        {% else %}
+        <span>{{ page.title }}</span>
+        {% endif %}
+    </li>
 {% endif %}
 {% endfor %}    
 </{{ opts.type }}>

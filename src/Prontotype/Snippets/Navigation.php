@@ -56,7 +56,11 @@ Class Navigation extends Base {
         }
         
         $opts = $this->mergeOpts(array(
-            'type' => 'ul',
+            'type'   => 'ul',
+            'offset' => 0,
+            'limit'  => null,
+            'append' => array(),
+            'prepend' => array()
         ), $opts);
         
         $pages = array(
@@ -67,13 +71,38 @@ Class Navigation extends Base {
         if ( !empty($this->app['pt.prototype.path']) ) {
             $urlPath = preg_replace("/^(\\" . $this->app['pt.prototype.path'] . ")/", '', $urlPath);            
         }
-
-        $urlParts = explode('/', trim($urlPath,'/') );
-        $builtPath = '/' . $this->app['pt.prototype.path'];
-        if ( count($urlParts) ) {
-            foreach( $urlParts as $urlPart ) {
-                $builtPath .= '/' . $urlPart;
-                $pages[] = $this->app['pt.pages']->getByUrlPath($builtPath);
+        
+        if ( ! empty($urlPath) ) {
+            $urlParts = explode('/', trim($urlPath,'/') );
+            $builtPath = '/' . $this->app['pt.prototype.path'];
+        
+            if ( count($urlParts) ) {
+                foreach( $urlParts as $urlPart ) {
+                    $builtPath .= '/' . $urlPart;
+                    $pages[] = $this->app['pt.pages']->getByUrlPath($builtPath);
+                }
+            }   
+        }
+        
+        if ( $opts['offset'] || $opts['limit'] ) {
+            $pages = array_slice($pages, $opts['offset'], $opts['limit']);
+        }
+        
+        if ( count($opts['append']) ) {
+            foreach( $opts['append'] as $title => $url ) {
+                array_push($pages, array(
+                    'url' => $url,
+                    'title' => $title
+                ));
+            }
+        }
+        
+        if ( count($opts['prepend']) ) {
+            foreach( $opts['prepend'] as $title => $url ) {
+                array_unshift($pages, array(
+                    'url' => $url,
+                    'title' => $title
+                ));
             }
         }
         
