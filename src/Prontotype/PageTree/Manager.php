@@ -38,6 +38,9 @@ Class Manager {
     
     public function getByUrlPath($path)
     {
+        if ( $path === '/' && ! empty($this->app['pt.prototype.path']) ) {
+            $path = $this->app['pt.prototype.path'];
+        }
         foreach( $this->getRecursivePagesIterator() as $page ) {
             if ( $page->matchesUrlPath($path) ) {
                 return $page;

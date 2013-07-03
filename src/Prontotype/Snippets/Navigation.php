@@ -24,7 +24,7 @@ Class Navigation extends Base {
         
         if ( $startPage === null ) {
             // get the homepage
-            $startPage = $this->app['pt.pages']->getByUrlPath('/' . $this->app['pt.prototype.path']);
+            $startPage = $this->app['pt.pages']->getByUrlPath('/');
         } elseif ( is_string($startPage) ) {
             // start page is an ID?
             if ( ! $startPage = $this->app['pt.pages']->getById($startPage) ) {
@@ -44,7 +44,71 @@ Class Navigation extends Base {
         return $this->renderTemplate('page-tree.twig', array(
             'pages' => $pages,
             'level' => $level,
-            'opts' => $opts,
+            'opts'  => $opts,
+            'attrs' => $attrs
+        ));
+    }
+    
+    public function breadcrumb($opts = array(), $attrs = array())
+    {
+        if ( ! $opts ) {
+            $opts = array();
+        }
+        
+        $opts = $this->mergeOpts(array(
+            'type'   => 'ul',
+            'offset' => 0,
+            'limit'  => null,
+            'append' => array(),
+            'prepend' => array()
+        ), $opts);
+        
+        $pages = array(
+            $this->app['pt.pages']->getByUrlPath('/')
+        );
+        
+        $urlPath = $this->app['pt.request']->getUrlPath();
+        if ( !empty($this->app['pt.prototype.path']) ) {
+            $urlPath = preg_replace("/^(\\" . $this->app['pt.prototype.path'] . ")/", '', $urlPath);            
+        }
+        
+        if ( ! empty($urlPath) ) {
+            $urlParts = explode('/', trim($urlPath,'/') );
+            $builtPath = '/' . $this->app['pt.prototype.path'];
+        
+            if ( count($urlParts) ) {
+                foreach( $urlParts as $urlPart ) {
+                    $builtPath .= '/' . $urlPart;
+                    $pages[] = $this->app['pt.pages']->getByUrlPath($builtPath);
+                }
+            }   
+        }
+        
+        if ( $opts['offset'] || $opts['limit'] ) {
+            $pages = array_slice($pages, $opts['offset'], $opts['limit']);
+        }
+        
+        if ( count($opts['append']) ) {
+            foreach( $opts['append'] as $title => $url ) {
+                array_push($pages, array(
+                    'url' => $url,
+                    'title' => $title
+                ));
+            }
+        }
+        
+        if ( count($opts['prepend']) ) {
+            foreach( $opts['prepend'] as $title => $url ) {
+                array_unshift($pages, array(
+                    'url' => $url,
+                    'title' => $title
+                ));
+            }
+        }
+        
+        return $this->renderTemplate('breadcrumb.twig', array(
+            'pages' => $pages,
+            'opts'  => $opts,
             'attrs' => $attrs
         ));
     }
