@@ -81,7 +81,9 @@
           
               <div class="main">
                   
+                  {% if not pt.pages.getCurrent().isHome() %}
                   {{ pt.snippets.navigation.breadcrumb(null, {class : 'breadcrumb'}) }}
+                  {% endif %}
                   
                   <div class="pt-content-block"> 
                       {% block content %}

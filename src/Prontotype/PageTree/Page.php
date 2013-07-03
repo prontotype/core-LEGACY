@@ -55,6 +55,14 @@ Class Page extends Base {
         return $this->isIndex;
     }
     
+    public function isHome()
+    {
+        $root = empty($this->app['pt.prototype.path']) ? '/' : $this->app['pt.prototype.path'];
+        if ( $this->matchesUrlPath($root) ) {
+            return true;
+        }
+    }
+    
     public function isCurrent()
     {
         return $this->matchesUrlPath($this->app['pt.request']->getUrlPath());
