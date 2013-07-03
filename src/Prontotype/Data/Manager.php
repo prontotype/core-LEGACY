@@ -92,15 +92,19 @@ Class Manager {
     
     protected function fetch($url, $replacements = null, $type = null, $dataPath = null)
     {
+        if ( ! $replacements ) {
+            $replacements = array();
+        }
         if ( isset($this->parsed[$url]) ) {
             $data = $this->parsed[$url];
         } else {
             $data = $this->app['pt.utils']->fetchFromUrl($url);
+            $contents = $this->app['twig.stringloader']->render($data['body'], $replacements);
             if ( !empty($data['body']) ) {
                 if ( ! $type ) {
                     $type = $this->getExtensionFromMimeType($data['mime']);
                 }
-                $data = $this->parse($data['body'], $type);
+                $data = $this->parse($contents, $type);
             } else {
                 $data = null;
             }
