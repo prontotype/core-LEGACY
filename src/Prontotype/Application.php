@@ -75,7 +75,7 @@ Class Application {
         )));
         
         $app->register(new Service\Prontotype($this->sharedServices));
-        
+
         $this->doHealthCheck();
         
         $this->app->before(function() use ($app){
