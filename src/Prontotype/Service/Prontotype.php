@@ -47,6 +47,8 @@ Class Prontotype implements ServiceProviderInterface {
                 $app['pt.install.paths.config'],    
             ), $app['pt.app.paths.config'], $app['pt.prototype.environment']);
         });
+        
+        date_default_timezone_set($app['pt.config']->get('timezone'));
     }
     
     protected function registerServices($app)

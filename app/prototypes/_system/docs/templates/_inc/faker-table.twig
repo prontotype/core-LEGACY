@@ -1,0 +1,26 @@
+<table>
+    <tr>
+        <th class="faker-key">Key</th>
+        <th>Example output</th>
+    </tr>
+    {% for key in opts %}
+    <tr>
+        <td>{% if key is iterable %}{{ key['name'] }}<span class="method-params">{{ key['params'] }}</span>{% else %}{{ key }}{% endif %}</td>
+        <td>
+            {% if key is iterable %}
+                {% if key['type'] == 'array' %}
+                <strong>[</strong>{% for result in faker.format(key['name'], key['args']) %}
+                '{{ result }}'{% if not loop.last %},{% endif %}
+                {% endfor %}<strong>]</strong>
+                {% elseif key['type'] == 'boolean' %}
+                {% if faker.format(key['name'], key['args']) %}true{% else %}false{% endif %}
+                {% else %}
+                '{{ faker.format(key['name'], key['args']) }}'
+                {% endif %}
+            {% else %}
+            '{{ faker.format(key) }}'
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

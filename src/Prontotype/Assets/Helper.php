@@ -17,7 +17,8 @@ Class Helper {
     
     public function getUrl($path)
     {
-        return $this->app['pt.request']->getUriForPath($this->getUrl($path));
+        $path = str_replace('/index.php', '', $this->getUrlPath($path));
+        return $this->app['pt.request']->getUriForPath($path);
     }
     
     public function getUrlPath($path)

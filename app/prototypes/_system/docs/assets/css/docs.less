@@ -82,15 +82,21 @@ li code {
     background: #023962;
     .receptacle-inner {
         padding: 8px 0 10px 0;
+        overflow: hidden;
     }
     .branding {
         color: #FFF;
         text-decoration: none;
         font-size: 18px;
+        float: left;
     }
     .version {
+        color: #FFF;
         opacity: 0.65;
-        font-size: 0.8em;
+        font-size: 0.9em;
+        float: right;
+        position: relative;
+        top: 4px;
     }
 }
 
@@ -240,6 +246,12 @@ td {
 }
 th {
     font-weight: bold;
+}
+.faker-key {
+    width: 300px;
+}
+.method-params {
+    color: #999;
 }
 
 /* Method reference */

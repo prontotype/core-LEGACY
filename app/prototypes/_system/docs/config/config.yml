@@ -10,8 +10,10 @@ pages:
     '[pages-routing]' : Routing URLs to pages
     '[pages-titles]' : Page titles
     '[pages-clean-urls]' : "Enabling 'clean' URLs"
-    '[data-external]' : Using external sources
+    '[data-external]' : External data sources
     '[data-local]' : Local data files
     '[data-formats]' : Data formats
-    '[data-fake]' : "Generating 'fake' data"
+    '[data-fake]' : "Auto-generating data"
+    '[data-twig]' : Template logic in data files  
+    '[data-api]' : Data JSON API
     

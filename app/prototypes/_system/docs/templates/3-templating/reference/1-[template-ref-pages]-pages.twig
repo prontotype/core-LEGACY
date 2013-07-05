@@ -92,114 +92,114 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
 
 Once you have a **Pronototype page object** returned by one of the relevant methods above, you can then get data about the page that it represents.
 
-In the following examples we'll assume that the `myPage` variable has been first set using the `pt.pages.getPageById()` method - but obviously in your prototype you can call your variables whatever you like!
+In the following examples we'll assume that the `examplePage` variable has been first set using the `pt.pages.getPageById()` method - but obviously in your prototype you can call your variables whatever you like!
 
-{% raw %}<pre class="brush: twig">{% set myPage = pt.pages.getById('hmstrs') %}</pre>{% endraw %}
+{% raw %}<pre class="brush: twig">{% set examplePage = pt.pages.getById('hmstrs') %}</pre>{% endraw %}
 
 <div class="method-ref">
     
     {# <h3>Page object methods</h3>
     
     <ul class="method-links">
-        <li><a href="#page-gettitle">myPage.<span class="name">getTitle()</span></a></li>
-        <li><a href="#page-getid">myPage.<span class="name">getId()</span></a></li>
-        <li><a href="#page-geturlpath">myPage.<span class="name">getUrlPath()</span></a></li>
-        <li><a href="#page-geturl">myPage.<span class="name">getUrl()</span></a></li>
-        <li><a href="#page-getshorturlpath">myPage.<span class="name">getShortUrlPath()</span></a></li>
-        <li><a href="#page-getshorturl">myPage.<span class="name">getShortUrl()</span></a></li>
-        <li><a href="#page-getdepth">myPage.<span class="name">getDepth()</span></a></li>
-        <li><a href="#page-gettemplatepath">myPage.<span class="name">getTemplatePath()</span></a></li>
-        <li><a href="#page-getfullpath">myPage.<span class="name">getFullPath()</span></a></li>
-        <li><a href="#page-iscurrent">myPage.<span class="name">isCurrent()</span></a></li>
-        <li><a href="#page-isparentofcurrent">myPage.<span class="name">isParentOfCurrent()</span></a></li>
+        <li><a href="#page-gettitle">examplePage.<span class="name">getTitle()</span></a></li>
+        <li><a href="#page-getid">examplePage.<span class="name">getId()</span></a></li>
+        <li><a href="#page-geturlpath">examplePage.<span class="name">getUrlPath()</span></a></li>
+        <li><a href="#page-geturl">examplePage.<span class="name">getUrl()</span></a></li>
+        <li><a href="#page-getshorturlpath">examplePage.<span class="name">getShortUrlPath()</span></a></li>
+        <li><a href="#page-getshorturl">examplePage.<span class="name">getShortUrl()</span></a></li>
+        <li><a href="#page-getdepth">examplePage.<span class="name">getDepth()</span></a></li>
+        <li><a href="#page-gettemplatepath">examplePage.<span class="name">getTemplatePath()</span></a></li>
+        <li><a href="#page-getfullpath">examplePage.<span class="name">getFullPath()</span></a></li>
+        <li><a href="#page-iscurrent">examplePage.<span class="name">isCurrent()</span></a></li>
+        <li><a href="#page-isparentofcurrent">examplePage.<span class="name">isParentOfCurrent()</span></a></li>
     </ul> #}
     
     <div class="method">
-        <h3 class="method-title" id="page-gettitle">myPage.<span class="name">getTitle()</span></h3>
+        <h3 class="method-title" id="page-gettitle">examplePage.<span class="name">getTitle()</span></h3>
         <div class="method-desc">
         <p>Return the <a href="{{ pt.pages.getUrlById('pages-titles') }}">automatically generated title</a> of the page.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getTitle() }} <!-- All About Hamsters --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getTitle() }} <!-- All About Hamsters --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getid">myPage.<span class="name">getId()</span></h3>
+        <h3 class="method-title" id="page-getid">examplePage.<span class="name">getId()</span></h3>
         <div class="method-desc">
         <p>Return the <strong>ID</strong> of the page, if one is set.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getId() }} <!-- hmstrs --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getId() }} <!-- hmstrs --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-geturlpath">myPage.<span class="name">getUrlPath()</span></h3>
+        <h3 class="method-title" id="page-geturlpath">examplePage.<span class="name">getUrlPath()</span></h3>
         <div class="method-desc">
             <p>Return the <strong>URL path</strong> of the page (i.e. root relative URL, without the domain part).</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getUrlPath() }} <!-- /animals/hamsters --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getUrlPath() }} <!-- /animals/hamsters --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-geturl">myPage.<span class="name">getUrl()</span></h3>
+        <h3 class="method-title" id="page-geturl">examplePage.<span class="name">getUrl()</span></h3>
         <div class="method-desc">
             <p>Return the <strong>full URL</strong> of the page (including domain).</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getUrl() }}  <!-- http://example.com/animals/hamsters --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getUrl() }}  <!-- http://example.com/animals/hamsters --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getshorturlpath">myPage.<span class="name">getShortUrlPath()</span></h3>
+        <h3 class="method-title" id="page-getshorturlpath">examplePage.<span class="name">getShortUrlPath()</span></h3>
         <div class="method-desc">
             <p>Return the <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL path</a> of the page (i.e. root relative URL, without the domain part).</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getShortUrlPath() }} <!-- /_p/hmstrs --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getShortUrlPath() }} <!-- /_p/hmstrs --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getshorturl">myPage.<span class="name">getShortUrl()</span></h3>
+        <h3 class="method-title" id="page-getshorturl">examplePage.<span class="name">getShortUrl()</span></h3>
         <div class="method-desc">
             <p>Return the full <a href="{{ pt.pages.getUrlById('pages-shorturls') }}">short URL</a> of the page (including domain).</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getShortUrl() }} <!-- http://example.com/_p/hmstrs --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getShortUrl() }} <!-- http://example.com/_p/hmstrs --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getdepth">myPage.<span class="name">getDepth()</span></h3>
+        <h3 class="method-title" id="page-getdepth">examplePage.<span class="name">getDepth()</span></h3>
         <div class="method-desc">    
             <p>Return the 'depth' of the page - i.e. how many levels deep in the page hierarchy the page sits.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getDepth() }} <!-- 2 --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getDepth() }} <!-- 2 --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-gettemplatepath">myPage.<span class="name">getTemplatePath()</span></h3>
+        <h3 class="method-title" id="page-gettemplatepath">examplePage.<span class="name">getTemplatePath()</span></h3>
         <div class="method-desc">
             <p>Return the template-directory relative filesystem path for the page template.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getTemplatePath() }} <!-- /2-animals/3-[hmstrs]-hamsters.twig --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getTemplatePath() }} <!-- /2-animals/3-[hmstrs]-hamsters.twig --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-getfullpath">myPage.<span class="name">getFullPath()</span></h3>
+        <h3 class="method-title" id="page-getfullpath">examplePage.<span class="name">getFullPath()</span></h3>
         <div class="method-desc">
             <p>Return the full filesystem path for the page template.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.getFullPath() }} <!-- /Users/foo/sites/example/prontotypes/default/templates/2-animals/3-[hmstrs]-hamsters.twig --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.getFullPath() }} <!-- /Users/foo/sites/example/prontotypes/default/templates/2-animals/3-[hmstrs]-hamsters.twig --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-iscurrent">myPage.<span class="name">isCurrent()</span></h3>
+        <h3 class="method-title" id="page-iscurrent">examplePage.<span class="name">isCurrent()</span></h3>
         <div class="method-desc">
             <p>Return <code>true/false</code> according to whether the page is the current one being viewed or not.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.isCurrent() }} <!-- true/false --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.isCurrent() }} <!-- true/false --></pre>{% endraw %}
     </div>
     
     <div class="method">
-        <h3 class="method-title" id="page-isparentofcurrent">myPage.<span class="name">isParentOfCurrent()</span></h3>
+        <h3 class="method-title" id="page-isparentofcurrent">examplePage.<span class="name">isParentOfCurrent()</span></h3>
         <div class="method-desc">
             <p>Return <code>true/false</code> according to whether the page object represents a page that is a parent (not necessarily direct parent) of the current page.</p>
         </div>
-        {% raw %}<pre class="brush: twig">{{ myPage.isParentOfCurrent() }} <!-- true/false --></pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{{ examplePage.isParentOfCurrent() }} <!-- true/false --></pre>{% endraw %}
     </div>
     
 </div>
