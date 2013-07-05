@@ -49,7 +49,7 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
         {% raw %}<pre class="brush: twig">{% set zebraPage = pt.pages.getById('/zoo/animals/zebras') %}</pre>{% endraw %}
     </div>
     
-    <div class="method">
+    {# <div class="method">
         <h3 class="method-title" id="pages-getsubpagesbyid">pt.pages.<span class="name">getSubPagesById(<span class="var">id</span>)</span></h3>
         <div class="method-desc">
         <p>Returns an array of <a href="#page-objects">page objects</a> representing the sub-pages of a page specified by it's ID.</p>
@@ -65,7 +65,7 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
         </div>
         {% raw %}<pre class="brush: twig">{% set catTypePages = pt.pages.getSubPagesByUrlPath('/animals/domestic/cats') %}</pre>{% endraw %}
         <p class="hint">This can be used to generate page-specific navigation lists; the output can be passed to the <a href="{{ pt.pages.getUrlById('snippets-nav') }}#snippets-nav-pagetree">page tree snippet</a> to make this even easier!</p>
-    </div>
+    </div> #}
     
     <div class="method">
         <h3 class="method-title" id="pages-geturlpathbyid">pt.pages.<span class="name">getUrlPathById(<span class="var">id</span>)</span></h3>
