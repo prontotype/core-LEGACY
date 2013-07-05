@@ -2,11 +2,11 @@
 
 {% set content %}
 
-# Generating 'fake' data
+# Auto-generating data
 
-To make populating your prototype with content easier, Prontotype [provides a method]({{ pt.pages.getUrlById('template-ref-data') }}#data-faker) for auto-generating data such as names, addresses, dates, numbers and more.
+To make populating your prototype with content easier, Prontotype integrates the [Faker library](https://github.com/fzaninotto/Faker) to [provide a method]({{ pt.pages.getUrlById('template-ref-data') }}#data-faker) for auto-generating data such as names, addresses, dates, numbers and more.
 
-The `pt.data.faker()` method returns a faker instance, which can then be used to generate fake content in your templates. For example:
+The `pt.data.faker()` method returns a 'faker' instance, which can then be used to auto-generate content in your templates. For example:
 
 {% raw %}<pre class="brush: twig">{% set faker = pt.data.faker() %}
 Name: {{ faker.firstName }} {{ faker.lastName }}
@@ -15,11 +15,11 @@ Tel: {{ faker.phoneNumber }}</pre>{% endraw %}
 
 This method will generate a randomly generate content for each call to the same method (i.e. firstName etc) and each time the page is refreshed. This is great for testing aspects of your UI with different sets of data, lengths of names, addresses etc.
 
-## Using seeding to repeatably generate the data 
+## Using seeds to repeatably auto-generate data 
 
 If you want to remove the random generation aspect of the faker method - i.e. to use the **same** set of randomly generated data throughout your prototype and page refreshes - you can **seed** the faker instance by passing in an integer number to the `pt.data.faker()` method.
 
-Everywhere that uses that same seed will then produce the same set of auto-generated data. To help explain this consider the following example:
+Everywhere that uses that same seed integer will then produce the same set of auto-generated data. To help explain this consider the following example:
 
 {% raw %}<pre class="brush: twig">{# NON seeded example #}
 {% set faker = pt.data.faker() %}
@@ -29,16 +29,25 @@ First Name: {{ faker.firstName }} <!-- Fred -->
 {# Example with seeding #}
 {% set seededFaker = pt.data.faker(123) %}
 First Name: {{ seededFaker.firstName }} <!-- Jim -->
-First Name: {{ seededFaker.firstName }} <!-- Jim --></pre>{% endraw %}
+First Name: {{ seededFaker.firstName }} <!-- Jim -->
+
+{# In a different template #}
+{% set otherFaker = pt.data.faker(123) %}
+First Name: {{ otherFaker.firstName }} <!-- Jim --></pre>{% endraw %}
+
+## Locale
+
+By default Prontotype uses the **en_EN** locale, which generates US-style addresses, phone numbers etc. To change the locale see the section on configuration below. Possible locale values include: **en_GB**, **fr_FR**, **es_ES**, **de_DE** and many more - see the [faker documentation](https://github.com/fzaninotto/Faker#localization) for full details.
 
 ## Prototype-wide configuration
 
 You can configure faker using the following configuration block in your config file:
 
-data:
+{% raw %}<pre class="brush: yaml">data:
   faker:
-    locale: en_EN # specify locale
-    seed: # set global seed here
+    locale: en_EN # specify a different locale here if required
+    seed: # set global seed here (see note)</pre>{% endraw %}
 
+Note that this allows you to set a prototype-wide seed for your faker instances, which will be applied to any faker instances that don't themselves specify a seed. However this is **not generally recommended** as it reduces your ability to randomly generate data in other parts of you prototype - specifying a per-instance seed is generally more flexible.
 
 {% endset %}
