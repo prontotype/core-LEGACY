@@ -1,23 +1,26 @@
 <?php
 
-namespace Prontotype;
+namespace Prontotype\Store;
 
-Class Store {
-    
-    protected $app;
+Class Cookie extends Base {
     
     protected $cookiePrefix = '';
 
     protected $cookieLifetime = '';
-
-    public function __construct( $app )
+    
+    public function __construct($app)
     {
-        $this->app = $app;
-        $this->cookiePrefix = $app['pt.config']->get('cookie.prefix');
-        $this->cookieLifetime = $app['pt.config']->get('cookie.lifetime');
+        parent::__construct($app);
+        $this->cookiePrefix = $app['pt.config']->get('storage.prefix');
+        $this->cookieLifetime = $app['pt.config']->get('storage.lifetime');
     }
     
-    public function set( $key, $value )
+    public function get($key)
+    {
+        return isset($_COOKIE[$this->cookiePrefix . $key]) ? json_decode(rawurldecode(stripslashes($_COOKIE[$this->cookiePrefix . $key])), true) : NULL;
+    }
+    
+    public function set($key, $value)
     {
         // raw url encode and set raw cookie used here to prevent issues with spaces encoded as '+'
         $value = rawurlencode(json_encode($value));
@@ -25,15 +28,10 @@ Class Store {
         $_COOKIE[$this->cookiePrefix . $key] = $value;
     }
     
-    public function get( $key )
-    {
-        return isset($_COOKIE[$this->cookiePrefix . $key]) ? json_decode(rawurldecode(stripslashes($_COOKIE[$this->cookiePrefix . $key])), true) : NULL;
-    }
-    
-    public function clear( $key )
+    public function clear($key)
     {
         setcookie( $this->cookiePrefix . $key, '', time() - 3600, '/' );
         unset($_COOKIE[$this->cookiePrefix . $key]);
     }
-
+    
 }

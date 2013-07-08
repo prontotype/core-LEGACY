@@ -6,8 +6,9 @@ authenticate:
   password: 
   error: Your password was incorrect.
   ip_whitelist: # eg. 127.0.0.1
-  
-cookie:
+
+storage:  
+  adapter: cookie   # cookie or session 
   prefix: prototype-
   lifetime: 604800 # 1 week
 

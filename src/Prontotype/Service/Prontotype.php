@@ -24,6 +24,7 @@ use Prontotype\Data\YamlParser;
 use Prontotype\Data\XmlParser;
 use Prontotype\Data\CsvParser;
 use Prontotype\Data\MarkdownParser;
+use Prontotype\Store\Manager as StoreManager;
 use Prontotype\Extension\Manager as ExtensionManager;
 use Prontotype\Assets\Manager as AssetManager;
 use Prontotype\Config as ConfigManager;
@@ -88,6 +89,10 @@ Class Prontotype implements ServiceProviderInterface {
                 new CsvParser($app),
                 new MarkdownParser($app)
             ));
+        });
+        
+        $app['pt.store'] = $app->share(function($app) {
+            return new StoreManager($app, $app['pt.config']->get('storage.adapter'));
         });
         
         $app['pt.assets'] = $app->share(function($app) {

@@ -18,7 +18,7 @@ Class Auth {
             $app['pt.utils']->generateUrlPath('auth.check'),
             $app['pt.utils']->generateUrlPath('auth.logout')
         );
-        $this->authSessionName = $this->app['pt.config']->get('cookie.prefix') . $this->authSessionName;
+        $this->authSessionName = $this->app['pt.config']->get('storage.prefix') . $this->authSessionName;
     }
     
     public function check()
