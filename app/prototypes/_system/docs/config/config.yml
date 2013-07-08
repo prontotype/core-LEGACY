@@ -10,7 +10,9 @@ pages:
     '[pages-order-ids]' : Ordering and assigning IDs
     '[pages-routing]' : Routing URLs to pages
     '[pages-titles]' : Page titles
+    '[pages-errors]' : Error pages and 404s
     '[pages-clean-urls]' : "Enabling 'clean' URLs"
+    '[templating-overrides]' : Overriding system templates
     '[data-external]' : External data sources
     '[data-local]' : Local data files
     '[data-formats]' : Data formats

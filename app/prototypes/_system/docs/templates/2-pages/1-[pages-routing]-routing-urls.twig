@@ -21,4 +21,14 @@ Any directories or templates whose names start with an **underscore** (`_`) will
 
 Any templates within these 'underscore-prefixed' directories can be used for extending or including as any other [Twig]({{ pt.pages.getUrlById('templating-twig') }}) template would be.
 
+## URL 'trigger' segments
+
+There are a set of **trigger keywords** in URLs which have special meaning for Prontotype. You can read more about these and the functionality that they expose on the [URL triggers config reference page]({{ pt.pages.getUrlById('config-triggers') }}).
+
+## Error pages and 404s
+
+If Prontotype can't resolve a URL via the methods above, it will display the **default 404 page** template. Similarly if something has caused an error to occur then **default error page** template will be shown.
+
+If you want to customise the look and feel of these templates then you should refer to the section on [overriding system templates]({{ pt.pages.getUrlById('templating-overrides') }}) for more information.
+
 {% endset %}
