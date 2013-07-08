@@ -33,14 +33,36 @@ Class Directory extends Base {
         $this->items = $items;
     }
     
+    public function getUrlPath()
+    {
+        if ( $this->urlPath === null ) {
+            $segments = explode('/', trim($this->getRelPath(),'/'));
+            $cleanSegments = array();
+            foreach($segments as $segment) {
+                $cleanSegments[] = preg_replace('/^((\d*)[\._\-]).*?/', '', $segment);
+            }
+            $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
+            if ( $up == '' ) {
+                $up = '/';
+            }
+            $this->urlPath = $this->prefixUrl($up);
+        }
+        return $this->urlPath;
+    }
+    
+    public function matchesUrlPath($urlPath)
+    {
+        return parent::matchesUrlPath($urlPath);
+    }
+    
     public function hasSubPages()
     {
-        return false;
+        return count($this->items);
     }
     
     public function getSubPages()
     {
-        return array();
+        return $this->items;
     }
     
     public function toArray($siblings = null)
@@ -67,7 +89,7 @@ Class Directory extends Base {
         }
         if ( ! $hasIndex && $siblings ) {
             foreach( $siblings as $sibling ) {
-                if ( $sibling instanceof Page && $this->getUrlPath() == $sibling->getUrlPath() ) {
+                if (  $this->getUrlPath() == $sibling->getUrlPath() ) {
                     $output = $sibling->toArray();
                     break;
                 }

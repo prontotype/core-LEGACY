@@ -146,10 +146,12 @@ li code {
         display: none;
     }
     .level-0 .is-parent ul,
-    .level-0 .is-current ul {
+    .level-0 .is-current ul,
+    .is-directory > ul {
         display: block;
     }
-    a {
+    a,
+    .is-directory > span {
         text-decoration: none;
         display: block;
         padding: 3px 10px;
@@ -159,7 +161,9 @@ li code {
         text-decoration: underline;
     }
     .level-0 > a,
-    .level-1 > a {
+    .level-1 > a,
+    .level-0 > span,
+    .level-1 > span {
         font-weight: bold;
     }
     .is-current > a {

@@ -54,6 +54,19 @@ Class Manager {
         return null;
     }
     
+    public function getDirectoryByUrlPath($path)
+    {
+        if ( $path === '/' && ! empty($this->app['pt.prototype.path']) ) {
+            $path = $this->app['pt.prototype.path'];
+        }
+        foreach( new \RecursiveIteratorIterator($this->tree, true) as $item ) {
+            if ( $item instanceof Directory && $item->matchesUrlPath($path) ) {
+                return $item;
+            }
+        }
+        return null;
+    }
+    
     public function getByRoute($route)
     {
         // lets see if we need to do any checking of custom routes

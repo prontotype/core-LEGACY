@@ -1,28 +1,26 @@
 {% if level == 0 %}
 <{{ opts.type }}{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
-{% else %}
-<{{ opts.type }}>
 {% endif %}
 
     {% for item in pages %}
     
-    <li class="level-{{ level }}{% if item.isCurrent() %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent() %} {{ opts.parentClass }}{% endif %}">
+    <li class="level-{{ level }} {% if item.isPage() %}is-page{% else %}is-directory{% endif %}{% if item.isCurrent() %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent() %} {{ opts.parentClass }}{% endif %}">
         {% if item.isPage() %}
         <a href="{{ item.getUrlPath() }}">{{ item.getTitle() }}</a>
         {% else %}
         <span>{{ item.getTitle() }}</span>
         {% endif %}
         {% if item.hasSubPages() and (not opts.maxDepth or opts.maxDepth > level + 1) %}
+        <ul>
         {% for page in item.getSubPages() %}
-        {% if page.isPage() %}
-        {{ pt.snippets.navigation.pageTree(page, attrs, opts, level + 1) }}
-        {% else %}
-        {{ page.getTitle() }}
-        {% endif %}
-        {% endfor %}
+            {{ pt.snippets.navigation.pageTree(page, attrs, opts, level + 1) }}
+        {% endfor %} 
+        </ul>
         {% endif %}
     </li>
     
     {% endfor %}
 
+{% if level == 0 %}
 </{{ opts.type }}>
+{% endif %}

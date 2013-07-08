@@ -101,9 +101,37 @@ Class Page extends Base {
         $subPageArray = $this->app['pt.pages']->getSubPagesByUrlPath($this->getUrlPath());        
         $subPageObjects = array();
         foreach( $subPageArray as $subPage ) {
-            $subPageObjects[] = $this->app['pt.pages']->getByUrlPath($subPage['urlPath']);
+            if ( ! $this->app['pt.pages']->getByUrlPath($subPage['urlPath']) ) {
+                // see if there is a directory that matches
+                if ( $dir = $this->app['pt.pages']->getDirectoryByUrlPath($subPage['urlPath']) ) {
+                    $subPageObjects[] = $dir;                 
+                }
+            } else {
+                $subPageObjects[] = $this->app['pt.pages']->getByUrlPath($subPage['urlPath']);   
+            }             
         }
         return $subPageObjects;
+    }
+    
+    public function getUrlPath()
+    {
+        if ( $this->urlPath === null ) {
+            $segments = explode('/', trim($this->getRelPath(),'/'));
+            $cleanSegments = array();
+            foreach( $segments as $segment ) {
+                preg_match($this->nameFormatRegex, str_replace('.' . $this->nameExtension, '', $segment), $segmentParts);
+                $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
+            }
+            if ( $cleanSegments[count($cleanSegments)-1] == 'index' ) {
+                unset($cleanSegments[count($cleanSegments)-1]);
+            }
+            $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
+            if ( $up == '' ) {
+                $up = '/';
+            }
+            $this->urlPath = $this->prefixUrl($up);
+        }
+        return $this->urlPath;
     }
     
     public function toArray()
