@@ -2,7 +2,7 @@
 
 {% set content %}
 
-# Data JSON API
+# JSON Data API
 
 There are times when you might want to access the data structures you've defined from your frontend JavaScript code. Prontotype makes this easy by giving you a URL for each data file that returns a JSON representation of that data. This allows you to make a Ajax request to that URL to access the data.
 
@@ -13,5 +13,7 @@ The URL for each data file looks like this:
 Where `<data_trigger>` is as defined [in the 'triggers' section of your config file]({{ pt.pages.getUrlById('config-triggers') }}) (defaults to **_data**) and `<path_to_data>` is the path of the data file  that you wish to access.
 
 So, using the default configuration, to get a JSON representation of the data in a YAML file `/data/posts/all.yml` you would make an Ajax request to `http://example.com/index.php/_data/posts/all.yml`.
+
+<p class="note">If you want to <strong>disable this behaviour</strong> for security reasons, you can set the value of the <code>data</code> URL trigger in <a href="{{ pt.pages.getUrlById('config-triggers') }}">your config file</a> to <code>null</code>.</p>
 
 {% endset %}

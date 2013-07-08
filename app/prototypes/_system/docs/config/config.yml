@@ -5,6 +5,7 @@ pages:
     '/' : Overview
     '[setup]' : Setup and Installation
     '[setup-prototypes]' : Prototypes and domains
+    '[config-triggers]' : URL triggers
     '[pages]' : Pages and URLs
     '[pages-order-ids]' : Ordering and assigning IDs
     '[pages-routing]' : Routing URLs to pages
@@ -15,6 +16,6 @@ pages:
     '[data-formats]' : Data formats
     '[data-fake]' : "Auto-generating data"
     '[data-twig]' : Template logic in data files  
-    '[data-api]' : Data JSON API
+    '[data-api]' : JSON Data API
     '[data]' : Working with Data
     
