@@ -16,4 +16,5 @@ pages:
     '[data-fake]' : "Auto-generating data"
     '[data-twig]' : Template logic in data files  
     '[data-api]' : Data JSON API
+    '[data]' : Working with Data
     
