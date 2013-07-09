@@ -79,7 +79,11 @@ Class Navigation extends Base {
             if ( count($urlParts) ) {
                 foreach( $urlParts as $urlPart ) {
                     $builtPath .= '/' . $urlPart;
-                    $pages[] = $this->app['pt.pages']->getByUrlPath($builtPath);
+                    if ( $pageObj = $this->app['pt.pages']->getByUrlPath($builtPath) ) {
+                        $pages[] = $pageObj;
+                    } elseif ( $dirObj = $this->app['pt.pages']->getDirectoryByUrlPath($builtPath) ) {
+                        $pages[] = $dirObj;
+                    }
                 }
             }   
         }

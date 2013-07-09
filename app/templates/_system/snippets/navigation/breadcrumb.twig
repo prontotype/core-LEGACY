@@ -4,16 +4,18 @@
     <li class="level-{{ loop.index0 }}">
         {% if page.isPage() %}
         <a href="{{ page.getUrl() }}">{{ page.getTitle() }}</a>
+        {% elseif page.isDirectory() %}
+        <span>{{ page.getTitle() }}</span>
         {% else %}
         <a href="{{ page.url }}">{{ page.title }}</a>
         {% endif %}
     </li>
 {% else %}
-    <li class="level-{{ loop.index0 }}">
+    <li class="level-{{ loop.index0 }} is-current">
         {% if page.isPage() %}
-        <span>{{ page.getTitle() }}</span>
+        <em>{{ page.getTitle() }}</em>
         {% else %}
-        <span>{{ page.title }}</span>
+        <em>{{ page.title }}</em>
         {% endif %}
     </li>
 {% endif %}

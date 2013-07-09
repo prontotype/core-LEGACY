@@ -114,6 +114,11 @@ Class Base implements \RecursiveIterator
         return $this instanceof Page;
     }
     
+    public function isDirectory()
+    {
+        return $this instanceof Directory;
+    }
+    
     protected function prefixUrl($url)
     {
         $prefix = '';
