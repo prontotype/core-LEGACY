@@ -74,6 +74,18 @@ Class Manager {
         }
     }
     
+    public function aliasFilePath($path)
+    {
+        $pathParts = pathinfo($path);
+        $ext = strtolower($pathParts['extension']);
+        foreach( $this->aliases as $extension => $aliases ) {
+            if ( in_array($ext, $aliases) ) {
+                return preg_replace('/\.' . $ext . '$/', '.' . $extension, $path);
+            }
+        }
+        return $path;
+    }
+    
     protected function process($contents, $extension)
     {
         $extension = strtolower($extension);

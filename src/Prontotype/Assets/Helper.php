@@ -23,7 +23,8 @@ Class Helper {
     
     public function getUrlPath($path)
     {
-        $root = $this->app['pt.prototype.path'] . '/';     
+        $path = $this->app['pt.assets']->aliasFilePath($path);
+        $root = $this->app['pt.prototype.path'] . '/';  
         $path = $root . $this->app['pt.config']->get('triggers.assets') . '/' . trim($path, '/');
         if ( ! $this->app['pt.env.clean_urls'] ) {
             $path = '/index.php' . $path;
