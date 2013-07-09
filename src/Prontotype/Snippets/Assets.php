@@ -25,6 +25,21 @@ Class Assets extends Base {
         ));
     }
     
+    public function js($src, $attrs = array(), $rawPath = false)
+    {
+        if ( ! $rawPath ) {
+            $src = $this->app['pt.assets_helper']->getUrlPath($src);
+        }
+        
+        $attrs = $this->mergeOpts(array(
+            'src'  => $src,
+        ), $attrs);
+            
+        return $this->renderTemplate('js.twig', array(
+            'attrs'  => $attrs,
+        ));
+    }
+    
     public function image($src, $attrs = array(), $rawPath = false)
     {
         if ( ! $rawPath ) {

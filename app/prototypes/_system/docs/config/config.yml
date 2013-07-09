@@ -20,4 +20,6 @@ pages:
     '[data-twig]' : Template logic in data files  
     '[data-api]' : JSON Data API
     '[data]' : Working with Data
+    '[assets]' : Asset Handling
+    '[assets-css]' : Preprocessing CSS
     
