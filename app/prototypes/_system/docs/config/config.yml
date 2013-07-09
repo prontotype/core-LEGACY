@@ -22,4 +22,5 @@ pages:
     '[data]' : Working with Data
     '[assets]' : Asset Handling
     '[assets-css]' : Preprocessing CSS
+    '[users]' : Users and Logins
     
