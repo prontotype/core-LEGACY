@@ -13,7 +13,7 @@ Below is the default set of trigger values:
 <pre class="brush: yaml">triggers:
   data: _data
   shorturl: _p
-  tools: _tools
+{% if pt.pages.getById('tools') %}  tools: _tools{% endif %}
   auth: _auth
   assets: _assets
   user: _user</pre>
@@ -24,7 +24,7 @@ To read more about the functionality each of these triggers expose, see the rele
 * `shorturl`: [{{ pt.pages.getById('pages-shorturls').getTitle() }}]({{ pt.pages.getById('pages-shorturls').getUrl() }})
 {% if pt.pages.getById('tools') %}* `tools`: [{{ pt.pages.getById('tools').getTitle() }}]({{ pt.pages.getById('tools').getUrl() }}){% endif %}
 * `auth`: [{{ pt.pages.getById('config-passwords').getTitle() }}]({{ pt.pages.getById('config-passwords').getUrl() }})
-{% if pt.pages.getById('assets') %}* `assets`: [{{ pt.pages.getById('assets').getTitle() }}]({{ pt.pages.getById('assets').getUrl() }}){% endif %}
-{% if pt.pages.getById('user') %}* `user`: [{{ pt.pages.getById('user').getTitle() }}]({{ pt.pages.getById('user').getUrl() }}){% endif %}
+* `assets`: [{{ pt.pages.getById('assets').getTitle() }}]({{ pt.pages.getById('assets').getUrl() }})
+* `user`: [{{ pt.pages.getById('users').getTitle() }}]({{ pt.pages.getById('users').getUrl() }})
 
 {% endset %}
