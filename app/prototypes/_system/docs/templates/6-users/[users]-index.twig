@@ -85,9 +85,13 @@ Using the default configuration this will generate a form that looks like this:
 
 You can see the <a href="{{ pt.pages.getUrlById('snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
 
-## Making content available to logged in users only
+## Accessing current user metadata and restricting access to content
 
-In any of your templates you can check the value of the `pt.user` variable to see if there is a currently logged in user, and take action accordingly. A couple of examples:
+In any of your templates you can check the value of the `pt.user` variable to see if there is a currently logged in user, and take action accordingly - perhaps showing/hiding content or redirecting users as required.
+
+If there is no logged in user then the value of this variable will be `null`. If there is a user logged in, then the variable will hold the metadata for that user that you defined in your `users.yml` file.
+
+A couple of examples:
 
 {% raw %}<pre class="brush: twig">{# redirect to the homepage if there is no user logged in #}
 {% if not user %}
