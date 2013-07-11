@@ -117,4 +117,16 @@ Class Navigation extends Base {
         ));
     }
     
+    public function logout($text = 'Logout', $attrs = array())
+    {
+        $attrs = $this->mergeOpts(array(
+            'href' => $this->app['pt.utils']->generateUrlPath('user.logout')
+        ), $attrs);
+        
+        return $this->renderTemplate('link.twig', array(
+            'text'  => $text,
+            'attrs' => $attrs
+        ));
+    }
+    
 }

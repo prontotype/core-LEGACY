@@ -30,6 +30,7 @@ class HelperExtension extends \Twig_Extension
                 'assets'        => $this->app['pt.assets_helper'],
                 'notifications' => $this->app['pt.notifications'],
                 'snippets'      => $this->app['pt.snippets'],
+                'session'       => $this->app['pt.session'],
                 'scraper'       => $this->app['pt.scraper'],
                 'urls' => array(
                     'user' => array(

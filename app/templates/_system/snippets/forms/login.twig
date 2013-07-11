@@ -1,0 +1,29 @@
+{{ pt.snippets.forms.open(attrs) }}
+
+{% set loginError = pt.notifications.get('error') %}
+{% set postData = pt.session.getFlash('requestData').post %}
+
+{% if loginError %}
+<div class="pt-notification pt-notification--error">
+    <p>{{ loginError }}</p>
+</div>
+{% endif %}
+
+{% if opts.default %}{{ pt.snippets.forms.hidden(opts.identify, opts.default) }}{% endif %}
+{% if opts.redirect %}{{ pt.snippets.forms.hidden('redirect', opts.redirect) }}{% endif %}
+
+<div class="pt-control">
+    {{ pt.snippets.forms.label(opts.identifyLabel, opts.identify) }}
+    {{ pt.snippets.forms.text(opts.identify, postData[opts.identify]) }}
+</div>
+
+{% if opts.auth %}
+<div class="pt-control">
+    {{ pt.snippets.forms.label(opts.authLabel, opts.auth, postData[opts.auth]) }}
+    {{ pt.snippets.forms.password(opts.auth, postData[opts.identify]) }}
+</div>
+{% endif %}
+
+{{ pt.snippets.forms.button(opts.submitLabel) }}
+
+{{ pt.snippets.forms.close() }}

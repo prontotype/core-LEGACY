@@ -53,7 +53,14 @@ Class Prontotype implements ServiceProviderInterface {
     }
     
     protected function registerServices($app)
-    {        
+    {   
+        $app->register(new \Silex\Provider\SessionServiceProvider(), array(
+            'session.storage.options' => array(
+                'name' => $app['pt.config']->get('storage.prefix') . 'SESS',
+                'cookie_lifetime' => $app['pt.config']->get('storage.lifetime')
+            )
+        ));
+        
         foreach( $this->sharedServices as $serviceName => $serviceClass ) {
             $app[$serviceName] = $app->share(function() use ($app, $serviceClass) {
                 return new $serviceClass($app);
@@ -108,7 +115,6 @@ Class Prontotype implements ServiceProviderInterface {
             return new ExtensionManager($app, $app['pt.prototype.paths.extensions']);
         });
         
-        $app->register(new SessionServiceProvider());
         $app->register(new UrlGeneratorServiceProvider());
         
         $app->register(new TwigServiceProvider(), array(

@@ -13,20 +13,20 @@ Class Notifications {
     
     public function setFlash($name, $content)
     {
-        $this->app['session']->getFlashBag()->set('notifications', array(
+        $this->app['pt.session']->setFlash('notifications', array(
             $name => $content
         ));
     }
     
     public function get($name)
     {
-        $notifications = $this->app['session']->getFlashBag()->get('notifications');
+        $notifications = $this->app['pt.session']->getFlash('notifications');
         return isset($notifications[$name]) ? $notifications[$name] : null;
     }
     
     public function getAll()
     {
-        $notifications = $this->app['session']->getFlashBag()->set('notifications');
+        $notifications = $this->app['pt.session']->getFlashBag()->get('notifications');
         return $notifications;
     }
 }

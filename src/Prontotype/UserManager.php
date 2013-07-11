@@ -90,7 +90,8 @@ Class UserManager {
             return $override;
         }
         $rdir = $this->app['pt.config']->get('user.login.redirect');
-        return ! empty($rdir) ? $rdir : '/';
+        $rdir = ! empty($rdir) ? $rdir : '/';
+        return $this->app['pt.utils']->makePrefixedUrl($rdir);
     }
     
     public function getLogoutRedirectUrlPath($override = null)
@@ -99,7 +100,8 @@ Class UserManager {
             return $override;
         }
         $rdir = $this->app['pt.config']->get('user.logout.redirect');
-        return ! empty($rdir) ? $rdir : '/';
+        $rdir = ! empty($rdir) ? $rdir : '/';
+        return $this->app['pt.utils']->makePrefixedUrl($rdir);
     }
     
 }

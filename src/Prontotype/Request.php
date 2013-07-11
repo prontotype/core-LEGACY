@@ -75,10 +75,20 @@ Class Request {
         
         return http_build_query($qsArray);
     }
+
+    public function getQueryParam($param)
+    {
+        return $this->request->query->get($param);
+    }
     
     public function getQueryParams()
     {
         return $this->request->query;
+    }
+    
+    public function getPostParam($param)
+    {
+        return $this->request->request->get($param);
     }
     
     public function getPostParams()

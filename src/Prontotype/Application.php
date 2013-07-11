@@ -32,6 +32,7 @@ Class Application {
         'pt.user_manager'  => '\Prontotype\UserManager',
         'pt.snippets'      => '\Prontotype\Snippets\Manager',
         'pt.assets_helper' => '\Prontotype\Assets\Helper',
+        'pt.session'       => '\Prontotype\Session',
     );
     
     protected $srcPaths = array(

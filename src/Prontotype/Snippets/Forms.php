@@ -54,11 +54,32 @@ Class Forms extends Base {
             'name'  => $name,
             'type'  => $type,
             'value' => $value,
+            'id'    => $name
         ), $attrs);
         
         return $this->renderTemplate('input.twig', array(
             'attrs'  => $attrs,
         ));
+    }
+    
+    public function text($name = null, $value = null, $attrs = array())
+    {
+        return $this->input($name, 'text', $value, $attrs);
+    }
+    
+    public function password($name = null, $value = null, $attrs = array())
+    {
+        return $this->input($name, 'password', $value, $attrs);
+    }
+    
+    public function email($name = null, $value = null, $attrs = array())
+    {
+        return $this->input($name, 'email', $value, $attrs);
+    }
+    
+    public function hidden($name = null, $value = null, $attrs = array())
+    {
+        return $this->input($name, 'hidden', $value, $attrs);
     }
     
     public function select($name = null, $value = null, $opts = array(), $attrs = array())
@@ -83,6 +104,30 @@ Class Forms extends Base {
         return $this->renderTemplate('textarea.twig', array(
             'value' => $value,
             'attrs' => $attrs,
+        ));
+    }
+    
+    public function login($opts = array(), $attrs = array())
+    {
+        $attrs = $this->mergeOpts(array(
+            'action' => $this->app['pt.utils']->generateUrlPath('user.login'),
+            'method' => 'POST'
+        ), $attrs);
+        
+        $opts = $this->mergeOpts(array(
+            'redirect'      => null,
+            'default'       => null,
+            'loginUrl'      => $this->app['pt.utils']->generateUrlPath('user.login'),
+            'identify'      => $this->app['pt.config']->get('user.identify'),
+            'identifyLabel' => $this->app['pt.utils']->titleCase($this->app['pt.config']->get('user.identify')),
+            'auth'          => $this->app['pt.config']->get('user.auth'),
+            'authLabel'     => $this->app['pt.utils']->titleCase($this->app['pt.config']->get('user.auth')),
+            'submitLabel'   => "Login &rarr;",
+        ), $opts);
+        
+        return $this->renderTemplate('login.twig', array(
+            'attrs' => $attrs,
+            'opts' => $opts
         ));
     }
     

@@ -4,7 +4,26 @@
 
 # Users and logins
 
-To make it easier to prototype user-based interactions, Prontotype includes a system for mocking up users, accounts and logins.
+To make it easier to prototype user-based interactions, Prontotype includes a system for mocking up users, accounts and logins. As a quick overview, the user/login system works as follows:
+
+1. You define one or more users, with optional metadata, in a special data file called `users.yml`
+2. Optionally update your prototype's [config file]({{ pt.pages.getUrlById('config') }}) to specify how you want your user's logins to be handled - Prontotype needs to know how to identify a user on login, and whether or not it should try to match an authentication parameter (like a password) or allow 'mocked up' authentication.
+3. Create a login page in your prototype, with the form POSTing to the **login URL**.
+4. In your pages, check for the value of the special `pt.user` variable. If a user is logged in
+5. Optionally create a 'logout' link, pointing to the **logout URL**.
+
+
+## The users.yml file
+
+At the heart of the system is a data file called users.yml. If you don't have one of these in your prototype's `/data` directory, the system default one will be used, which looks like this:
+
+{% raw %}<pre class="brush: yaml">default:
+  name: Edward Xample
+  username: example
+  password: test
+  email: ed@xample.com
+  role: user</pre>{% endraw %}
+
 
 
 {% endset %}

@@ -15,10 +15,7 @@ Class Utils {
     {
         try {
             if ( $route == 'home' ) {
-                $url = ! empty($this->app['pt.prototype.path']) ? $this->app['pt.prototype.path'] : '/';
-                if ( ! $this->app['pt.env.clean_urls'] ) {
-                    $url = '/index.php' . $url;
-                }
+                return $this->makePrefixedUrl('');
             } else {
                 $url = $this->app['url_generator']->generate($route, $params);
                 if ( ! $this->app['pt.env.clean_urls'] && strpos( $url, 'index.php' ) === false ) {
@@ -29,6 +26,16 @@ Class Utils {
         } catch (\Exception $e) {
             return '#';
         }
+    }
+    
+    public function makePrefixedUrl($path)
+    {
+        $base = ! empty($this->app['pt.prototype.path']) ? $this->app['pt.prototype.path'] : '/';
+        if ( ! $this->app['pt.env.clean_urls'] ) {
+            $base = '/index.php' . $base;
+        }
+        $url = $base . str_replace($base, '', $path);
+        return $url;
     }
     
     public function fetchFromUrl($url, $ignoreCache = false)

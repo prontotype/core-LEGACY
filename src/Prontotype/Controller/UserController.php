@@ -23,6 +23,10 @@ class UserController implements ControllerProviderInterface
             if ( $app['pt.user_manager']->attemptLogin($app['request']->get($identifyBy), $app['request']->get($authBy)) ) {
                 return $app->redirect($app['pt.user_manager']->getLoginRedirectUrlPath($request->get('redirect')));
             } else {
+                $app['pt.session']->setFlash('requestData', array(
+                    'post'  => $app['request']->request->all(),
+                    'query' => $app['request']->query->all(),
+                ));
                 return $app->redirect($request->headers->get('referer'));
             }
             
