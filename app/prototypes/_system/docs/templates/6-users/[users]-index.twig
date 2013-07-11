@@ -8,9 +8,9 @@ To make it easier to prototype user-based interactions, Prontotype includes a sy
 
 1. You define one or more users, with optional metadata, in a special data file called `users.yml`
 2. Optionally update your prototype's [config file]({{ pt.pages.getUrlById('config') }}) to specify how you want your user's logins to be handled - Prontotype needs to know how to identify a user on login, and whether or not it should try to match an authentication parameter (like a password) or allow 'mocked up' authentication.
-3. Create a login page in your prototype, with the form POSTing to the **login URL**.
-4. In your pages, check for the value of the special `pt.user` variable. If a user is logged in
-5. Optionally create a 'logout' link, pointing to the **logout URL**.
+3. Create a login page in your prototype, with the form POSTing to the **login URL** - or just use the [login form snippet]({{ pt.pages.getUrlById('snippets-forms') }}) to generate this for you.
+4. In your pages, hide/show content or redirect check for the value of the special `pt.user` variable. If a user is logged in this will return the logged-in user's details as specified in your `users.yml` file. Otherwise it wll return `null`.
+5. Optionally create a 'logout' link, pointing to the **logout URL** - or use the [logout link navigation snippet]({{ pt.pages.getUrlById('nav') }}) to generate this for you.
 
 
 ## The users.yml file
@@ -23,6 +23,21 @@ At the heart of the system is a data file called users.yml. If you don't have on
   password: test
   email: ed@xample.com
   role: user</pre>{% endraw %}
+
+This file defines one user. All of the user attributes are optional and you can add/remove to fit your needs. For instance, if you wanted to create two users for your prototype, one who should have 'admin' privileges and one who should be a regular user, you could use the following in your prototype's `/data/users.yml` file:
+
+{% raw %}<pre class="brush: yaml">admin_user:
+  name: Adrian Admin
+  username: admin
+  password: password123
+  role: admin
+
+regular_user:
+  name: Reginald Regular
+  username: regular
+  password: 123abc
+  role: user</pre>{% endraw %}
+
 
 
 
