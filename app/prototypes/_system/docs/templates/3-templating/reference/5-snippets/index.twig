@@ -1,0 +1,13 @@
+{% extends "_layouts/skeleton.twig" %}
+
+{% set content %}
+
+# Snippets template reference
+
+For details on the available methods for each of the snippet groups, see the specific documentation for that group:
+
+<nav class="nav-inpage">
+{{ pt.snippets.navigation.pageTree(pt.pages.getCurrent(), {includeParent : false}) }}
+</nav>
+
+{% endset %}

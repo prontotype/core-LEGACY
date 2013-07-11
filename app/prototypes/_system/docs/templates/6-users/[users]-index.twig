@@ -8,9 +8,9 @@ To make it easier to prototype user-based interactions, Prontotype includes a sy
 
 1. You define one or more users, with optional metadata, in a special data file called `users.yml`
 2. Optionally update your prototype's [config file]({{ pt.pages.getUrlById('config') }}) to specify how you want your user's logins to be handled - Prontotype needs to know how to identify a user on login, and whether or not it should try to match an authentication parameter (like a password) or allow 'mocked up' authentication.
-3. Create a login page in your prototype, with the form POSTing to the **login URL** - or just use the [user login form snippet]({{ pt.pages.getUrlById('snippets-users') }}) to generate this for you.
+3. Create a login page in your prototype, with the form POSTing to the **login URL** - or just use the [user login form snippet]({{ pt.pages.getUrlById('tref-snippets-users') }}) to generate this for you.
 4. In your pages, hide/show content or redirect check for the value of the special `pt.user` variable. If a user is logged in this will return the logged-in user's details as specified in your `users.yml` file. Otherwise it wll return `null`.
-5. Optionally create a 'logout' link, pointing to the **logout URL** - or use the [user logout link snippet]({{ pt.pages.getUrlById('snippets-users') }}) to generate this for you.
+5. Optionally create a 'logout' link, pointing to the **logout URL** - or use the [user logout link snippet]({{ pt.pages.getUrlById('tref-snippets-users') }}) to generate this for you.
 
 
 ## The users.yml file
@@ -61,7 +61,7 @@ If you want users to be able to **login without authentication**, you can just s
 
 If you want to log in <strong>a default user if the identification field in the login form is not filled in</strong>, you can create a hidden field above this one to specify the default user identifier value. This means that the login form can be submitted completely empty and a user of your choosing will still get logged in.
 
-<p class="note">Note that using the <a href="{{ pt.pages.getUrlById('snippets-users') }}">user login form snippet</a> to generate your login form based on your configuration settings makes this process much easier!</p>
+<p class="note">Note that using the <a href="{{ pt.pages.getUrlById('tref-snippets-users') }}">user login form snippet</a> to generate your login form based on your configuration settings makes this process much easier!</p>
 
 ## Creating a login form
 
@@ -83,7 +83,7 @@ Using the default configuration this will generate a form that looks like this:
     <button type="submit">Login &rarr;</button>
 </form></pre>{% endraw %}
 
-You can see the <a href="{{ pt.pages.getUrlById('snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
+You can see the <a href="{{ pt.pages.getUrlById('tref-snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
 
 ## Accessing current user metadata and restricting access to content
 
@@ -111,6 +111,6 @@ You can generate a logout link using the `pt.snippets.users.logout()` method as 
 
 {% raw %}<pre class="brush: twig">{{ pt.snippets.users.logout() }} <!-- <a href="/index.php/_user/logout">Log out</a> --></pre>{% endraw %}
 
-You can see the <a href="{{ pt.pages.getUrlById('snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
+You can see the <a href="{{ pt.pages.getUrlById('tref-snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
 
 {% endset %}
