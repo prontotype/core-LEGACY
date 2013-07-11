@@ -28,7 +28,8 @@ class AuthController implements ControllerProviderInterface {
         $controllers->post('/login', function() use ($app) {
             
             if ( $app['pt.auth']->attemptLogin($app['request']->get('password')) ) {
-                return $app->redirect($app['pt.utils']->generateUrlPath('home'));
+                $redirect = $request->headers->get('referer') ? $request->headers->get('referer') : $app['pt.utils']->generateUrlPath('home');
+                return $app->redirect($redirect);
             } else {
                 return $app->redirect($app['pt.utils']->generateUrlPath('auth.login'));
             }

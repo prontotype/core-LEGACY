@@ -23,4 +23,5 @@ pages:
     '[assets]' : Asset Handling
     '[assets-css]' : Preprocessing CSS
     '[users]' : Users and Logins
+    '[users-data]' : The users.yml file
     
