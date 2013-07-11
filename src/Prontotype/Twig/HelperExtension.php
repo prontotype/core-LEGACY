@@ -9,6 +9,14 @@ class HelperExtension extends \Twig_Extension
         $this->app = $app;
     }
     
+    public function getTokenParsers()
+    {
+        return array(
+            new ExitTokenParser(),
+            new RedirectTokenParser(),
+        );
+    }
+    
     public function getName()
     {
         return 'helper';

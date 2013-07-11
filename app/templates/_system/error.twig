@@ -9,7 +9,7 @@ An error has occurred
 <div class="pt-content-block">
     
     <h1>An error has occurred.</h1>
-    <p>Computer says: {{ message }}</p>
+    {% if message %}<p>Computer says: {{ message }}</p>{% endif %}
     
 </div>
 

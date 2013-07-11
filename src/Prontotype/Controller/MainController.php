@@ -7,6 +7,7 @@ use Silex\ControllerProviderInterface;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MainController implements ControllerProviderInterface
 {
@@ -23,6 +24,11 @@ class MainController implements ControllerProviderInterface
             try {
                 return $app['twig']->render($page->getTemplatePath(), array());
             } catch ( \Exception $e ) {
+          
+                if ( $e instanceof \Twig_Error and $e->getPrevious() instanceof HttpException ) {
+                    return $app->abort($e->getPrevious()->getStatusCode());
+                }
+                
                 return $app['twig']->render('_system/error.twig', array(
                     'message'=>$e->getMessage()
                 ));

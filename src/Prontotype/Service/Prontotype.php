@@ -196,7 +196,7 @@ Class Prontotype implements ServiceProviderInterface {
         });
 
         $app->error(function(\Exception $e, $code) use ($app) {
-            
+
             switch( $code ) {
                 case '404':
                     $template = '_system/404.twig';
@@ -209,6 +209,7 @@ Class Prontotype implements ServiceProviderInterface {
             return new Response($app['twig']->render($template, array(
                 'message' => $e->getMessage()
             )), $code);
+            
         });
     }
     

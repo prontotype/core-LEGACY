@@ -5,6 +5,8 @@ namespace Prontotype;
 Class Utils {
 
     protected $app;
+    
+    protected static $APP; 
 
     public function __construct($app)
     {
