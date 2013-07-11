@@ -107,30 +107,6 @@ Class Forms extends Base {
         ));
     }
     
-    public function login($opts = array(), $attrs = array())
-    {
-        $attrs = $this->mergeOpts(array(
-            'action' => $this->app['pt.utils']->generateUrlPath('user.login'),
-            'method' => 'POST'
-        ), $attrs);
-        
-        $opts = $this->mergeOpts(array(
-            'redirect'      => null,
-            'default'       => null,
-            'loginUrl'      => $this->app['pt.utils']->generateUrlPath('user.login'),
-            'identify'      => $this->app['pt.config']->get('user.identify'),
-            'identifyLabel' => $this->app['pt.utils']->titleCase($this->app['pt.config']->get('user.identify')),
-            'auth'          => $this->app['pt.config']->get('user.auth'),
-            'authLabel'     => $this->app['pt.utils']->titleCase($this->app['pt.config']->get('user.auth')),
-            'submitLabel'   => "Login &rarr;",
-        ), $opts);
-        
-        return $this->renderTemplate('login.twig', array(
-            'attrs' => $attrs,
-            'opts' => $opts
-        ));
-    }
-    
     // public function control($type = 'input', $label = null, $name = null, $value = null, $opts = array(), $attrs = array())
     // {
     //     return $this->renderTemplate('control.twig', array(
