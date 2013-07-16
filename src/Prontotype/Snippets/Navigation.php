@@ -18,6 +18,7 @@ Class Navigation extends Base {
             'includeParent' => true,
             'type'         => 'ul',
             'maxDepth'     => null,
+            'levelClassPrefix' => 'level-',
             'currentClass' => 'is-current',
             'parentClass'  => 'is-parent',
         ), $opts);
@@ -58,6 +59,7 @@ Class Navigation extends Base {
         $opts = $this->mergeOpts(array(
             'type'   => 'ul',
             'offset' => 0,
+            'levelClassPrefix' => 'level-',
             'limit'  => null,
             'append' => array(),
             'prepend' => array()

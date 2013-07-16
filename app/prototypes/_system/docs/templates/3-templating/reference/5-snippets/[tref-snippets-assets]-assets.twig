@@ -4,6 +4,52 @@
 
 # Assets snippets template reference
 
-Documentation coming soon.
+All asset snippet methods are available under the `pt.snippets.assets` template variable.
+
+## Available methods
+
+<div class="method-ref">
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-assets-stylesheet">pt.snippets.assets.<span class="name">stylesheet(path [, media [, attrs ]])</span></h3>
+        <ul class="variables">
+            <li><code>path</code>: Asset-directory relative path to the asset (<a href="{{ pt.pages.getUrlById('assets-css') }}">CSS, LESS or SCSS</a>) file </li>
+            <li><code>media</code>: <em>(optional)</em> <code>media</code> attribute to use for the generated <code>link</code> element. <strong>Defaults to <code>all</code></strong>.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the generated <code>link</code> element.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Outputs a stylesheet <code>link</code> element for use in the head of your HTML page, with the correct dynamic asset URL generated.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.stylesheet('css/meerkat.css') }} <!-- <link href="http://example.com/index.php/_assets/css/meerkat.css" rel="stylesheet" media="all" type="text/css"> -->
+{{ pt.snippets.assets.stylesheet('css/parrot.less', 'screen', {id:'parrot-css'}) }} <!-- <link href="http://example.com/index.php/_assets/css/parrot.css" rel="stylesheet" media="screen" type="text/css" id="parrot-css"> --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-assets-js">pt.snippets.assets.<span class="name">js(path [, attrs ])</span></h3>
+        <ul class="variables">
+            <li><code>path</code>: Asset-directory relative path to the JS file </li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the generated <code>script</code> tag.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Outputs a JavaScript <code>script</code> tag for use in your HTML page, with the correct dynamic asset URL generated.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.js('js/panda.js') }} <!-- <script src="http://example.com/index.php/_assets/js/panda.js"></script> -->
+{{ pt.snippets.assets.js('js/otter-tpl.js', {type:'text/template'}) }} <!-- <script src="http://example.com/index.php/_assets/js/otter-tpl.js" type="text/template"></script> --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-assets-image">pt.snippets.assets.<span class="name">image(path [, attrs ])</span></h3>
+        <ul class="variables">
+            <li><code>path</code>: Asset-directory relative path to the image file </li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the generated <code>img</code> element.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Outputs an <code>img</code> element for use in your HTML page, with the correct dynamic asset URL generated.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.img('img/koala.png') }} <!-- <img href="http://example.com/index.php/_assets/img/koala.png"> -->
+{{ pt.snippets.assets.img('img/squirrel.jpg', {class:'big-squirrel'}) }} <!-- <img href="http://example.com/index.php/_assets/img/squirrel.jpg" class="big-squirrel"> --></pre>{% endraw %}
+    </div>
+    
+</div>
 
 {% endset %}

@@ -1,7 +1,7 @@
 <{{ opts.type }}{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 {% for page in pages %}
 {% if not loop.last %}
-    <li class="level-{{ loop.index0 }}">
+    <li class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ loop.index0 }}{% endif %}">
         {% if page.isPage() %}
         <a href="{{ page.getUrl() }}">{{ page.getTitle() }}</a>
         {% elseif page.isDirectory() %}
