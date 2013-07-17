@@ -2,7 +2,7 @@
 <{{ opts.type }}{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 {% endif %}
     {% for item in pages %}
-    <li class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ level }} {% endif %}{% if item.isPage() %}is-page{% else %}is-directory{% endif %}{% if item.isCurrent() %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent() %} {{ opts.parentClass }}{% endif %}">
+    <li class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ level }} {% endif %}{% if item.isPage() %}is-page{% else %}is-directory{% endif %}{% if item.isCurrent() and opts.currentClass %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent() and opts.parentClass %} {{ opts.parentClass }}{% endif %}">
         {% if item.isPage() %}
         <a href="{{ item.getUrlPath() }}">{{ item.getTitle() }}</a>
         {% else %}

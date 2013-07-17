@@ -1,7 +1,7 @@
 <{{ opts.type }}{% for attr, val in attrs %} {{ attr }}="{{ val }}"{% endfor %}>
 {% for page in pages %}
 {% if not loop.last %}
-    <li class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ loop.index0 }}{% endif %}">
+    <li{% if opts.levelClassPrefix %} class="{{ opts.levelClassPrefix }}{{ loop.index0 }}"{% endif %}>
         {% if page.isPage() %}
         <a href="{{ page.getUrl() }}">{{ page.getTitle() }}</a>
         {% elseif page.isDirectory() %}
@@ -11,7 +11,7 @@
         {% endif %}
     </li>
 {% else %}
-    <li class="level-{{ loop.index0 }} is-current">
+    <li {% if opts.levelClassPrefix or opts.currentClass %}class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ loop.index0 }}{% endif %}{% if opts.currentClass %} {{ opts.currentClass }}{% endif %}"{% endif %}>
         {% if page.isPage() %}
         <em>{{ page.getTitle() }}</em>
         {% else %}

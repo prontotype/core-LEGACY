@@ -58,8 +58,9 @@ Class Navigation extends Base {
         
         $opts = $this->mergeOpts(array(
             'type'   => 'ul',
-            'offset' => 0,
             'levelClassPrefix' => 'level-',
+            'currentClass' => 'is-current',
+            'offset' => 0,
             'limit'  => null,
             'append' => array(),
             'prepend' => array()
@@ -115,18 +116,6 @@ Class Navigation extends Base {
         return $this->renderTemplate('breadcrumb.twig', array(
             'pages' => $pages,
             'opts'  => $opts,
-            'attrs' => $attrs
-        ));
-    }
-    
-    public function logout($text = 'Logout', $attrs = array())
-    {
-        $attrs = $this->mergeOpts(array(
-            'href' => $this->app['pt.utils']->generateUrlPath('user.logout')
-        ), $attrs);
-        
-        return $this->renderTemplate('link.twig', array(
-            'text'  => $text,
             'attrs' => $attrs
         ));
     }
