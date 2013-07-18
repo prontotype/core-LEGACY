@@ -75,7 +75,23 @@ All navigation snippet methods are available under the `pt.snippets.navigation` 
     <li class="level-0"><a href="/">Home</a></li>
     <li class="level-1"><a href="/index.php/about">About</a>
     <li class="level-2 is-current"><em>Bar</em></li>
-</ul></pre>{% endraw %}
+</ul>
+
+{# Generate a breadcrumb, don't include the homepage, append a couple of items on the end #}
+{{ pt.snippets.navigation.breadcrumb({
+    'type': 'ol',
+    'offset': 1,
+    'append': [
+        'Foo': '/index.php/example/foo',
+        'Hello': '/index.php/hello'
+    ]
+}) }}
+<ol>
+    <li class="level-0"><a href="/index.php/about">About</a>
+    <li class="level-1"><a href="/index.php/about/bar">Bar</a>
+    <li class="level-2"><a href="/index.php/example/foo">Foo</a>
+    <li class="level-3 is-current"><em>Hello</em></li>
+</ol></pre>{% endraw %}
 
 <h3><code>opts</code> options and defaults</h3>
 
