@@ -27,7 +27,7 @@ Class Forms extends Base {
     public function label($text = 'Label', $target = null, $attrs = array())
     {
         $attrs = $this->mergeOpts(array(
-            'for'   => $target
+            'for'   => '#' . str_replace('#', '', $target)
         ), $attrs);
         
         return $this->renderTemplate('label.twig', array(
@@ -50,6 +50,9 @@ Class Forms extends Base {
     
     public function input($name = null, $type = 'text', $value = null, $attrs = array())
     {
+        if ( ! $name ) {
+            $name = $this->app['pt.utils']->randomString(6);
+        } 
         $attrs = $this->mergeOpts(array(
             'name'  => $name,
             'type'  => $type,

@@ -4,6 +4,144 @@
 
 # Form snippets template reference
 
-Documentation coming soon.
+All user snippet methods are available under the `pt.snippets.forms` template variable, and give you a set of useful shortcut methods for quickly generating form elements.
+
+## Available methods
+
+<div class="method-ref">
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-open">pt.snippets.forms.<span class="name">open([ attrs ])</span></h3>
+        <ul class="variables">
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the opening form tag.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates an opening form tag, with optional attributes</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.open({'action':'/index.php/test'}) }} <form action="/index.php/test"></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-close">pt.snippets.forms.<span class="name">close()</span></h3>
+        <div class="method-desc">
+            <p>Generates an closing form tag</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.close() }} </form></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-label">pt.snippets.forms.<span class="name">label([ text [, target [, attrs ]]])</span></h3>
+        <ul class="variables">
+            <li><code>text</code>: <em>(optional)</em> Text to use for the label. <strong>Defaults to 'Label'</strong>.</li>
+            <li><code>target</code>: <em>(optional)</em> ID of the input that this label describes.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the label.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a label element.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.label('Pet name', 'pet-name', {'class':'required'}) }} <label for="#pet-name">Pet name</label></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-button">pt.snippets.forms.<span class="name">button([ text [, attrs ]])</span></h3>
+        <ul class="variables">
+            <li><code>text</code>: <em>(optional)</em> Text to use for the button. <strong>Defaults to 'Submit'</strong>.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the button.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a button element.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.button('Release hounds', {'id':'uhoh'}) }} <button type="submit" id="uhoh">Release hounds</button></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-text">pt.snippets.forms.<span class="name">text([ name [, value [, attrs ]]])</span></h3>
+        <ul class="variables">
+            <li><code>name</code>: <em>(optional)</em> Name for the field. <strong>Defaults to a random string</strong>.</li>
+            <li><code>value</code>: <em>(optional)</em> Value for the field.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the field.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a text input field.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.text('pet-name', null, {'placeholder':'e.g. Fido'}) }} <input type="text" name="pet-name" placeholder="e.g. Fido"></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-email">pt.snippets.forms.<span class="name">email([ name [, value [, attrs ]]])</span></h3>
+        <ul class="variables">
+            <li><code>name</code>: <em>(optional)</em> Name for the field. <strong>Defaults to a random string</strong>.</li>
+            <li><code>value</code>: <em>(optional)</em> Value for the field.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the field.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a email input field.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.email('electronic-mail', 'fido@dogs.com') }} <input type="email" name="electronic-mail" value="fido@dogs.com"></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-password">pt.snippets.forms.<span class="name">password([ name [, value [, attrs ]]])</span></h3>
+        <ul class="variables">
+            <li><code>name</code>: <em>(optional)</em> Name for the field. <strong>Defaults to a random string</strong>.</li>
+            <li><code>value</code>: <em>(optional)</em> Value for the field.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the field.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a password input field.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.password('shhh') }} <input type="email" name="shhh"></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-hidden">pt.snippets.forms.<span class="name">hidden([ name [, value [, attrs ]]])</span></h3>
+        <ul class="variables">
+            <li><code>name</code>: <em>(optional)</em> Name for the field. <strong>Defaults to a random string</strong>.</li>
+            <li><code>value</code>: <em>(optional)</em> Value for the field.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the field.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a hidden input field.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.hidden('group-id', 23) }} <input type="hidden" name="group-id" value="23"></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-select">pt.snippets.forms.<span class="name">select([ name [, value [, opts [, attrs ]]]])</span></h3>
+        <ul class="variables">
+            <li><code>name</code>: <em>(optional)</em> Name for the field. <strong>Defaults to a random string</strong>.</li>
+            <li><code>value</code>: <em>(optional)</em> Value for the field.</li>
+            <li><code>opts</code>: <em>(optional)</em> Value:Label array of options for the select field.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the field.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a select field.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.select('cat-choice', 'persian', {
+    'Tabby': 'tabby',
+    'Persian': 'persian',
+    'Lion': 'rarrghh'
+}) }}
+<select name="cat-choice">
+    <option value="tabby">Tabby</option>
+    <option value="persian" selected>Persian</option>
+    <option value="rarrghh">Lion</option>
+</select></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-forms-textarea">pt.snippets.forms.<span class="name">textarea([ name [, value [, attrs ]]])</span></h3>
+        <ul class="variables">
+            <li><code>name</code>: <em>(optional)</em> Name for the field. <strong>Defaults to a random string</strong>.</li>
+            <li><code>value</code>: <em>(optional)</em> Value for the field.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the field.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a textarea field.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.textarea(null, 'Hello!') }} <textarea name="haajsdal">Hello!</textarea></pre>{% endraw %}
+    </div>
+
+</div>
 
 {% endset %}
