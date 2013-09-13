@@ -145,10 +145,7 @@ Class Prontotype implements ServiceProviderInterface {
         $app['twig.dataloader'] = $app->share(function ($app) {
             
             $paths = array();
-            foreach( array(
-                $app['pt.prototype.paths.data'],
-                $app['pt.app.paths.data']
-            ) as $path ) {
+            foreach( $app['pt.data']->getLoadPaths() as $path ) {
                 if ( is_dir($path) ) {
                     $paths[] = $path;
                 }
