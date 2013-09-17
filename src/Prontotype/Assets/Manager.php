@@ -104,12 +104,6 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        if ( strpos($assetPath, '::') !== false ) {
-            // this is a request for an asset in another prototype
-            list($ptName, $path) = explode('::', $assetPath);
-            
-        }
-        exit();
         $loadPaths = $this->getLoadPaths();        
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($assetPath);
