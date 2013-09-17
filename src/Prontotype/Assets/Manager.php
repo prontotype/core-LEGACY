@@ -105,23 +105,8 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        $loadPaths = $this->getLoadPaths(); 
-        
-        // if ( strpos($assetPath, '::') !== false ) {
-        //     // this is a request for an asset in another prototype
-        //     list($ptName, $path) = explode('::', $assetPath);
-        //     
-        //     $defs = Prototype::getPrototypeDefinitions($this->app['pt.prototype']->getDefPaths());
-        //     
-        //     if (isset($defs[$ptName])) {
-        //         
-        //         $pt = new Prototype($ptName, $defs[$ptName], $this->app);
-        //         $pt->locate($this->app['pt.prototype']->getPtPaths(), $this->app['pt.prototype']->getDefPaths());
-        //         
-        //         $path = $pt->getRootPath();
-        //     }
-        // }
-               
+        $loadPaths = $this->getLoadPaths();        
+
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {
