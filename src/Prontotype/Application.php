@@ -37,11 +37,11 @@ Class Application {
     
     protected $srcPaths = array(
         'root'       => '/../../',
+        'app_root'   => '/../../app',
         'data'       => '/../../app/data',
         'config'     => '/../../app/config',
         'assets'     => '/../../app/assets',
         'templates'  => '/../../app/templates',
-        'prototypes' => '/../../app/prototypes',
     );
     
 	public function __construct($paths)
@@ -52,7 +52,6 @@ Class Application {
         $this->app['pt.install.paths.root'] = $this->paths['root'];
         $this->app['pt.install.paths.cache.root'] = $this->paths['cache'];
         $this->app['pt.install.paths.vendor'] = $this->paths['vendor'];
-        $this->app['pt.install.paths.prototypes'] = $this->paths['prototypes'];
         $this->app['pt.install.paths.config'] = $this->paths['config'];
         
         foreach($this->srcPaths as $key => $path) {
@@ -70,8 +69,8 @@ Class Application {
             $app['pt.install.paths.config'],
             $app['pt.app.paths.config'],
         ), array(
-            $app['pt.install.paths.prototypes'],
-            $app['pt.app.paths.prototypes'],
+            $app['pt.install.paths.root'],
+            $app['pt.app.paths.app_root'],
         )));
         
         $app->register(new Service\Prontotype($this->sharedServices));
@@ -97,11 +96,6 @@ Class Application {
     public function doHealthCheck()
     {
         $errors = array();
-        if ( $this->app['pt.prototype.environment'] !== '_system' ) {
-            if ( ! file_exists($this->app['pt.install.paths.prototypes']) ) {
-                $errors[] = 'The prototypes directory (' . $this->app['pt.install.paths.prototypes'] . ') does not exist.';
-            }
-        }
         if ( ! is_writeable($this->app['pt.install.paths.cache.root']) ) {
             $errors[] = 'The cache directory (' . $this->app['pt.install.paths.cache.root'] . ') is not writeable or does not exist.';
         }

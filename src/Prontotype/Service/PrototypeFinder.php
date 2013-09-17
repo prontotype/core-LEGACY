@@ -68,26 +68,27 @@ Class PrototypeFinder implements ServiceProviderInterface {
         }
 
         $ptDirPath = $this->findPrototype($ptConfig['prototype']);
-
-        $app['pt.prototype.label'] = $label;
-        $app['pt.prototype.folder'] = $ptConfig['prototype'];
-        $app['pt.prototype.domain'] = $ptConfig['domain'];
-        $app['pt.prototype.path'] = $ptConfig['path'];
+        
+        $app['pt.prototype.label']       = $label;
+        $app['pt.prototype.location']    = $ptConfig['prototype'];
+        $app['pt.prototype.uid']         = md5($ptConfig['prototype']);
+        $app['pt.prototype.domain']      = $ptConfig['domain'];
+        $app['pt.prototype.path']        = $ptConfig['path'];
         $app['pt.prototype.environment'] = isset($ptConfig['environment']) ? $ptConfig['environment'] : 'live';
 
-        $app['pt.prototype.paths.root'] = $ptDirPath;
-        $app['pt.prototype.paths.templates'] = $app['pt.prototype.paths.root'] . '/templates';
-        $app['pt.prototype.paths.data'] = $app['pt.prototype.paths.root'] . '/data';
-        $app['pt.prototype.paths.config'] = $app['pt.prototype.paths.root'] . '/config';
+        $app['pt.prototype.paths.root']       = $ptDirPath;
+        $app['pt.prototype.paths.templates']  = $app['pt.prototype.paths.root'] . '/templates';
+        $app['pt.prototype.paths.data']       = $app['pt.prototype.paths.root'] . '/data';
+        $app['pt.prototype.paths.config']     = $app['pt.prototype.paths.root'] . '/config';
         $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
-        $app['pt.prototype.paths.assets'] = $app['pt.prototype.paths.root'] . '/assets';
+        $app['pt.prototype.paths.assets']     = $app['pt.prototype.paths.root'] . '/assets';
 
-        $app['pt.prototype.paths.cache.root'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'];
-        $app['pt.prototype.paths.cache.templates'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/templates';
-        $app['pt.prototype.paths.cache.assets'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/assets';
-        $app['pt.prototype.paths.cache.data'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/data';
-        $app['pt.prototype.paths.cache.requests'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/requests';
-        $app['pt.prototype.paths.cache.exports'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.folder'] .'/exports';        
+        $app['pt.prototype.paths.cache.root']      = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'];
+        $app['pt.prototype.paths.cache.templates'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/templates';
+        $app['pt.prototype.paths.cache.assets']    = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/assets';
+        $app['pt.prototype.paths.cache.data']      = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/data';
+        $app['pt.prototype.paths.cache.requests']  = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/requests';
+        $app['pt.prototype.paths.cache.exports']   = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/exports';        
     }
         
     public function boot(SilexApp $app) {}
@@ -108,25 +109,28 @@ Class PrototypeFinder implements ServiceProviderInterface {
         return $defs;
     }
     
-    protected function findPrototype($prototypeName)
+    protected function findPrototype($location)
     {
         $path = null;
-        foreach($this->ptPaths as $ptPath) {
-            if ( file_exists($ptPath . '/' . $prototypeName) ) {
-                $path = $ptPath . '/' . $prototypeName;
-                break;
+        
+        if ( strpos($location,'/') === 0 && file_exists($location) ) {
+            $path = $location;
+        }
+                
+        if ( $path === null ) {
+            foreach($this->ptPaths as $ptPath) {
+                if ( file_exists($ptPath . '/' . $location) ) {
+                    $path = $ptPath . '/' . $location;
+                    break;
+                }
             }
         }
         
         if ( $path === null ) {
-            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $prototypeName));
+            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
         }
         
         return $path;
     }
     
 }
-
-
-
-

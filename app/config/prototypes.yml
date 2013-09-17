@@ -1,5 +1,5 @@
 _docs:
   domain: '*'
   path: '_docs'
-  prototype: '_system/docs'
+  prototype: 'prototypes/_system/docs'
   environment: _system
