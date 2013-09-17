@@ -3,6 +3,7 @@
 namespace Prontotype\Assets;
 
 use Prontotype\Cache;
+use Prontotype\Prototype;
 
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -104,13 +105,23 @@ Class Manager {
     
     protected function findAssetFile($assetPath)
     {
-        if ( strpos($assetPath, '::') !== false ) {
-            // this is a request for an asset in another prototype
-            list($ptName, $path) = explode('::', $assetPath);
-            
-        }
-        exit();
-        $loadPaths = $this->getLoadPaths();        
+        $loadPaths = $this->getLoadPaths(); 
+        
+        // if ( strpos($assetPath, '::') !== false ) {
+        //     // this is a request for an asset in another prototype
+        //     list($ptName, $path) = explode('::', $assetPath);
+        //     
+        //     $defs = Prototype::getPrototypeDefinitions($this->app['pt.prototype']->getDefPaths());
+        //     
+        //     if (isset($defs[$ptName])) {
+        //         
+        //         $pt = new Prototype($ptName, $defs[$ptName], $this->app);
+        //         $pt->locate($this->app['pt.prototype']->getPtPaths(), $this->app['pt.prototype']->getDefPaths());
+        //         
+        //         $path = $pt->getRootPath();
+        //     }
+        // }
+               
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {

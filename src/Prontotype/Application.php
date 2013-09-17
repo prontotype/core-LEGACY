@@ -61,7 +61,7 @@ Class Application {
         $this->app['pt.env.clean_urls'] = file_exists($this->app['pt.install.paths.root'] . '/.htaccess');
     }
     
-    public function run()
+    public function run($host = null)
     {
         $app = $this->app;
         
@@ -71,7 +71,7 @@ Class Application {
         ), array(
             $app['pt.install.paths.root'],
             $app['pt.app.paths.app_root'],
-        )));
+        ), $host));
         
         $app->register(new Service\Prontotype($this->sharedServices));
 
@@ -91,6 +91,8 @@ Class Application {
         });
         
         $this->app->run();
+        
+        return $app;
     }
     
     public function doHealthCheck()

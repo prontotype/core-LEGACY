@@ -15,42 +15,46 @@ Class PrototypeFinder implements ServiceProviderInterface {
     
     protected $ptPaths;
     
-    public function __construct($defPaths, $ptPaths)
+    public function __construct($defPaths, $ptPaths, $prototype = null)
     {
         $this->defPaths = $defPaths;
         $this->ptPaths = $ptPaths;
+        $this->prototype = $prototype;
     }
     
     public function register(SilexApp $app)
-    {
-        $ptDefinitions = $this->getPrototypeDefinitions();
+    {   
+        $app['pt.prototype'] = null;
+        
+        if ( ! $this->prototype ) {
+            $ptDefinitions = Prototype::getPrototypeDefinitions($this->defPaths);
+            $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 
-        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-        $ptConfig = null;
-
-        foreach( $ptDefinitions as $label => $definition ) {
-            
-            $test = new Prototype($label, $definition, $this->ptPaths, $app);
-            
-            if ( $test->matches($host) ) {
-                $pt = $test;
-                break;
-            }
-            
+            foreach( $ptDefinitions as $label => $definition ) {
+                $pt = new Prototype($label, $definition, $app);
+                if ( $pt->locate($this->ptPaths, $this->defPaths) ) {
+                    if ( $pt->matches($host) ) {
+                        $app['pt.prototype'] = $pt;
+                        break;
+                    }                
+                }
+            }            
+        } else {
+            $app['pt.prototype'] = $this->prototype;
         }
-
-        if ( ! $pt ) {
+        
+        if ( ! $app['pt.prototype'] ) {
             throw new \Exception(sprintf("Could not find matching prototype definition for '%s'.", $host));
         }
         
-        $app['pt.prototype.label']       = $pt->getLabel();
-        $app['pt.prototype.prototype']   = $pt->getPrototypePath();
-        $app['pt.prototype.uid']         = $pt->getUid();
-        $app['pt.prototype.domain']      = $pt->getDomain();
-        $app['pt.prototype.path']        = $pt->getPath();
-        $app['pt.prototype.environment'] = $pt->getEnvironment();
+        $app['pt.prototype.label']       = $app['pt.prototype']->getLabel();
+        $app['pt.prototype.prototype']   = $app['pt.prototype']->getPrototypePath();
+        $app['pt.prototype.uid']         = $app['pt.prototype']->getUid();
+        $app['pt.prototype.domain']      = $app['pt.prototype']->getDomain();
+        $app['pt.prototype.path']        = $app['pt.prototype']->getPath();
+        $app['pt.prototype.environment'] = $app['pt.prototype']->getEnvironment();
 
-        $app['pt.prototype.paths.root']       = $pt->getRootPath();
+        $app['pt.prototype.paths.root']       = $app['pt.prototype']->getRootPath();
         $app['pt.prototype.paths.templates']  = $app['pt.prototype.paths.root'] . '/templates';
         $app['pt.prototype.paths.data']       = $app['pt.prototype.paths.root'] . '/data';
         $app['pt.prototype.paths.config']     = $app['pt.prototype.paths.root'] . '/config';
@@ -66,23 +70,5 @@ Class PrototypeFinder implements ServiceProviderInterface {
     }
         
     public function boot(SilexApp $app) {}
-    
-    protected function getPrototypeDefinitions()
-    {
-        $defs = array();
-        foreach($this->defPaths as $loadPath) {
-            $loadPath = $loadPath . '/prototypes.yml';
-            if ( file_exists($loadPath) ) {
-                $ptDefinitions = Yaml::parse($loadPath);       
-                if (null === $ptDefinitions) {
-                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
-                }
-                $defs = array_merge($ptDefinitions, $defs);                
-            }
-        }
-        return $defs;
-    }
-    
- 
     
 }

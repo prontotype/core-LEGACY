@@ -2,20 +2,29 @@
 
 namespace Prontotype;
 
+use Symfony\Component\Yaml\Yaml;
+
 Class Prototype {
     
     protected $app;
     
-    protected $ptPaths;
+    protected $ptPaths = array();
+    
+    protected $defPaths = array();
 
-    public function __construct( $label, $definition, $ptPaths, $app )
+    public function __construct( $label, $definition, $app )
     {
         $this->app = $app;
         $this->label = $label;
         $this->definition = $definition;
+    }
+    
+    public function locate($ptPaths, $defPaths)
+    {
+        $this->location = $this->findPrototype($ptPaths, $this->definition['prototype']);
         $this->ptPaths = $ptPaths;
-        $this->location = $this->findPrototype($this->definition['prototype']);
-        
+        $this->defPaths = $defPaths;
+        return true;
     }
     
     public function getLabel()
@@ -45,12 +54,22 @@ Class Prototype {
     
     public function getPath()
     {
-        return $this->definition['path'];
+        return isset($this->definition['path']) ? $this->definition['path'] : '';
     }
     
     public function getEnvironment()
     {
         return isset($this->definition['environment']) ? $this->definition['environment'] : 'live';
+    }
+    
+    public function getPtPaths()
+    {
+        return $this->ptPaths;
+    }
+    
+    public function getDefPaths()
+    {
+        return $this->defPaths;
     }
     
     public function matches($host)
@@ -94,7 +113,7 @@ Class Prototype {
         }
     }
          
-    protected function findPrototype($location)
+    protected function findPrototype($ptPaths, $location)
     {
         $path = null;
         
@@ -103,7 +122,7 @@ Class Prototype {
         }
                 
         if ( $path === null ) {
-            foreach($this->ptPaths as $ptPath) {
+            foreach($ptPaths as $ptPath) {
                 if ( file_exists($ptPath . '/' . $location) ) {
                     $path = $ptPath . '/' . $location;
                     break;
@@ -116,6 +135,22 @@ Class Prototype {
         }
         
         return $path;
+    }
+    
+    public static function getPrototypeDefinitions($defPaths)
+    {
+        $defs = array();
+        foreach($defPaths as $loadPath) {
+            $loadPath = $loadPath . '/prototypes.yml';
+            if ( file_exists($loadPath) ) {
+                $ptDefinitions = Yaml::parse($loadPath);       
+                if (null === $ptDefinitions) {
+                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
+                }
+                $defs = array_merge($ptDefinitions, $defs);                
+            }
+        }
+        return $defs;
     }
     
 }
