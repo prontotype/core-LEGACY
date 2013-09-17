@@ -7,6 +7,8 @@ use Symfony\Component\Yaml\Yaml;
 use Silex\Application as SilexApp;
 use Silex\ServiceProviderInterface;
 
+use Prontotype\Prototype;
+
 Class PrototypeFinder implements ServiceProviderInterface {
     
     protected $defPaths;
@@ -27,56 +29,28 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $ptConfig = null;
 
         foreach( $ptDefinitions as $label => $definition ) {
-            $matches = is_array($definition['domain']) ? $definition['domain'] : array($definition['domain']);
-            $regexp = '/^(';
-            $regexp .= implode('|', array_map(function($value){
-                return str_replace(array('.','*'), array('\.','(.*)'), $value);
-            }, $matches));
-            $regexp .= ')/';
-            if ( preg_match($regexp, $host, $matches) ) {
-                if ( isset($definition['path']) && $definition['path'] != '/' ) {
-                    // check the path
-                    $requestPath = trim(str_replace(array('/index.php'), '', $_SERVER['REQUEST_URI']),'/');
-                    $requestPathParts = explode('/', $requestPath);
-                    $definitionPathParts = explode('/',trim($definition['path'],'/'));
-                    if ( count($definitionPathParts) > count($requestPathParts) ) {
-                        continue;
-                    }
-                    for ( $i = 0; $i < count($definitionPathParts); $i++) {
-                        if ( $requestPathParts[$i] !== $definitionPathParts[$i] ) {
-                            continue 2;
-                        }
-                    }
-                    $definition['path'] = '/' . implode($definitionPathParts);
-                } else {
-                    $definition['path'] = '';
-                }
-                $replacements = array_slice($matches, 2);                
-                $ptConfig = $definition;
-                $replacementTokens = array();
-                for ( $j = 0; $j < count($replacements); $j++ ) {
-                    $replacementTokens['$' . ($j+1)] = $replacements[$j];
-                }
-                $ptLabel = $label;
-                $ptConfig['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $ptConfig['prototype']);
+            
+            $test = new Prototype($label, $definition, $this->ptPaths, $app);
+            
+            if ( $test->matches($host) ) {
+                $pt = $test;
                 break;
             }
+            
         }
 
-        if ( ! $ptConfig ) {
+        if ( ! $pt ) {
             throw new \Exception(sprintf("Could not find matching prototype definition for '%s'.", $host));
         }
-
-        $ptDirPath = $this->findPrototype($ptConfig['prototype']);
         
-        $app['pt.prototype.label']       = $label;
-        $app['pt.prototype.location']    = $ptConfig['prototype'];
-        $app['pt.prototype.uid']         = md5($ptConfig['prototype']);
-        $app['pt.prototype.domain']      = $ptConfig['domain'];
-        $app['pt.prototype.path']        = $ptConfig['path'];
-        $app['pt.prototype.environment'] = isset($ptConfig['environment']) ? $ptConfig['environment'] : 'live';
+        $app['pt.prototype.label']       = $pt->getLabel();
+        $app['pt.prototype.prototype']   = $pt->getPrototypePath();
+        $app['pt.prototype.uid']         = $pt->getUid();
+        $app['pt.prototype.domain']      = $pt->getDomain();
+        $app['pt.prototype.path']        = $pt->getPath();
+        $app['pt.prototype.environment'] = $pt->getEnvironment();
 
-        $app['pt.prototype.paths.root']       = $ptDirPath;
+        $app['pt.prototype.paths.root']       = $pt->getRootPath();
         $app['pt.prototype.paths.templates']  = $app['pt.prototype.paths.root'] . '/templates';
         $app['pt.prototype.paths.data']       = $app['pt.prototype.paths.root'] . '/data';
         $app['pt.prototype.paths.config']     = $app['pt.prototype.paths.root'] . '/config';
@@ -109,28 +83,6 @@ Class PrototypeFinder implements ServiceProviderInterface {
         return $defs;
     }
     
-    protected function findPrototype($location)
-    {
-        $path = null;
-        
-        if ( strpos($location,'/') === 0 && file_exists($location) ) {
-            $path = $location;
-        }
-                
-        if ( $path === null ) {
-            foreach($this->ptPaths as $ptPath) {
-                if ( file_exists($ptPath . '/' . $location) ) {
-                    $path = $ptPath . '/' . $location;
-                    break;
-                }
-            }
-        }
-        
-        if ( $path === null ) {
-            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
-        }
-        
-        return $path;
-    }
+ 
     
 }

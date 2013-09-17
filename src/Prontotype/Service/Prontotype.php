@@ -15,6 +15,7 @@ use Twig_Environment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 
+use Prontotype\Application;
 use Prontotype\Cache;
 use Prontotype\Twig\HelperExtension;
 use Prontotype\Twig\GeshiExtension;
@@ -66,6 +67,17 @@ Class Prontotype implements ServiceProviderInterface {
                 return new $serviceClass($app);
             });
         }
+        
+        $app['pt.instance'] = function($rootPath){
+            $app = new Application(array(
+                'root'       => $rootPath,
+                'cache'      => $rootPath . '/cache',
+                'vendor'     => $rootPath . '/vendor',
+                'config'     => $rootPath . '/config',
+            ));
+            $app->run();
+            return $app;
+        };
         
         $app['pt.cache'] = $app->share(function($app) {
             return new Cache($app, array(
