@@ -34,7 +34,7 @@ Class Manager {
     public function getById($id)
     {
         foreach( $this->getRecursivePagesIterator() as $page ) {
-            if ( $page->getId() == $id ) {
+            if ( $page instanceof Page && $page->getId() == $id ) {
                 return $page;
             }
         }
