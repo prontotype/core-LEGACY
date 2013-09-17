@@ -68,17 +68,6 @@ Class Prontotype implements ServiceProviderInterface {
             });
         }
         
-        $app['pt.instance'] = function($rootPath){
-            $app = new Application(array(
-                'root'       => $rootPath,
-                'cache'      => $rootPath . '/cache',
-                'vendor'     => $rootPath . '/vendor',
-                'config'     => $rootPath . '/config',
-            ));
-            $app->run();
-            return $app;
-        };
-        
         $app['pt.cache'] = $app->share(function($app) {
             return new Cache($app, array(
                 Cache::CACHE_TYPE_ASSETS => array(

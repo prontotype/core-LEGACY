@@ -120,7 +120,7 @@ Class Prototype {
         if ( strpos($location,'/') === 0 && file_exists($location) ) {
             $path = $location;
         }
-                
+        
         if ( $path === null ) {
             foreach($ptPaths as $ptPath) {
                 if ( file_exists($ptPath . '/' . $location) ) {

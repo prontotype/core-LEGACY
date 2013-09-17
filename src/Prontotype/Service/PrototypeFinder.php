@@ -15,33 +15,28 @@ Class PrototypeFinder implements ServiceProviderInterface {
     
     protected $ptPaths;
     
-    public function __construct($defPaths, $ptPaths, $prototype = null)
+    public function __construct($defPaths, $ptPaths)
     {
         $this->defPaths = $defPaths;
         $this->ptPaths = $ptPaths;
-        $this->prototype = $prototype;
     }
     
     public function register(SilexApp $app)
     {   
         $app['pt.prototype'] = null;
-        
-        if ( ! $this->prototype ) {
-            $ptDefinitions = Prototype::getPrototypeDefinitions($this->defPaths);
-            $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
+             
+        $ptDefinitions = Prototype::getPrototypeDefinitions($this->defPaths);
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 
-            foreach( $ptDefinitions as $label => $definition ) {
-                $pt = new Prototype($label, $definition, $app);
-                if ( $pt->locate($this->ptPaths, $this->defPaths) ) {
-                    if ( $pt->matches($host) ) {
-                        $app['pt.prototype'] = $pt;
-                        break;
-                    }                
-                }
-            }            
-        } else {
-            $app['pt.prototype'] = $this->prototype;
-        }
+        foreach( $ptDefinitions as $label => $definition ) {
+            $pt = new Prototype($label, $definition, $app);
+            if ( $pt->locate($this->ptPaths, $this->defPaths) ) {
+                if ( $pt->matches($host) ) {
+                    $app['pt.prototype'] = $pt;
+                    break;
+                }                
+            }
+        }            
         
         if ( ! $app['pt.prototype'] ) {
             throw new \Exception(sprintf("Could not find matching prototype definition for '%s'.", $host));
@@ -52,7 +47,7 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $app['pt.prototype.uid']         = $app['pt.prototype']->getUid();
         $app['pt.prototype.domain']      = $app['pt.prototype']->getDomain();
         $app['pt.prototype.path']        = $app['pt.prototype']->getPath();
-        $app['pt.prototype.environment'] = $app['pt.prototype']->getEnvironment();
+        $app['pt.prototype.environment'] = $app['pt.prototype']->getEnvironment();        
 
         $app['pt.prototype.paths.root']       = $app['pt.prototype']->getRootPath();
         $app['pt.prototype.paths.templates']  = $app['pt.prototype.paths.root'] . '/templates';
