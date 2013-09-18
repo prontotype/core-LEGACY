@@ -8,24 +8,58 @@ Class Prototype {
     
     protected $app;
     
-    protected $ptPaths = array();
+    protected $definition = null;
     
-    protected $defPaths = array();
-
-    public function __construct( $label, $definition, $app )
+    protected $location = null;
+    
+    protected $label = null;
+    
+    public function __construct( $defs, $app )
     {
         $this->app = $app;
-        $this->label = $label;
-        $this->definition = $definition;
+        $this->definitions = $defs;
     }
     
-    public function locate($ptPaths, $defPaths)
+    public function load($label, $ptPaths = array())
     {
-        $this->location = $this->findPrototype($ptPaths, $this->definition['prototype']);
-        $this->ptPaths = $ptPaths;
-        $this->defPaths = $defPaths;
+        $path = null;
+        
+        if ( ! isset($this->definitions[$label]) ) {
+            throw new \Exception(sprintf("Prototype with label '%s' does not exist.", $label));
+        }
+        
+        if ( ! isset($this->definitions[$label]['prototype']) ) {
+            throw new \Exception(sprintf("Prototype with label '%s' does not have a 'prototype' key set.", $label));
+        }
+        
+        $location = $this->definitions[$label]['prototype'];
+        
+        if ( strpos($location,'/') === 0 && file_exists($location) ) {
+            $path = $location;
+        }
+        
+        if ( $path === null ) {
+            foreach($ptPaths as $ptPath) {
+                if ( file_exists($ptPath . '/' . $location) ) {
+                    $path = $ptPath . '/' . $location;
+                    break;
+                }
+            }
+        }
+        
+        if ( $path === null ) {
+            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
+        }
+        
+        // this is a valid prototype definition
+        
+        $this->definition = $this->definitions[$label];
+        $this->label = $label;
+        $this->location = $path;
+        
         return true;
     }
+         
     
     public function getLabel()
     {
@@ -35,6 +69,11 @@ Class Prototype {
     public function getRootPath()
     {
         return $this->location;
+    }
+    
+    public function getPathTo($dir)
+    {
+        return $this->getRootPath() . '/' . $dir;
     }
     
     public function getPrototypePath()
@@ -60,16 +99,6 @@ Class Prototype {
     public function getEnvironment()
     {
         return isset($this->definition['environment']) ? $this->definition['environment'] : 'live';
-    }
-    
-    public function getPtPaths()
-    {
-        return $this->ptPaths;
-    }
-    
-    public function getDefPaths()
-    {
-        return $this->defPaths;
     }
     
     public function matches($host)
@@ -112,45 +141,5 @@ Class Prototype {
             return false;
         }
     }
-         
-    protected function findPrototype($ptPaths, $location)
-    {
-        $path = null;
         
-        if ( strpos($location,'/') === 0 && file_exists($location) ) {
-            $path = $location;
-        }
-        
-        if ( $path === null ) {
-            foreach($ptPaths as $ptPath) {
-                if ( file_exists($ptPath . '/' . $location) ) {
-                    $path = $ptPath . '/' . $location;
-                    break;
-                }
-            }
-        }
-        
-        if ( $path === null ) {
-            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
-        }
-        
-        return $path;
-    }
-    
-    public static function getPrototypeDefinitions($defPaths)
-    {
-        $defs = array();
-        foreach($defPaths as $loadPath) {
-            $loadPath = $loadPath . '/prototypes.yml';
-            if ( file_exists($loadPath) ) {
-                $ptDefinitions = Yaml::parse($loadPath);       
-                if (null === $ptDefinitions) {
-                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
-                }
-                $defs = array_merge($ptDefinitions, $defs);                
-            }
-        }
-        return $defs;
-    }
-    
 }

@@ -106,7 +106,16 @@ Class Manager {
     protected function findAssetFile($assetPath)
     {
         $loadPaths = $this->getLoadPaths();        
-
+        
+        if ( strpos($assetPath,'::') !== false && $this->app['pt.config']->get('assets.sideload') ) {
+            list($label, $path) = explode('::', $assetPath);
+            $pt = new Prototype($this->app['pt.prototypes.definitions'], $this->app);
+            try {
+                $pt->load($label, $this->app['pt.prototypes.loadpaths']);
+                $assetPath = $path;
+                array_unshift($loadPaths, $pt->getPathTo('assets'));
+            } catch( \Exception $e ) {}
+        }        
         foreach($loadPaths as $loadPath) {            
             $fullPath = $loadPath . '/' . strtolower($assetPath);
             if ( ! file_exists( $fullPath ) ) {

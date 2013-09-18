@@ -24,18 +24,21 @@ Class PrototypeFinder implements ServiceProviderInterface {
     public function register(SilexApp $app)
     {   
         $app['pt.prototype'] = null;
-             
-        $ptDefinitions = Prototype::getPrototypeDefinitions($this->defPaths);
+        $app['pt.prototypes.loadpaths'] = $this->ptPaths;
+        $app['pt.prototypes.defpaths'] = $this->defPaths;
+        $app['pt.prototypes.definitions'] = $this->getPrototypeDefinitions($this->defPaths);
+        
         $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 
-        foreach( $ptDefinitions as $label => $definition ) {
-            $pt = new Prototype($label, $definition, $app);
-            if ( $pt->locate($this->ptPaths, $this->defPaths) ) {
+        foreach( $app['pt.prototypes.definitions'] as $label => $definition ) {
+            $pt = new Prototype($app['pt.prototypes.definitions'], $app);
+            try {
+                $pt->load($label, $app['pt.prototypes.loadpaths']);
                 if ( $pt->matches($host) ) {
                     $app['pt.prototype'] = $pt;
                     break;
-                }                
-            }
+                }
+            } catch( \Exception $e ) {}
         }            
         
         if ( ! $app['pt.prototype'] ) {
@@ -50,11 +53,11 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $app['pt.prototype.environment'] = $app['pt.prototype']->getEnvironment();        
 
         $app['pt.prototype.paths.root']       = $app['pt.prototype']->getRootPath();
-        $app['pt.prototype.paths.templates']  = $app['pt.prototype.paths.root'] . '/templates';
-        $app['pt.prototype.paths.data']       = $app['pt.prototype.paths.root'] . '/data';
-        $app['pt.prototype.paths.config']     = $app['pt.prototype.paths.root'] . '/config';
-        $app['pt.prototype.paths.extensions'] = $app['pt.prototype.paths.root'] . '/extensions';
-        $app['pt.prototype.paths.assets']     = $app['pt.prototype.paths.root'] . '/assets';
+        $app['pt.prototype.paths.templates']  = $app['pt.prototype']->getPathTo('templates');
+        $app['pt.prototype.paths.data']       = $app['pt.prototype']->getPathTo('data');
+        $app['pt.prototype.paths.config']     = $app['pt.prototype']->getPathTo('config');
+        $app['pt.prototype.paths.extensions'] = $app['pt.prototype']->getPathTo('extensions');
+        $app['pt.prototype.paths.assets']     = $app['pt.prototype']->getPathTo('assets');
 
         $app['pt.prototype.paths.cache.root']      = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'];
         $app['pt.prototype.paths.cache.templates'] = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/templates';
@@ -65,5 +68,21 @@ Class PrototypeFinder implements ServiceProviderInterface {
     }
         
     public function boot(SilexApp $app) {}
+        
+    protected function getPrototypeDefinitions($defPaths)
+    {
+        $defs = array();
+        foreach($defPaths as $loadPath) {
+            $loadPath = $loadPath . '/prototypes.yml';
+            if ( file_exists($loadPath) ) {
+                $ptDefinitions = Yaml::parse($loadPath);       
+                if (null === $ptDefinitions) {
+                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
+                }
+                $defs = array_merge($ptDefinitions, $defs);                
+            }
+        }
+        return $defs;
+    }
     
 }
