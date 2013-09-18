@@ -23,27 +23,14 @@ Class PrototypeFinder implements ServiceProviderInterface {
     
     public function register(SilexApp $app)
     {   
-        $app['pt.prototype'] = null;
         $app['pt.prototypes.loadpaths'] = $this->ptPaths;
         $app['pt.prototypes.defpaths'] = $this->defPaths;
         $app['pt.prototypes.definitions'] = $this->getPrototypeDefinitions($this->defPaths);
         
         $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-
-        foreach( $app['pt.prototypes.definitions'] as $label => $definition ) {
-            $pt = new Prototype($app['pt.prototypes.definitions'], $app);
-            try {
-                $pt->load($label, $app['pt.prototypes.loadpaths']);
-                if ( $pt->matches($host) ) {
-                    $app['pt.prototype'] = $pt;
-                    break;
-                }
-            } catch( \Exception $e ) {}
-        }            
         
-        if ( ! $app['pt.prototype'] ) {
-            throw new \Exception(sprintf("Could not find matching prototype definition for '%s'.", $host));
-        }
+        $app['pt.prototype'] = new Prototype($app['pt.prototypes.definitions'], $app['pt.prototypes.loadpaths'], $app);
+        $app['pt.prototype']->loadByHost($host);
         
         $app['pt.prototype.label']       = $app['pt.prototype']->getLabel();
         $app['pt.prototype.prototype']   = $app['pt.prototype']->getPrototypePath();

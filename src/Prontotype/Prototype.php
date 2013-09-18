@@ -14,13 +14,18 @@ Class Prototype {
     
     protected $label = null;
     
-    public function __construct( $defs, $app )
+    protected $definitions = array();
+    
+    protected $searchPaths = array();
+    
+    public function __construct( $defs, $searchPaths, $app )
     {
         $this->app = $app;
         $this->definitions = $defs;
+        $this->searchPaths = $searchPaths;
     }
     
-    public function load($label, $ptPaths = array())
+    public function load($label)
     {
         $path = null;
         
@@ -39,7 +44,7 @@ Class Prototype {
         }
         
         if ( $path === null ) {
-            foreach($ptPaths as $ptPath) {
+            foreach($this->searchPaths as $ptPath) {
                 if ( file_exists($ptPath . '/' . $location) ) {
                     $path = $ptPath . '/' . $location;
                     break;
@@ -101,45 +106,61 @@ Class Prototype {
         return isset($this->definition['environment']) ? $this->definition['environment'] : 'live';
     }
     
-    public function matches($host)
-    {
-        $matches = is_array($this->definition['domain']) ? $this->definition['domain'] : array($this->definition['domain']);
-        $regexp = '/^(';
-        $regexp .= implode('|', array_map(function($value){
-            return str_replace(array('.','*'), array('\.','(.*)'), $value);
-        }, $matches));
-        $regexp .= ')/';
+    public function loadByHost($host)
+    {        
+        $found = false;
+        foreach( $this->definitions as $label => $def ) {
+            try {
+                $this->load($label);
+                $matches = is_array($this->definition['domain']) ? $this->definition['domain'] : array($this->definition['domain']);
+                $regexp = '/^(';
+                $regexp .= implode('|', array_map(function($value){
+                    return str_replace(array('.','*'), array('\.','(.*)'), $value);
+                }, $matches));
+                $regexp .= ')/';
         
-        if ( preg_match($regexp, $host, $matches) ) {
-            
-            if ( isset($this->definition['path']) && $this->definition['path'] != '/' ) {
-                // check the path
-                $requestPath = trim(str_replace(array('/index.php'), '', $_SERVER['REQUEST_URI']),'/');
-                $requestPathParts = explode('/', $requestPath);
-                $definitionPathParts = explode('/',trim($this->definition['path'],'/'));
-                if ( count($definitionPathParts) > count($requestPathParts) ) {
-                    return false;
-                }
-                for ( $i = 0; $i < count($definitionPathParts); $i++) {
-                    if ( $requestPathParts[$i] !== $definitionPathParts[$i] ) {
-                        return false;
+                if ( preg_match($regexp, $host, $matches) ) {                    
+                    if ( isset($this->definition['path']) && $this->definition['path'] != '/' ) {
+                        // check the path
+                        $requestPath = trim(str_replace(array('/index.php'), '', $_SERVER['REQUEST_URI']),'/');
+                        $requestPathParts = explode('/', $requestPath);
+                        $definitionPathParts = explode('/',trim($this->definition['path'],'/'));
+                        if ( count($definitionPathParts) > count($requestPathParts) ) {
+                            continue;
+                        }
+                        for ( $i = 0; $i < count($definitionPathParts); $i++) {
+                            if ( $requestPathParts[$i] !== $definitionPathParts[$i] ) {
+                                continue 2;
+                            }
+                        }
+                        $this->definition['path'] = '/' . implode($definitionPathParts);
+                    } else {
+                        $this->definition['path'] = '';
                     }
+                    $replacements = array_slice($matches, 2);                
+                    $replacementTokens = array();
+                    for ( $j = 0; $j < count($replacements); $j++ ) {
+                        $replacementTokens['$' . ($j+1)] = $replacements[$j];
+                    }
+                    $this->definition['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $this->definition['prototype']);
+                    $found = true;
+                    break;
+                } else {
+                    continue;
                 }
-                $this->definition['path'] = '/' . implode($definitionPathParts);
-            } else {
-                $this->definition['path'] = '';
+            } catch( \Exception $e ) {
+                continue;
             }
-            $replacements = array_slice($matches, 2);                
-            $replacementTokens = array();
-            for ( $j = 0; $j < count($replacements); $j++ ) {
-                $replacementTokens['$' . ($j+1)] = $replacements[$j];
-            }
-            $this->definition['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $this->definition['prototype']);
-            
-            return true;
-        } else {
-            return false;
         }
+        
+        if ( ! $found ) {
+            $this->definition = array();
+            $this->label = null;
+            $this->location = null;
+            throw new \Exception(sprintf("Could not find matching prototype for host '%s'.", $host));
+        }
+        
+        return true;
     }
         
 }

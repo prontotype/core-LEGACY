@@ -109,9 +109,9 @@ Class Manager {
         
         if ( strpos($assetPath,'::') !== false && $this->app['pt.config']->get('assets.sideload') ) {
             list($label, $path) = explode('::', $assetPath);
-            $pt = new Prototype($this->app['pt.prototypes.definitions'], $this->app);
+            $pt = new Prototype($this->app['pt.prototypes.definitions'], $this->app['pt.prototypes.loadpaths'], $this->app);
             try {
-                $pt->load($label, $this->app['pt.prototypes.loadpaths']);
+                $pt->load($label);
                 $assetPath = $path;
                 array_unshift($loadPaths, $pt->getPathTo('assets'));
             } catch( \Exception $e ) {}
