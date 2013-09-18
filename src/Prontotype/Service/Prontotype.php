@@ -118,25 +118,32 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app->register(new UrlGeneratorServiceProvider());
         
-        $app->register(new TwigServiceProvider(), array(
-            'twig.path'         => array( $app['pt.prototype.paths.templates']),
-            'twig.options'      => array(
+        // template loading...
+        
+        $app['twig.loader.filesystem'] = $app->share(function ($app) {
+            return new \Twig_Loader_Filesystem(array($app['pt.prototype.paths.templates']));
+        });
+        $app['twig.loader'] = $app->share(function ($app) {
+            return new \Twig_Loader_Chain(array(
+                $app['twig.loader.filesystem'],
+            ));
+        });
+        $app['twig'] = $app->share(function ($app) {
+            $twig = new \Twig_Environment($app['twig.loader'], array(
                 'strict_variables'  => false,
                 'cache'             => $app['pt.prototype.paths.cache.templates'],
                 'auto_reload'       => true,
                 'debug'             => $app['pt.config']->get('debug'),
                 'autoescape'        => false
-            )
-        ));
-
-        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+            ));
+            $twig->addGlobal('app', $app);
             if ( $app['pt.config']->get('debug') ) {
                 $twig->addExtension(new Twig_Extension_Debug());  
             } 
             $twig->addExtension(new HelperExtension($app));
             $twig->addExtension(new GeshiExtension());
             return $twig;
-        }));
+        });
         
         $app['twig.stringloader'] = $app->share(function($app) {
             $loader = new Twig_Loader_String();
@@ -144,7 +151,6 @@ Class Prontotype implements ServiceProviderInterface {
         });
         
         $app['twig.dataloader'] = $app->share(function ($app) {
-            
             $paths = array();
             foreach( $app['pt.data']->getLoadPaths() as $path ) {
                 if ( is_dir($path) ) {
