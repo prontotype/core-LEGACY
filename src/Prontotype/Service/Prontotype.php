@@ -130,7 +130,7 @@ Class Prontotype implements ServiceProviderInterface {
         });
         $app['twig'] = $app->share(function ($app) {
             $twig = new \Twig_Environment($app['twig.loader'], array(
-                'strict_variables'  => false,
+                'strict_variables'  => $app['pt.config']->get('debug'),
                 'cache'             => $app['pt.prototype.paths.cache.templates'],
                 'auto_reload'       => true,
                 'debug'             => $app['pt.config']->get('debug'),
@@ -160,7 +160,7 @@ Class Prontotype implements ServiceProviderInterface {
             $twig = new \Twig_Environment(
                 new \Twig_Loader_Filesystem($paths),
                 array(
-                    'strict_variables'  => false,
+                    'strict_variables'  => $app['pt.config']->get('debug'),
                     'cache'             => $app['pt.prototype.paths.cache.data'],
                     'auto_reload'       => true,
                     'debug'             => $app['pt.config']->get('debug'),
