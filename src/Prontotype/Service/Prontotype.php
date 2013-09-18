@@ -97,7 +97,9 @@ Class Prontotype implements ServiceProviderInterface {
                 new XmlParser($app),
                 new CsvParser($app),
                 new MarkdownParser($app)
-            ));
+            ), array(
+                $app['pt.prototype.paths.data'],
+            ), $app['pt.app.paths.data']);
         });
         
         $app['pt.store'] = $app->share(function($app) {

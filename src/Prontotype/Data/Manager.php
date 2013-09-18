@@ -18,13 +18,15 @@ Class Manager {
     
     protected $seededFakers = array();
 
-    public function __construct($app, $parsers = array())
+    public function __construct($app, $parsers = array(), $loadPaths = array(), $fallbackPath = null)
     {
         $this->app = $app;
         $this->defaultFaker = $this->createFaker();
         foreach( $parsers as $parser ) {
             $this->registerParser($parser);
         }
+        $this->loadPaths = $loadPaths;
+        $this->fallbackPath = $fallbackPath;
     }
     
     public function addLoadPath($path)
