@@ -19,6 +19,7 @@ use Prontotype\Application;
 use Prontotype\Cache;
 use Prontotype\Twig\HelperExtension;
 use Prontotype\Twig\GeshiExtension;
+use Prontotype\Twig\Loader\Filesystem as FilesystemLoader;
 use Prontotype\Data\Manager as DataManager;
 use Prontotype\Data\JsonParser;
 use Prontotype\Data\YamlParser;
@@ -121,15 +122,13 @@ Class Prontotype implements ServiceProviderInterface {
         // template loading...
         
         $app['twig.loader.filesystem'] = $app->share(function ($app) {
-            return new \Twig_Loader_Filesystem(array($app['pt.prototype.paths.templates']));
-        });
-        $app['twig.loader'] = $app->share(function ($app) {
-            return new \Twig_Loader_Chain(array(
-                $app['twig.loader.filesystem'],
-            ));
+            $fl = new FilesystemLoader(array($app['pt.prototype.paths.templates']));
+            $fl->setApp($app);
+            $fl->setLoaderType('templates');
+            return $fl;
         });
         $app['twig'] = $app->share(function ($app) {
-            $twig = new \Twig_Environment($app['twig.loader'], array(
+            $twig = new \Twig_Environment($app['twig.loader.filesystem'], array(
                 'strict_variables'  => $app['pt.config']->get('debug'),
                 'cache'             => $app['pt.prototype.paths.cache.templates'],
                 'auto_reload'       => true,
@@ -157,9 +156,10 @@ Class Prontotype implements ServiceProviderInterface {
                     $paths[] = $path;
                 }
             }
-            $twig = new \Twig_Environment(
-                new \Twig_Loader_Filesystem($paths),
-                array(
+            $fl = new FilesystemLoader($paths);
+            $fl->setApp($app);
+            $fl->setLoaderType('data');
+            $twig = new \Twig_Environment($fl, array(
                     'strict_variables'  => $app['pt.config']->get('debug'),
                     'cache'             => $app['pt.prototype.paths.cache.data'],
                     'auto_reload'       => true,
