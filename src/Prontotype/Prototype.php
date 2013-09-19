@@ -8,24 +8,63 @@ Class Prototype {
     
     protected $app;
     
-    protected $ptPaths = array();
+    protected $definition = null;
     
-    protected $defPaths = array();
-
-    public function __construct( $label, $definition, $app )
+    protected $location = null;
+    
+    protected $label = null;
+    
+    protected $definitions = array();
+    
+    protected $searchPaths = array();
+    
+    public function __construct( $defs, $searchPaths, $app )
     {
         $this->app = $app;
-        $this->label = $label;
-        $this->definition = $definition;
+        $this->definitions = $defs;
+        $this->searchPaths = $searchPaths;
     }
     
-    public function locate($ptPaths, $defPaths)
+    public function load($label)
     {
-        $this->location = $this->findPrototype($ptPaths, $this->definition['prototype']);
-        $this->ptPaths = $ptPaths;
-        $this->defPaths = $defPaths;
+        $path = null;
+        
+        if ( ! isset($this->definitions[$label]) ) {
+            throw new \Exception(sprintf("Prototype with label '%s' does not exist.", $label));
+        }
+        
+        if ( ! isset($this->definitions[$label]['prototype']) ) {
+            throw new \Exception(sprintf("Prototype with label '%s' does not have a 'prototype' key set.", $label));
+        }
+        
+        $location = $this->definitions[$label]['prototype'];
+        
+        if ( strpos($location,'/') === 0 && file_exists($location) ) {
+            $path = $location;
+        }
+        
+        if ( $path === null ) {
+            foreach($this->searchPaths as $ptPath) {
+                if ( file_exists($ptPath . '/' . $location) ) {
+                    $path = $ptPath . '/' . $location;
+                    break;
+                }
+            }
+        }
+        
+        if ( $path === null ) {
+            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
+        }
+        
+        // this is a valid prototype definition
+        
+        $this->definition = $this->definitions[$label];
+        $this->label = $label;
+        $this->location = $path;
+        
         return true;
     }
+         
     
     public function getLabel()
     {
@@ -35,6 +74,11 @@ Class Prototype {
     public function getRootPath()
     {
         return $this->location;
+    }
+    
+    public function getPathTo($dir)
+    {
+        return $this->getRootPath() . '/' . $dir;
     }
     
     public function getPrototypePath()
@@ -62,95 +106,61 @@ Class Prototype {
         return isset($this->definition['environment']) ? $this->definition['environment'] : 'live';
     }
     
-    public function getPtPaths()
-    {
-        return $this->ptPaths;
-    }
-    
-    public function getDefPaths()
-    {
-        return $this->defPaths;
-    }
-    
-    public function matches($host)
-    {
-        $matches = is_array($this->definition['domain']) ? $this->definition['domain'] : array($this->definition['domain']);
-        $regexp = '/^(';
-        $regexp .= implode('|', array_map(function($value){
-            return str_replace(array('.','*'), array('\.','(.*)'), $value);
-        }, $matches));
-        $regexp .= ')/';
+    public function loadByHost($host)
+    {        
+        $found = false;
+        foreach( $this->definitions as $label => $def ) {
+            try {
+                $this->load($label);
+                $matches = is_array($this->definition['domain']) ? $this->definition['domain'] : array($this->definition['domain']);
+                $regexp = '/^(';
+                $regexp .= implode('|', array_map(function($value){
+                    return str_replace(array('.','*'), array('\.','(.*)'), $value);
+                }, $matches));
+                $regexp .= ')/';
         
-        if ( preg_match($regexp, $host, $matches) ) {
-            
-            if ( isset($this->definition['path']) && $this->definition['path'] != '/' ) {
-                // check the path
-                $requestPath = trim(str_replace(array('/index.php'), '', $_SERVER['REQUEST_URI']),'/');
-                $requestPathParts = explode('/', $requestPath);
-                $definitionPathParts = explode('/',trim($this->definition['path'],'/'));
-                if ( count($definitionPathParts) > count($requestPathParts) ) {
-                    return false;
-                }
-                for ( $i = 0; $i < count($definitionPathParts); $i++) {
-                    if ( $requestPathParts[$i] !== $definitionPathParts[$i] ) {
-                        return false;
+                if ( preg_match($regexp, $host, $matches) ) {                    
+                    if ( isset($this->definition['path']) && $this->definition['path'] != '/' ) {
+                        // check the path
+                        $requestPath = trim(str_replace(array('/index.php'), '', $_SERVER['REQUEST_URI']),'/');
+                        $requestPathParts = explode('/', $requestPath);
+                        $definitionPathParts = explode('/',trim($this->definition['path'],'/'));
+                        if ( count($definitionPathParts) > count($requestPathParts) ) {
+                            continue;
+                        }
+                        for ( $i = 0; $i < count($definitionPathParts); $i++) {
+                            if ( $requestPathParts[$i] !== $definitionPathParts[$i] ) {
+                                continue 2;
+                            }
+                        }
+                        $this->definition['path'] = '/' . implode($definitionPathParts);
+                    } else {
+                        $this->definition['path'] = '';
                     }
-                }
-                $this->definition['path'] = '/' . implode($definitionPathParts);
-            } else {
-                $this->definition['path'] = '';
-            }
-            $replacements = array_slice($matches, 2);                
-            $replacementTokens = array();
-            for ( $j = 0; $j < count($replacements); $j++ ) {
-                $replacementTokens['$' . ($j+1)] = $replacements[$j];
-            }
-            $this->definition['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $this->definition['prototype']);
-            
-            return true;
-        } else {
-            return false;
-        }
-    }
-         
-    protected function findPrototype($ptPaths, $location)
-    {
-        $path = null;
-        
-        if ( strpos($location,'/') === 0 && file_exists($location) ) {
-            $path = $location;
-        }
-        
-        if ( $path === null ) {
-            foreach($ptPaths as $ptPath) {
-                if ( file_exists($ptPath . '/' . $location) ) {
-                    $path = $ptPath . '/' . $location;
+                    $replacements = array_slice($matches, 2);                
+                    $replacementTokens = array();
+                    for ( $j = 0; $j < count($replacements); $j++ ) {
+                        $replacementTokens['$' . ($j+1)] = $replacements[$j];
+                    }
+                    $this->definition['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $this->definition['prototype']);
+                    $found = true;
                     break;
+                } else {
+                    continue;
                 }
+            } catch( \Exception $e ) {
+                continue;
             }
         }
         
-        if ( $path === null ) {
-            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
+        if ( ! $found ) {
+            $this->definition = array();
+            $this->label = null;
+            $this->location = null;
+            throw new \Exception(sprintf("Could not find matching prototype for host '%s'.", $host));
         }
         
-        return $path;
+        return true;
     }
-    
-    public static function getPrototypeDefinitions($defPaths)
-    {
-        $defs = array();
-        foreach($defPaths as $loadPath) {
-            $loadPath = $loadPath . '/prototypes.yml';
-            if ( file_exists($loadPath) ) {
-                $ptDefinitions = Yaml::parse($loadPath);       
-                if (null === $ptDefinitions) {
-                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
-                }
-                $defs = array_merge($ptDefinitions, $defs);                
-            }
-        }
-        return $defs;
-    }
-    
+        
 }

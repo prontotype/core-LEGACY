@@ -57,3 +57,8 @@ data:
     delimiter: ','
     enclosure: '"'
     
+assets:
+  sideload: true
+  
+templates:
+  sideload: true

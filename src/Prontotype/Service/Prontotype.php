@@ -19,6 +19,7 @@ use Prontotype\Application;
 use Prontotype\Cache;
 use Prontotype\Twig\HelperExtension;
 use Prontotype\Twig\GeshiExtension;
+use Prontotype\Twig\Loader\Filesystem as FilesystemLoader;
 use Prontotype\Data\Manager as DataManager;
 use Prontotype\Data\JsonParser;
 use Prontotype\Data\YamlParser;
@@ -96,7 +97,9 @@ Class Prontotype implements ServiceProviderInterface {
                 new XmlParser($app),
                 new CsvParser($app),
                 new MarkdownParser($app)
-            ));
+            ), array(
+                $app['pt.prototype.paths.data'],
+            ), $app['pt.app.paths.data']);
         });
         
         $app['pt.store'] = $app->share(function($app) {
@@ -118,25 +121,30 @@ Class Prontotype implements ServiceProviderInterface {
         
         $app->register(new UrlGeneratorServiceProvider());
         
-        $app->register(new TwigServiceProvider(), array(
-            'twig.path'         => array( $app['pt.prototype.paths.templates']),
-            'twig.options'      => array(
-                'strict_variables'  => false,
+        // template loading...
+        
+        $app['twig.loader.filesystem'] = $app->share(function ($app) {
+            $fl = new FilesystemLoader(array($app['pt.prototype.paths.templates']));
+            $fl->setApp($app);
+            $fl->setLoaderType('templates');
+            return $fl;
+        });
+        $app['twig'] = $app->share(function ($app) {
+            $twig = new \Twig_Environment($app['twig.loader.filesystem'], array(
+                'strict_variables'  => $app['pt.config']->get('debug'),
                 'cache'             => $app['pt.prototype.paths.cache.templates'],
                 'auto_reload'       => true,
                 'debug'             => $app['pt.config']->get('debug'),
                 'autoescape'        => false
-            )
-        ));
-
-        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+            ));
+            $twig->addGlobal('app', $app);
             if ( $app['pt.config']->get('debug') ) {
                 $twig->addExtension(new Twig_Extension_Debug());  
             } 
             $twig->addExtension(new HelperExtension($app));
             $twig->addExtension(new GeshiExtension());
             return $twig;
-        }));
+        });
         
         $app['twig.stringloader'] = $app->share(function($app) {
             $loader = new Twig_Loader_String();
@@ -144,17 +152,17 @@ Class Prontotype implements ServiceProviderInterface {
         });
         
         $app['twig.dataloader'] = $app->share(function ($app) {
-            
             $paths = array();
             foreach( $app['pt.data']->getLoadPaths() as $path ) {
                 if ( is_dir($path) ) {
                     $paths[] = $path;
                 }
             }
-            $twig = new \Twig_Environment(
-                new \Twig_Loader_Filesystem($paths),
-                array(
-                    'strict_variables'  => false,
+            $fl = new FilesystemLoader($paths);
+            $fl->setApp($app);
+            $fl->setLoaderType('data');
+            $twig = new \Twig_Environment($fl, array(
+                    'strict_variables'  => $app['pt.config']->get('debug'),
                     'cache'             => $app['pt.prototype.paths.cache.data'],
                     'auto_reload'       => true,
                     'debug'             => $app['pt.config']->get('debug'),
