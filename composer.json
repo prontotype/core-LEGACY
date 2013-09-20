@@ -19,7 +19,8 @@
         "leafo/scssphp" : "0.*",
         "fzaninotto/faker" : "1.*",
         "mheap/Silex-Markdown": "*",
-        "easybook/geshi" : "*"
+        "easybook/geshi" : "*",
+        "sybio/image-workshop" : "2.0.*"
     },
     "repositories" : [{
         "type": "vcs",
