@@ -43,12 +43,12 @@ Class Manager {
         return $paths;
     }
     
-    public function get($location, $replacements = null, $type = null, $dataPath = null)
+    public function get($location, $replacements = null, $type = null, $dataPath = null, $headers = null)
     {
         if ( strpos($location, 'http') !== 0 ) {
             return $this->load($location, $replacements, $type, $dataPath);
         } else {
-            return $this->fetch($location, $replacements, $type, $dataPath);
+            return $this->fetch($location, $replacements, $type, $dataPath, $headers);
         }
     }
     
@@ -92,7 +92,7 @@ Class Manager {
         return $this->find($data, $dataPath);
     }
     
-    protected function fetch($url, $replacements = null, $type = null, $dataPath = null)
+    protected function fetch($url, $replacements = null, $type = null, $dataPath = null, $headers = null)
     {
         if ( ! $replacements ) {
             $replacements = array();
@@ -100,7 +100,7 @@ Class Manager {
         if ( isset($this->parsed[$url]) ) {
             $data = $this->parsed[$url];
         } else {
-            $data = $this->app['pt.utils']->fetchFromUrl($url);
+            $data = $this->app['pt.utils']->fetchFromUrl($url, $headers);
             $contents = $this->app['twig.stringloader']->render($data['body'], $replacements);
             if ( !empty($data['body']) ) {
                 if ( ! $type ) {

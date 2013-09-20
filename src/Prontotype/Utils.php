@@ -40,7 +40,7 @@ Class Utils {
         return $url;
     }
     
-    public function fetchFromUrl($url, $ignoreCache = false)
+    public function fetchFromUrl($url, $headers = null, $ignoreCache = false)
     {
         if ( ! $ignoreCache ) {
             $data = $this->app['pt.cache']->get(Cache::CACHE_TYPE_REQUESTS, $url);
@@ -51,6 +51,9 @@ Class Utils {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        if ( $headers && is_array($headers) ) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
         $data = curl_exec($ch);
         $info = array(
             'body' => $data,
