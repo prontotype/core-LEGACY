@@ -11,9 +11,11 @@ Class Manager {
         $this->app = $app;
     }
     
-    protected function fetch()
+    public function fetch()
     {
         $finder = new Finder();
+        $finder->setRoot($this->app['pt.prototype.paths.root']);
+        $finder->ignoreUnreadableDirs();
         return $finder;
     }
     

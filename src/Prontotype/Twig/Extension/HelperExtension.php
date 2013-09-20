@@ -43,6 +43,7 @@ class HelperExtension extends \Twig_Extension
                 'snippets'      => $this->app['pt.snippets'],
                 'session'       => $this->app['pt.session'],
                 'scraper'       => $this->app['pt.scraper'],
+                'finder'        => $this->app['pt.finder'],
                 'urls' => array(
                     'user' => array(
                         'login' => $this->app['pt.utils']->generateUrlPath('user.login'),
