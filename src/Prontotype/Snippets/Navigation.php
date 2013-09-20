@@ -15,12 +15,14 @@ Class Navigation extends Base {
         }
         
         $opts = $this->mergeOpts(array(
-            'includeParent' => true,
-            'type'         => 'ul',
-            'maxDepth'     => null,
+            'includeParent'    => true,
+            'type'             => 'ul',
+            'maxDepth'         => null,
             'levelClassPrefix' => 'level-',
-            'currentClass' => 'is-current',
-            'parentClass'  => 'is-parent',
+            'currentClass'     => 'is-current',
+            'parentClass'      => 'is-parent',
+            'ignoreTypes'      => array(),
+            'includeTypes'      => array(),
         ), $opts);
         
         if ( $startPage === null ) {
@@ -57,13 +59,13 @@ Class Navigation extends Base {
         }
         
         $opts = $this->mergeOpts(array(
-            'type'   => 'ul',
+            'type'             => 'ul',
             'levelClassPrefix' => 'level-',
-            'currentClass' => 'is-current',
-            'offset' => 0,
-            'limit'  => null,
-            'append' => array(),
-            'prepend' => array()
+            'currentClass'     => 'is-current',
+            'offset'           => 0,
+            'limit'            => null,
+            'append'           => array(),
+            'prepend'          => array()
         ), $opts);
         
         $pages = array(

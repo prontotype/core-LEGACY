@@ -24,6 +24,8 @@ Class Base implements \RecursiveIterator
     
     protected $pathInfo = null;
     
+    protected $typeHint = null;
+    
     protected $items = array();
     
     protected $position = 0;
@@ -32,7 +34,7 @@ Class Base implements \RecursiveIterator
     
     protected $nameFormatRegex = '/^((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
     
-    protected $nameExtension = 'twig';
+    protected $nameExtension = array('.twig', '.html.twig', '.html');
     
     public function __construct( SPLFileInfo $file, $app )
     {
@@ -109,6 +111,14 @@ Class Base implements \RecursiveIterator
         return $this->cleanName;
     }
     
+    public function getTypeHint()
+    {
+        if ( $this->typeHint === null ) {
+            $this->parseFileName();
+        }
+        return $this->typeHint;
+    }
+    
     public function isPage()
     {
         return $this instanceof Page;
@@ -143,18 +153,21 @@ Class Base implements \RecursiveIterator
     
     protected function parseFileName()
     {
-        preg_match($this->nameFormatRegex, $this->pathInfo['filename'], $parts);
+        $filename = str_replace($this->nameExtension, '', $this->pathInfo['filename']);
+        preg_match($this->nameFormatRegex, $filename, $parts);
         $this->id = ! empty($parts[5]) ? $parts[5] : '';
         $this->position = ! empty($parts[2]) ? $parts[2] : 0;
         $cleanName = empty($parts[3]) ? $parts[6] : $parts[3];
-        if ( $cleanName == 'index' ) {
+        if ( $cleanName == 'index' || strpos($cleanName, 'index.') === 0) {
             $this->isIndex = true;
             $segments = explode('/',trim($this->getUnPrefixedUrlPath(),'/'));
             if ( isset($segments[count($segments)-1]) ) {
                 $cleanName = $segments[count($segments)-1];
             }
         }
-        $this->cleanName = $cleanName;
+        $ext = pathinfo($cleanName, PATHINFO_EXTENSION);
+        $this->typeHint = ! empty($ext) ? $ext : 'html';
+        $this->cleanName = pathinfo($cleanName, PATHINFO_FILENAME);
     }
     
     protected function makeNiceName()
@@ -184,7 +197,7 @@ Class Base implements \RecursiveIterator
                 }
             }
         }
-        
+
         if ( $name ) {
             $this->niceName = $name;
         } else {

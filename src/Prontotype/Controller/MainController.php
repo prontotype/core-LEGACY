@@ -22,7 +22,9 @@ class MainController implements ControllerProviderInterface
             }
                             
             try {
-                return $app['twig']->render($page->getTemplatePath(), array());
+                return new Response($app['twig']->render($page->getTemplatePath(), array()), 200, array(
+                    'Content-Type' => $page->getMimeType()
+                ));
             } catch ( \Exception $e ) {
           
                 if ( $e instanceof \Twig_Error and $e->getPrevious() instanceof HttpException ) {

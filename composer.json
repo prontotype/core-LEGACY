@@ -14,7 +14,7 @@
         "php": ">=5.3.3",
         "silex/silex": "1.0.*",
         "symfony/yaml": "2.4.*",
-        "symfony/twig-bridge": "~2.3",
+        "twig/twig": ">=1.8,<2.0-dev",
         "leafo/lessphp" : "0.*",
         "leafo/scssphp" : "0.*",
         "fzaninotto/faker" : "1.*",

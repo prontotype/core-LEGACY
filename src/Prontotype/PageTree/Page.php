@@ -47,6 +47,24 @@ Class Page extends Base {
         return $this->app['pt.request']->getUriForPath($this->getShortUrlPath());
     }
     
+    public function getMimeType()
+    {
+        switch($this->getTypeHint()) {
+            case 'json':
+                return 'application/json';
+                break;
+            case 'xml':
+                return 'application/xml';
+                break;
+            case 'rss':
+                return 'application/rss+xml';
+                break;
+            default:
+                return 'text/html';
+                break;
+        }
+    }
+    
     public function isIndex()
     {
         if ( $this->isIndex === null ) {
@@ -119,10 +137,10 @@ Class Page extends Base {
             $segments = explode('/', trim($this->getRelPath(),'/'));
             $cleanSegments = array();
             foreach( $segments as $segment ) {
-                preg_match($this->nameFormatRegex, str_replace('.' . $this->nameExtension, '', $segment), $segmentParts);
+                preg_match($this->nameFormatRegex, str_replace($this->nameExtension, '', $segment), $segmentParts);
                 $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
             }
-            if ( $cleanSegments[count($cleanSegments)-1] == 'index' ) {
+            if ( $cleanSegments[count($cleanSegments)-1] == 'index' || strpos($cleanSegments[count($cleanSegments)-1], 'index.') === 0 ) {
                 unset($cleanSegments[count($cleanSegments)-1]);
             }
             $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
@@ -139,6 +157,9 @@ Class Page extends Base {
         return array(
             'id'        => $this->getId(),
             'depth'     => $this->getDepth(),
+            'mimeType'  => $this->getMimeType(),
+            'contentType' => $this->getTypeHint(),
+            'typeHint'  => $this->getTypeHint(),
             'shortUrlPath'  => $this->getShortUrlPath(),
             'shortUrl'  => $this->getShortUrl(),
             'niceName'  => $this->getNiceName(),
