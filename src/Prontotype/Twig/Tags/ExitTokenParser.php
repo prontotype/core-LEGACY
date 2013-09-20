@@ -1,6 +1,6 @@
 <?php
 
-namespace Prontotype\Twig;
+namespace Prontotype\Twig\Tags;
 
 class ExitTokenParser extends \Twig_TokenParser
 {
@@ -26,7 +26,7 @@ class ExitTokenParser extends \Twig_TokenParser
 
 		$stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new \Prontotype\Twig\ExitNode(array('status' => $status), array(), $lineno, $this->getTag());
+        return new \Prontotype\Twig\Tags\ExitNode(array('status' => $status), array(), $lineno, $this->getTag());
     }
 
     public function getTag()

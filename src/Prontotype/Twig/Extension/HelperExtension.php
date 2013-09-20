@@ -1,6 +1,9 @@
 <?php
 
-namespace Prontotype\Twig;
+namespace Prontotype\Twig\Extension;
+
+use Prontotype\Twig\Tags\ExitTokenParser;
+use Prontotype\Twig\Tags\RedirectTokenParser;
 
 class HelperExtension extends \Twig_Extension
 {
