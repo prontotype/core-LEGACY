@@ -11,11 +11,12 @@ Class Manager {
         $this->app = $app;
     }
     
-    public function fetch()
+    public function in($location)
     {
         $finder = new Finder();
         $finder->setRoot($this->app['pt.prototype.paths.root']);
         $finder->ignoreUnreadableDirs();
+        $finder->in($location);
         return $finder;
     }
     
