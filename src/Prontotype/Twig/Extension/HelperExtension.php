@@ -1,6 +1,9 @@
 <?php
 
-namespace Prontotype\Twig;
+namespace Prontotype\Twig\Extension;
+
+use Prontotype\Twig\Tags\ExitTokenParser;
+use Prontotype\Twig\Tags\RedirectTokenParser;
 
 class HelperExtension extends \Twig_Extension
 {
@@ -40,6 +43,7 @@ class HelperExtension extends \Twig_Extension
                 'snippets'      => $this->app['pt.snippets'],
                 'session'       => $this->app['pt.session'],
                 'scraper'       => $this->app['pt.scraper'],
+                'find'          => $this->app['pt.finder'],
                 'urls' => array(
                     'user' => array(
                         'login' => $this->app['pt.utils']->generateUrlPath('user.login'),

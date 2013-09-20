@@ -17,8 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 use Prontotype\Application;
 use Prontotype\Cache;
-use Prontotype\Twig\HelperExtension;
-use Prontotype\Twig\GeshiExtension;
+use Prontotype\Twig\Extension\HelperExtension;
+use Prontotype\Twig\Extension\GeshiExtension;
 use Prontotype\Twig\Loader\Filesystem as FilesystemLoader;
 use Prontotype\Data\Manager as DataManager;
 use Prontotype\Data\JsonParser;

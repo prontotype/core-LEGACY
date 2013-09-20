@@ -33,6 +33,7 @@ Class Application {
         'pt.snippets'      => '\Prontotype\Snippets\Manager',
         'pt.assets_helper' => '\Prontotype\Assets\Helper',
         'pt.session'       => '\Prontotype\Session',
+        'pt.finder'        => '\Prontotype\Finder\Manager',
     );
     
     protected $srcPaths = array(

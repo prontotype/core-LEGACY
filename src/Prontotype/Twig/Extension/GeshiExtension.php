@@ -1,6 +1,6 @@
 <?php
 
-namespace Prontotype\Twig;
+namespace Prontotype\Twig\Extension;
  
 class GeshiExtension extends \Twig_Extension
 {

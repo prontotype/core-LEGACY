@@ -20,7 +20,8 @@
         "fzaninotto/faker" : "1.*",
         "mheap/Silex-Markdown": "*",
         "easybook/geshi" : "*",
-        "sybio/image-workshop" : "2.0.*"
+        "sybio/image-workshop" : "2.0.*",
+        "symfony/finder" : "2.3.*"
     },
     "repositories" : [{
         "type": "vcs",

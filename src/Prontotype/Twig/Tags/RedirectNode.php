@@ -1,6 +1,6 @@
 <?php
 
-namespace Prontotype\Twig;
+namespace Prontotype\Twig\Tags;
 
 class RedirectNode extends \Twig_Node
 {
