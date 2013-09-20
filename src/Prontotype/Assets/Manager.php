@@ -158,19 +158,11 @@ Class Manager {
     {
         $parts = pathinfo($fullPath);
         $extension = strtolower($parts['extension']);
-        switch( $extension ) {
-            case 'css':
-            case 'less':
-            case 'scss':
-                return 'text/css';
-                break;
-            case 'js':
-            case 'coffee':
-                return 'text/javascript';
-                break;
-            default:
-                $file = new File($fullPath);
-                return $file->getMimeType(); 
+        $mime = $this->app['pt.utils']->getMimeTypeForExtension($extension);
+        if ( $mime ) {
+            return $mime;
         }
+        $file = new File($fullPath);
+        return $file->getMimeType();
     }
 }

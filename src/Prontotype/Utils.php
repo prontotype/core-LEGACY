@@ -7,10 +7,27 @@ Class Utils {
     protected $app;
     
     protected static $APP; 
+    
+    protected $mimeTypes = array(
+        'json'   => 'application/json',
+        'xml'    => 'application/xml',
+        'rss'    => 'application/rss+xml',
+        'css'    => 'text/css',
+        'less'   => 'text/css',
+        'scss'   => 'text/scss',
+        'js'     => 'text/javascript',
+        'coffee' => 'text/javascript',
+        'html'   => 'text/html',
+    );
 
     public function __construct($app)
     {
         $this->app = $app;
+    }
+    
+    public function getMimeTypeForExtension($ext)
+    {
+        return isset($this->mimeTypes[$ext]) ? $this->mimeTypes[$ext] : null;
     }
     
     public function generateUrlPath($route, $params = array())

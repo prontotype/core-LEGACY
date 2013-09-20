@@ -49,20 +49,8 @@ Class Page extends Base {
     
     public function getMimeType()
     {
-        switch($this->getTypeHint()) {
-            case 'json':
-                return 'application/json';
-                break;
-            case 'xml':
-                return 'application/xml';
-                break;
-            case 'rss':
-                return 'application/rss+xml';
-                break;
-            default:
-                return 'text/html';
-                break;
-        }
+        $mime = $this->app['pt.utils']->getMimeTypeForExtension($this->getTypeHint());
+        return $mime ? $mime : 'text/html';
     }
     
     public function isIndex()
