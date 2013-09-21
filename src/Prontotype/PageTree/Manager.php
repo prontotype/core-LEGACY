@@ -28,7 +28,7 @@ Class Manager {
     public function getCurrent()
     {
         if ( ! $this->current ) {
-            $this->current = $this->getByRoute(trim($this->app['pt.request']->getUrlPath(),'/'));
+            $this->current = $this->getByRoute($this->app['pt.request']->getUrlPath());
         }
         return $this->current;
     }
@@ -71,93 +71,9 @@ Class Manager {
     
     public function getByRoute($route)
     {
-        $originalRoute = $route;
-        if ( isset($this->routeCache[$originalRoute]) ) {
-            $route = $this->routeCache[$originalRoute]['route'];
-            $usingCustomRoute = $this->routeCache[$originalRoute]['custom'];
-        } else {
-            // lets see if we need to do any checking of custom routes
-            $plainRoutes = $this->app['pt.config']->get('pages.routes') ? $this->app['pt.config']->get('pages.routes') : array();
-            $routes = array();
-            $usingCustomRoute = false;
-            $root = $this->app['pt.prototype.path'] . '/';
-            foreach($plainRoutes as $spec => $r) {
-                $spec = ltrim($spec, '/');
-                $r = $root . ltrim($r, '/');
-                $routes[$spec] = $r;
-            }
-            $replacements = array();
-            if ( count($routes) ) {
-                foreach( $routes as $routeSpec => $endRoute ) {
-                    // see if there are any page ID placeholders that need parsing out
-                    $replacements = array();
-                    if ( preg_match('/\[([^\]]*)\]/', $routeSpec, $matches) ) {
-                        if ( $routePage = $this->getById($matches[1]) ) {
-                            $replacements[] = trim($routePage->getUnPrefixedUrlPath(),'/');
-                            if ( $root == '/' ) {
-                                $routeSpec = str_replace(
-                                    array($matches[0],'index.php'),
-                                    array($routePage->getUrlPath(),''),
-                                    $routeSpec
-                                );                            
-                            } else {
-                                $routeSpec = str_replace(
-                                    array($matches[0],'index.php', $root),
-                                    array($routePage->getUrlPath(),'', ''),
-                                    $routeSpec
-                                );
-                            }
-                        } else {
-                            continue;
-                        }
-                    }
-                    $routeSpec = trim($routeSpec,'/');
-                    // replace helper placeholders
-                    $routeSpec = str_replace(
-                        array('{any}','{num}','{all}','/'),
-                        array('([^/]*)','(\d*)','(.*)','\/'),
-                        $routeSpec
-                    );
-                    $routeSpec = '/^' . str_replace('/','\/',ltrim($root,'/')) . $routeSpec . '$/';
-                    if ( preg_match( $routeSpec, $route, $matches ) ) {
-                        // we have a match!
-                        for( $i = 0; $i < count($matches); $i++ ) {
-                            if ( $i !== 0) {
-                                $replacements[] = $matches[$i];
-                            }
-                        }
-                        $usingCustomRoute = true;
-                        $route = $endRoute;
-                        break;
-                    }
-                }
-                
-                // replace and reference tokens in the route
-                // '(:id=test)/hello': '$1'
-                $replacementTokens = array();
-                for ( $j = 0; $j < count($replacements); $j++ ) {
-                    $replacementTokens['$' . ($j+1)] = $replacements[$j];
-                }
-                $route = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $route);
-            
-                // replace any page ID placeholders in the route itself
-                if ( preg_match('/\[([^\]]*)\]/', $route, $matches) ) {
-                    if ( $routePage = $this->getById($matches[1]) ) {
-                        if ( $root == '/' ) {
-                            $route = $root . str_replace(array($matches[0],'index.php'), array($routePage->getUrlPath(),''), $route);    
-                        } else {
-                            $route = $root . str_replace(array($matches[0],'index.php',$root), array($routePage->getUrlPath(),'',''), $route);    
-                        }                    
-                    }
-                }
-            }
-            $route = str_replace('//', '/', $route);
-            $this->routeCache[$originalRoute] = array(
-                'route' => $route,
-                'custom' => $usingCustomRoute
-            );
-        }
-        return $this->getByUrlPath($route, $usingCustomRoute);
+        $newRoute = $this->app['pt.route_matcher']->convertRoute($route);
+        $usingCustomRoute = ($route == $newRoute ? false : true);
+        return $this->getByUrlPath($newRoute, $usingCustomRoute);
     }
     
     public function getUrlById($id)
