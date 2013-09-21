@@ -18,7 +18,7 @@ Class Utils {
         'js'     => 'text/javascript',
         'coffee' => 'text/coffeescript',
         'html'   => 'text/html',
-        'twig'   => 'text/twig',
+        'twig'   => 'text/html',
         'txt'    => 'text/plain',
         'yml'    => 'text/yaml',
         'csv'    => 'text/csv',

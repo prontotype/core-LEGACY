@@ -13,9 +13,8 @@ Class Navigation extends Base {
         if ( ! $opts ) {
             $opts = array();
         }
-        
-        if ( isset($opts['ignoreTypes']) && ! is_array($opts['ignoreTypes']) ) {
-            $opts['ignoreTypes'] = array($opts['ignoreTypes']);
+        if ( isset($opts['extensions']) && ! is_array($opts['extensions']) ) {
+            $opts['extensions'] = array($opts['extensions']);
         }
         
         $opts = $this->mergeOpts(array(
@@ -25,7 +24,7 @@ Class Navigation extends Base {
             'levelClassPrefix' => 'level-',
             'currentClass'     => 'is-current',
             'parentClass'      => 'is-parent',
-            'ignoreTypes'      => array(),
+            'extensions'      => array(),
         ), $opts);
         
         if ( $startPage === null ) {
