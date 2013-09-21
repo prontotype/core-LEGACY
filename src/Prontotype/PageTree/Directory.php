@@ -39,7 +39,8 @@ Class Directory extends Base {
             $segments = explode('/', trim($this->getRelPath(),'/'));
             $cleanSegments = array();
             foreach($segments as $segment) {
-                $cleanSegments[] = preg_replace('/^((\d*)[\._\-]).*?/', '', $segment);
+                $hideFlag = strpos($segment, '_') === 0 ? '_' : '';
+                $cleanSegments[] = $hideFlag . preg_replace('/^_?((\d*)[\._\-]).*?/', '', $segment);
             }
             $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
             if ( $up == '' ) {

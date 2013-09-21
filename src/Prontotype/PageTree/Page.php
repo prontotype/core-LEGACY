@@ -133,8 +133,9 @@ Class Page extends Base {
             $segments = explode('/', trim($this->getRelPath(),'/'));
             $cleanSegments = array();
             foreach( $segments as $segment ) {
+                $hideFlag = strpos($segment, '_') === 0 ? '_' : '';
                 preg_match($this->nameFormatRegex, $segment, $segmentParts);
-                $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
+                $cleanSegments[] = $hideFlag . (empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3]);
             }
             if ( strpos($cleanSegments[count($cleanSegments)-1],'index.') === 0 ) {
                 unset($cleanSegments[count($cleanSegments)-1]);

@@ -30,7 +30,7 @@ Class Base implements \RecursiveIterator
     
     protected $nameOverrides = null;
     
-    protected $nameFormatRegex = '/^((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
+    protected $nameFormatRegex = '/^_?((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
     
     protected $cloakedExtensions = array('html', 'twig');
         
@@ -186,7 +186,6 @@ Class Base implements \RecursiveIterator
         $name = null;
         if ( count($this->app['pt.config']->get('pages.titles')) ) {
             foreach( $this->app['pt.config']->get('pages.titles') as $path => $niceName ) {
-                
                 if ( preg_match('/\[([^\]]*)\]/', $path, $matches) ) {
                     // is an ID
                     if ( $this instanceof Page && $matches[1] == $this->getId() ) {
