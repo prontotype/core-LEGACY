@@ -80,25 +80,9 @@ Class RouteMatcher {
                 $replacementTokens['$' . ($j+1)] = $replacements[$j];
             }
             $route = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $route);
-        
+
             // replace any page ID placeholders in the route itself
-            if ( preg_match('/\[([^\]]*)\]/', $route, $matches) ) {
-                if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
-                    if ( $root == '/' ) {
-                        $route = $root . str_replace(
-                            array($matches[0],'index.php'),
-                            array($routePage->getUrlPath(),''),
-                            $route
-                        );    
-                    } else {
-                        $route = $root . str_replace(
-                            array($matches[0],'index.php',$root),
-                            array($routePage->getUrlPath(),'',''),
-                            $route
-                        );    
-                    }                    
-                }
-            }
+            $route = $this->replaceIds($route);
         }
         $route = trim(str_replace('//', '/', $route),'/');
         $this->routeCache[$originalRoute] = $route;
@@ -134,6 +118,7 @@ Class RouteMatcher {
         foreach ( $params as $param ) {
             $route = preg_replace('/\{([^\}]*)\}/', $param, $route, 1);
         }
+        $route = $this->replaceIds($route);
         $route = '/' . trim($route,'/');
         return $this->prefixRoute($route);
     }
@@ -146,6 +131,29 @@ Class RouteMatcher {
             $route
         );
         return '/^' . $route . '$/';
+    }
+    
+    protected function replaceIds($route)
+    {
+        $root = $this->app['pt.prototype.path'] . '/';
+        if ( preg_match('/\[([^\]]*)\]/', $route, $matches) ) {
+            if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
+                if ( $root == '/' ) {
+                    $route = $root . str_replace(
+                        array($matches[0],'index.php'),
+                        array($routePage->getUrlPath(),''),
+                        $route
+                    );    
+                } else {
+                    $route = $root . str_replace(
+                        array($matches[0],'index.php',$root),
+                        array($routePage->getUrlPath(),'',''),
+                        $route
+                    );    
+                }                    
+            }
+        }
+        return $route;
     }
     
     protected function getRoutes()
