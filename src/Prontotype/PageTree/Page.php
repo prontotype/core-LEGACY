@@ -15,6 +15,8 @@ Class Page extends Base {
     protected $shortUrl = null;
     
     protected $isIndex = null;
+    
+    protected $extension = null;
         
     public function __construct(SPLFileInfo $file, $app)
     {
@@ -22,6 +24,7 @@ Class Page extends Base {
             throw new \Exception('File is not a file');
         }
         parent::__construct($file, $app);
+        $this->extension = isset($this->pathInfo['extension']) ? $this->pathInfo['extension'] : null;
     }
     
     public function getId()
@@ -47,9 +50,14 @@ Class Page extends Base {
         return $this->app['pt.request']->getUriForPath($this->getShortUrlPath());
     }
     
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+    
     public function getMimeType()
     {
-        $mime = $this->app['pt.utils']->getMimeTypeForExtension($this->getTypeHint());
+        $mime = $this->app['pt.utils']->getMimeTypeForExtension($this->getExtension());
         return $mime ? $mime : 'text/html';
     }
     
@@ -125,10 +133,10 @@ Class Page extends Base {
             $segments = explode('/', trim($this->getRelPath(),'/'));
             $cleanSegments = array();
             foreach( $segments as $segment ) {
-                preg_match($this->nameFormatRegex, str_replace($this->nameExtension, '', $segment), $segmentParts);
+                preg_match($this->nameFormatRegex, $segment, $segmentParts);
                 $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
             }
-            if ( $cleanSegments[count($cleanSegments)-1] == 'index' || strpos($cleanSegments[count($cleanSegments)-1], 'index.') === 0 ) {
+            if ( strpos($cleanSegments[count($cleanSegments)-1],'index.') === 0 ) {
                 unset($cleanSegments[count($cleanSegments)-1]);
             }
             $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
@@ -136,6 +144,10 @@ Class Page extends Base {
                 $up = '/';
             }
             $this->urlPath = $this->prefixUrl($up);
+        }
+        $ext = pathinfo($this->urlPath, PATHINFO_EXTENSION);
+        if ( in_array($ext, $this->cloakedExtensions) ) {
+            $this->urlPath = $this->stripExtension($this->urlPath);
         }
         return $this->urlPath;
     }
@@ -146,8 +158,7 @@ Class Page extends Base {
             'id'        => $this->getId(),
             'depth'     => $this->getDepth(),
             'mimeType'  => $this->getMimeType(),
-            'contentType' => $this->getTypeHint(),
-            'typeHint'  => $this->getTypeHint(),
+            'extension' => $this->getExtension(),
             'shortUrlPath'  => $this->getShortUrlPath(),
             'shortUrl'  => $this->getShortUrl(),
             'niceName'  => $this->getNiceName(),
