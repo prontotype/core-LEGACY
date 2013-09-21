@@ -58,6 +58,11 @@ Class Base implements \RecursiveIterator
         return $this->templatePath;
     }
     
+    public function getBaseName()
+    {
+        return $this->pathInfo['basename'];
+    }
+    
     public function getUrl()
     {
         return $this->app['pt.request']->getUriForPath($this->getUnPrefixedUrlPath());
@@ -68,8 +73,9 @@ Class Base implements \RecursiveIterator
         return $this->unPrefixUrl($this->getUrlPath());
     }
     
-    public function matchesUrlPath($urlPath)
+    public function matchesUrlPath($urlPath, $includeHidden = false)
     {
+        if ( ! $includeHidden && $this->isHidden() ) return false;
         $urlPath = '/' . trim($urlPath,'/');
         return $this->unPrefixUrl($this->getUrlPath()) == $this->unPrefixUrl($urlPath);
     }
@@ -119,6 +125,17 @@ Class Base implements \RecursiveIterator
         return $this instanceof Directory;
     }
     
+    public function isHidden()
+    {
+        $pathParts = explode('/',trim($this->getTemplatePath(),'/'));
+        foreach( $pathParts as $part ) {
+           if ( strpos($part, '_') === 0 ) {
+               return true;
+           }
+        }
+        return false;
+    }
+    
     protected function prefixUrl($url)
     {
         $prefix = '';
@@ -138,7 +155,7 @@ Class Base implements \RecursiveIterator
 
     protected function isValidFile(SPLFileInfo $item)
     {
-        return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 && strpos($item->getBasename(), '_') !== 0 );
+        return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 );
     }
     
     protected function parseFileName()

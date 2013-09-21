@@ -50,11 +50,6 @@ Class Directory extends Base {
         return $this->urlPath;
     }
     
-    public function matchesUrlPath($urlPath)
-    {
-        return parent::matchesUrlPath($urlPath);
-    }
-    
     public function hasSubPages()
     {
         return count($this->items);
