@@ -107,7 +107,35 @@ Class RouteMatcher {
     
     public function getUrlForRoute($routeName, $params = array())
     {
+        if ( $urlPath = $this->getUrlPathForRoute($routeName, $params) ) {
+            return $this->app['pt.request']->getUriForPath($urlPath);
+        }
+    }
+    
+    public function getUrlPathForRoute($routeName, $params = array())
+    {
+        $routes = $this->getRoutes();
+        if ( ! isset($routes[$routeName], $routes[$routeName]['display']) ) {
+            return null;
+        }
+        $route = $routes[$routeName];
+        if ( strpos($route['display'], '[') === false && strpos($route['display'], '$') === false ) {
+            return $route['display']; // no tokens in the route to display, so can just return as-is
+        }
         
+        $route = $route['match'];
+        
+        // check we've got enough params
+        preg_match_all('/\{([^\}]*)\}/', $route, $matches);
+        
+        if ( count($matches[0]) !== count($params) ) {
+            return null;
+        }
+        foreach ( $params as $param ) {
+            $route = preg_replace('/\{([^\}]*)\}/', $param, $route, 1);
+        }
+        $route = '/' . trim($route,'/');
+        return $this->prefixRoute($route);
     }
     
     protected function makeRegexp($route, $tokens)
@@ -149,6 +177,15 @@ Class RouteMatcher {
             }
         }
         return $routes;
+    }
+    
+    protected function prefixRoute($route)
+    {
+        $prefix = '';
+        if ( ! $this->app['pt.env.clean_urls'] ) {
+            $prefix = '/index.php';
+        }
+        return $prefix . $route;
     }
     
 }

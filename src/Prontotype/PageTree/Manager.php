@@ -90,6 +90,22 @@ Class Manager {
         return '#';
     }
     
+    public function getUrlForRoute($routeName, $params = array())
+    {
+        if ( $url = $this->app['pt.route_matcher']->getUrlForRoute($routeName, $params) ) {
+            return $url;
+        }
+        return '#';
+    }
+    
+    public function getUrlPathForRoute($routeName, $params = array())
+    {
+        if ( $urlPath = $this->app['pt.route_matcher']->getUrlPathForRoute($routeName, $params) ) {
+            return $urlPath;
+        }
+        return '#';
+    }
+    
     public function getUrlPathById($id)
     {
         if ( $page = $this->getById($id) ) {
