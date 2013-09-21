@@ -136,6 +136,11 @@ Class Base implements \RecursiveIterator
         return false;
     }
     
+    public function isPublic()
+    {
+        return ! $this->isHidden();
+    }
+    
     protected function prefixUrl($url)
     {
         $prefix = '';
