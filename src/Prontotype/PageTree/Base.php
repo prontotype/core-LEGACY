@@ -30,6 +30,8 @@ Class Base implements \RecursiveIterator
     
     protected $nameOverrides = null;
     
+    protected $extension = null;
+    
     protected $nameFormatRegex = '/^_?((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
     
     protected $cloakedExtensions = array('html', 'twig');
@@ -38,11 +40,12 @@ Class Base implements \RecursiveIterator
     {
         $this->app = $app;
         $this->fullPath = $file->getPath() . '/' .  $file->getBasename();
-        $this->relPath = str_replace($app['pt.prototype.paths.templates'], '', $this->fullPath);
-        $this->templatePath = str_replace($app['pt.prototype.paths.templates'], '', $this->fullPath);
+        $this->relPath = str_replace($this->app['pt.prototype.paths.templates'], '', $this->fullPath);
+        $this->templatePath = str_replace($this->app['pt.prototype.paths.templates'], '', $this->fullPath);
         $this->pathInfo = pathinfo($this->fullPath);
+        $this->parseFileName($this->pathInfo['filename']);
     }
-    
+
     public function getFullPath()
     {
         return $this->fullPath;
@@ -109,9 +112,6 @@ Class Base implements \RecursiveIterator
     
     public function getCleanName()
     {
-        if ( $this->cleanName === null ) {
-            $this->parseFileName();
-        }
         return $this->cleanName;
     }
     
@@ -163,9 +163,10 @@ Class Base implements \RecursiveIterator
         return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 );
     }
     
-    protected function parseFileName()
+    protected function parseFileName($filename)
     {
-        preg_match($this->nameFormatRegex, $this->pathInfo['filename'], $parts);
+        $this->extension = isset($this->pathInfo['extension']) ? $this->pathInfo['extension'] : null;
+        preg_match($this->nameFormatRegex, $filename, $parts);
         $this->id = ! empty($parts[5]) ? $parts[5] : '';
         $this->position = ! empty($parts[2]) ? $parts[2] : 0;
         $cleanName = empty($parts[3]) ? $parts[6] : $parts[3];

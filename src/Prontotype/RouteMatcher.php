@@ -8,6 +8,12 @@ Class RouteMatcher {
     
     protected $routeCache = array();
     
+    protected $tokens = array(
+        '{any}' => '([^/]*)',
+        '{num}' => '(\d*)',
+        '{all}' => '(.*)'
+    );
+    
     public function __construct($app)
     {
         $this->app = $app;
@@ -33,7 +39,7 @@ Class RouteMatcher {
                 // see if there are any page ID placeholders that need parsing out
                 $replacements = array();
                 if ( preg_match('/\[([^\]]*)\]/', $routeSpec, $matches) ) {
-                    if ( $routePage = $this->getById($matches[1]) ) {
+                    if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
                         $replacements[] = trim($routePage->getUnPrefixedUrlPath(),'/');
                         if ( $root == '/' ) {
                             $routeSpec = str_replace(
@@ -52,16 +58,11 @@ Class RouteMatcher {
                         continue;
                     }
                 }
-                $routeSpec = trim($routeSpec,'/');
+                
+                $routeSpec = ltrim($root,'/') . trim($routeSpec,'/');
+                
                 // replace helper placeholders
-                $routeSpec = str_replace(
-                    array('{any}','{num}','{all}','/'),
-                    array('([^/]*)','(\d*)','(.*)','\/'),
-                    $routeSpec
-                );
-
-                $routeSpec = '/^' . str_replace('/','\/',ltrim($root,'/')) . $routeSpec . '$/';
-                if ( preg_match( $routeSpec, $route, $matches ) ) {
+                if ( preg_match( $this->makeRegexp($routeSpec, $this->tokens), $route, $matches ) ) {
                     // we have a match!
                     for( $i = 0; $i < count($matches); $i++ ) {
                         if ( $i !== 0) {
@@ -73,8 +74,7 @@ Class RouteMatcher {
                 }
             }
             
-            // replace and reference tokens in the route
-            // '(:id=test)/hello': '$1'
+            // replace reference tokens in the route
             $replacementTokens = array();
             for ( $j = 0; $j < count($replacements); $j++ ) {
                 $replacementTokens['$' . ($j+1)] = $replacements[$j];
@@ -83,11 +83,19 @@ Class RouteMatcher {
         
             // replace any page ID placeholders in the route itself
             if ( preg_match('/\[([^\]]*)\]/', $route, $matches) ) {
-                if ( $routePage = $this->getById($matches[1]) ) {
+                if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
                     if ( $root == '/' ) {
-                        $route = $root . str_replace(array($matches[0],'index.php'), array($routePage->getUrlPath(),''), $route);    
+                        $route = $root . str_replace(
+                            array($matches[0],'index.php'),
+                            array($routePage->getUrlPath(),''),
+                            $route
+                        );    
                     } else {
-                        $route = $root . str_replace(array($matches[0],'index.php',$root), array($routePage->getUrlPath(),'',''), $route);    
+                        $route = $root . str_replace(
+                            array($matches[0],'index.php',$root),
+                            array($routePage->getUrlPath(),'',''),
+                            $route
+                        );    
                     }                    
                 }
             }
@@ -102,6 +110,16 @@ Class RouteMatcher {
         
     }
     
+    protected function makeRegexp($route, $tokens)
+    {
+        $route = str_replace(
+            array_merge(array_keys($tokens), array('/')),
+            array_merge(array_values($tokens), array('\/')),
+            $route
+        );
+        return '/^' . $route . '$/';
+    }
+    
     protected function getRoutes()
     {
         return $this->routes;
@@ -113,6 +131,14 @@ Class RouteMatcher {
         $routeDefinitions = $this->app['pt.config']->get('pages.routes') ? $this->app['pt.config']->get('pages.routes') : array();
         foreach( $routeDefinitions as $name => $details ) {
             if ( isset($details['match'], $details['display']) ) {
+                if ( is_array($details['display']) ) {
+                    // should be string, probably forgot to quote an id in square brackets in the yml config
+                    $details['display'] = '[' . $details['display'][0] . ']';
+                }
+                if ( is_array($details['match']) ) {
+                    // should be string, probably forgot to quote an id in square brackets in the yml config
+                    $details['match'] = '[' . $details['match'][0] . ']';
+                }
                 $match = ltrim($details['match'], '/');
                 $display = $this->app['pt.prototype.path'] . '/' . ltrim($details['display'], '/');
                 $routes[$name] = array(

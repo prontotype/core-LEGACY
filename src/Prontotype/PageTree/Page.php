@@ -15,8 +15,6 @@ Class Page extends Base {
     protected $shortUrl = null;
     
     protected $isIndex = null;
-    
-    protected $extension = null;
         
     public function __construct(SPLFileInfo $file, $app)
     {
@@ -24,14 +22,10 @@ Class Page extends Base {
             throw new \Exception('File is not a file');
         }
         parent::__construct($file, $app);
-        $this->extension = isset($this->pathInfo['extension']) ? $this->pathInfo['extension'] : null;
     }
     
     public function getId()
     {
-        if ( $this->id === null ) {
-            $this->parseFileName();
-        }
         return empty($this->id) ? null : $this->id;
     }
     
@@ -63,9 +57,6 @@ Class Page extends Base {
     
     public function isIndex()
     {
-        if ( $this->isIndex === null ) {
-            $this->parseFileName();
-        }
         return $this->isIndex;
     }
     
@@ -153,24 +144,39 @@ Class Page extends Base {
         return $this->urlPath;
     }
     
+    public function setUrlPath($urlPath)
+    {
+        $this->urlPath = '/' . trim($urlPath,'/');
+        $originalExtension = $this->pathInfo['extension'];
+        $this->pathInfo['basename'] = pathinfo($urlPath, PATHINFO_BASENAME);
+        $this->pathInfo['filename'] = pathinfo($urlPath, PATHINFO_FILENAME);
+        $this->pathInfo['extension'] = pathinfo($urlPath, PATHINFO_EXTENSION);
+        if ( empty($this->pathInfo['extension']) ) {
+            $this->pathInfo['extension'] = $originalExtension;
+        }
+        $this->parseFileName($this->pathInfo['filename']);
+    }
+    
     public function toArray()
     {
         return array(
-            'id'        => $this->getId(),
-            'depth'     => $this->getDepth(),
-            'mimeType'  => $this->getMimeType(),
-            'extension' => $this->getExtension(),
-            'shortUrlPath'  => $this->getShortUrlPath(),
-            'shortUrl'  => $this->getShortUrl(),
-            'niceName'  => $this->getNiceName(),
-            'title'     => $this->getTitle(),
-            'name'      => $this->getCleanName(),
-            'urlPath'   => $this->getUrlPath(),
-            'relPath'   => $this->getRelPath(),
-            'fullPath'  => $this->getFullPath(),
-            'isCurrent' => $this->isCurrent(),
+            'id'                => $this->getId(),
+            'depth'             => $this->getDepth(),
+            'mimeType'          => $this->getMimeType(),
+            'extension'         => $this->getExtension(),
+            'shortUrlPath'      => $this->getShortUrlPath(),
+            'shortUrl'          => $this->getShortUrl(),
+            'niceName'          => $this->getNiceName(),
+            'title'             => $this->getTitle(),
+            'name'              => $this->getCleanName(),
+            'urlPath'           => $this->getUrlPath(),
+            'relPath'           => $this->getRelPath(),
+            'fullPath'          => $this->getFullPath(),
+            'isHidden'          => $this->isHidden(),
+            'isPublic'          => $this->isPublic(),
+            'isCurrent'         => $this->isCurrent(),
             'isParentOfCurrent' => $this->isParentOfCurrent(),
-            'isPage'    => true,
+            'isPage'            => true,
         );
     }
     

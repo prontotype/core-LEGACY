@@ -28,7 +28,13 @@ Class Manager {
     public function getCurrent()
     {
         if ( ! $this->current ) {
-            $this->current = $this->getByRoute($this->app['pt.request']->getUrlPath());
+            $requestPath = $this->app['pt.request']->getUrlPath();
+            $requestPath = empty($requestPath) ? '/' : $requestPath;
+            $this->current = $this->getByRoute($requestPath);
+            if ( $this->current && $requestPath !== $this->current->getUrlPath() ) {
+                // been rerouted
+                $this->current->setUrlPath($requestPath);  
+            }
         }
         return $this->current;
     }
