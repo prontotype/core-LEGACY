@@ -37,7 +37,7 @@ Class Utils {
         'twig'   => array('text/twig'),
         'txt'    => array('text/plain'),
         'yml'    => array('yml', 'yaml'),
-        'yml'    => array('csv'),
+        'csv'    => array('csv'),
     );
 
     public function __construct($app)
