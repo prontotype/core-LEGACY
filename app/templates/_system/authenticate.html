@@ -18,7 +18,7 @@ You must be logged in to access this content
     </div>
     {% endif %}
     
-    <form action="{{ pt.urls.auth.check }}" method="post" class="pt-auth-form pt-content-panel">
+    <form action="{{ pt.urls.auth.login }}" method="post" class="pt-auth-form pt-content-panel">
         
         {{ pt.snippets.forms.label('Password:', 'pt-auth-password') }}
         {{ pt.snippets.forms.input('password', 'password', null, {id : 'pt-auth-password'}) }}
