@@ -1,0 +1,66 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Users snippets template reference
+
+All user snippet methods are available under the `pt.snippets.users` template variable, and are intended to make it easy to generate login/logout components for the Prontotype <a href="{{ pt.pages.getUrlById('users') }}">users system</a>.
+
+## Available methods
+
+<div class="method-ref">
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-users-login">pt.snippets.users.<span class="name">login([ opts [, attrs ]])</span></h3>
+        <ul class="variables">
+            <li><code>opts</code>: <em>(optional)</em> Array of configuration options. See below for defaults.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the opening form tag.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Generates a login form for use with the <a href="{{ pt.pages.getUrlById('users') }}">users system</a>. Note that the exact form generated will in part depend on your users configuration settings.</p>
+        </div>
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.users.login() }}
+<form method="POST" action="/index.php/_user/login">
+    <div class="pt-control">
+        <label for="username">Username</label>
+        <input name="username" type="text" id="username">
+    </div>
+    <div class="pt-control">
+        <label for="password">Password</label>
+        <input name="password" type="password" id="password">
+    </div>
+    <button type="submit">Login &rarr;</button>
+</form></pre>{% endraw %}
+
+<h3><code>opts</code> options and defaults</h3>
+
+<p>Below are the default <code>opts</code> values - you can overwrite some or all of these to customise the <code>login</code> method's behaviour.</p>
+
+{% raw %}<pre class="brush: twig">{
+    'redirect': null,               {# URL of a page to redirect to after login #}
+    'default': null,                {# identifier of the default user to use if none is entered into the form #}
+    'identifyLabel': 'Username',    {# label to use for the identifier field #}
+    'authLabel': 'Password',        {# label to use for the authentication field #}
+    'submitLabel': 'Login',         {# text for the submit button #}
+}</pre>{% endraw %}       
+
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-users-logout">pt.snippets.users.<span class="name">logout([ text [, attrs ]])</span></h3>
+        <ul class="variables">
+            <li><code>text</code>: <em>(optional)</em> Text to use in the link. <strong>Defaults to 'Logout'</strong></li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the generated opening <code>a</code> tag.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Outputs a logout link for use with the <a href="{{ pt.pages.getUrlById('users') }}">users system</a>.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.users.logout('See ya!', {'class':'logout'}) }} <!-- <a href="http://example.com/index.php/_user/logout" class="logout">See ya!</a> --></pre>{% endraw %}
+    </div>
+    
+    
+</div>
+
+
+{% endset %}

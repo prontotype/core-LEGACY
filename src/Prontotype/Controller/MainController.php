@@ -31,7 +31,7 @@ class MainController implements ControllerProviderInterface
                     return $app->abort($e->getPrevious()->getStatusCode());
                 }
                 
-                return $app['twig']->render('_system/error.twig', array(
+                return $app['twig']->render('_system/error.html', array(
                     'message'=>$e->getMessage()
                 ));
             }

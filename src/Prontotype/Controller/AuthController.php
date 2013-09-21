@@ -20,7 +20,7 @@ class AuthController implements ControllerProviderInterface {
                 return $app->redirect($app['pt.utils']->generateUrlPath('home'));
             }
             
-            return $app['twig']->render('_system/authenticate.twig');
+            return $app['twig']->render('_system/authenticate.html');
             
         })->bind('auth.login');
         

@@ -1,0 +1,13 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# User template reference
+
+You can check whether there is a [user currently logged in]({{ pt.pages.getUrlById('users') }}) in your templates using the `pt.user` variable.
+
+If there is **no user** logged in then it will return `null`. If there **is** a user logged in then it will return an array of user data for that user, as specified in the `users.yml` file.
+
+See the [users and logins documentation]({{ pt.pages.getUrlById('users') }}) for more information.
+
+{% endset %}

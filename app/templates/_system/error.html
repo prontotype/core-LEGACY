@@ -1,0 +1,16 @@
+{% extends "_system/layouts/skeleton.html" %}
+
+{% block title %}
+An error has occurred
+{% endblock title %}
+
+{% block content %}
+
+<div class="pt-content-block">
+    
+    <h1>An error has occurred.</h1>
+    {% if message %}<p>Computer says: {{ message }}</p>{% endif %}
+    
+</div>
+
+{% endblock content %}

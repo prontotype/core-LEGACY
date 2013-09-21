@@ -20,7 +20,7 @@ Class Assets extends Base {
             'media' => $media,
         ), $attrs);
             
-        return $this->renderTemplate('stylesheet.twig', array(
+        return $this->renderTemplate('stylesheet.html', array(
             'attrs'  => $attrs,
         ));
     }
@@ -35,7 +35,7 @@ Class Assets extends Base {
             'src'  => $src,
         ), $attrs);
             
-        return $this->renderTemplate('js.twig', array(
+        return $this->renderTemplate('js.html', array(
             'attrs'  => $attrs,
         ));
     }
@@ -50,7 +50,7 @@ Class Assets extends Base {
             'src' => $src,
         ), $attrs);
             
-        return $this->renderTemplate('image.twig', array(
+        return $this->renderTemplate('image.html', array(
             'attrs'  => $attrs,
         ));
     }

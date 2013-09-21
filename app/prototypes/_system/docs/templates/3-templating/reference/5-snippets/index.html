@@ -1,0 +1,15 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Snippets template reference
+
+All snippet methods are available under the `pt.snippets` template variable.
+
+They are organised into logical groups of snippets - for details on the available methods for each snippet group please refer to the appropriate snippets documentation section:
+
+<nav class="nav-inpage">
+{{ pt.snippets.navigation.pageTree(pt.pages.getCurrent(), {includeParent : false}) }}
+</nav>
+
+{% endset %}

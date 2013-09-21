@@ -1,0 +1,34 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Routing URLs to pages
+
+Prontotype handles requests for pages by attempting to map a URL to a `.html` file in the prototype's template directory, `/prototypes/{my-prototype-name}/templates`.
+
+At it's simplest, it will map a URL to a template in much the same way that 'standard' URL to HTML page directory routing works.
+
+**So for example**, given a URL such as `http://example.com/index.php/foo/bar`, Prontotype will look for the templates in the following locations, stopping when it finds one:
+
+1. `/prototypes/{my-prototype-name}/templates/foo/bar.html`
+2. `/prototypes/{my-prototype-name}/templates/foo/bar/index.html`
+
+If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required. 
+
+## 'Hidden' templates {{ '{#' }}hidden-templates}
+
+Any directories or templates whose names start with an **underscore** (`_`) will be 'hidden' from the URL routing mechanism, and so will not accessible as pages. This is useful if you want to use one or more directories to contain template partials or layouts but don't want to risk them accidentally being exposed via a URL.
+
+Any templates within these 'underscore-prefixed' directories can be used for extending or including as any other [Twig]({{ pt.pages.getUrlById('templating-twig') }}) template would be.
+
+## URL 'trigger' segments
+
+There are a set of **trigger keywords** in URLs which have special meaning for Prontotype. You can read more about these and the functionality that they expose on the [URL triggers config reference page]({{ pt.pages.getUrlById('config-triggers') }}).
+
+## Error pages and 404s
+
+If Prontotype can't resolve a URL via the methods above, it will display the **default 404 page** template. Similarly if something has caused an error to occur then **default error page** template will be shown.
+
+If you want to customise the look and feel of these templates then you should refer to the section on [overriding system templates]({{ pt.pages.getUrlById('templating-overrides') }}) for more information.
+
+{% endset %}

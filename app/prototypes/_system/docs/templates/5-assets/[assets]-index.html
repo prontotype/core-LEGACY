@@ -1,0 +1,49 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Asset Handling
+
+Prontotype provides you with a number of features to make working with assets (CSS, JS, images etc) in your prototypes straightforward, including on-the-fly Sass and LESS preprocessing and handy tools for generating placeholder images.
+
+## Asset file locations
+
+All your prototype's asset files should be stored within that prototype's `/assets` directory - for example at `/prototypes/{my-prototype-name}/assets`. Within this directory you can organise you assets into subdirectories however you see fit.
+
+## Linking to assets from your templates
+
+By default Prontotype expects to dynamically serve up assets, allowing for preprocessing of files and other functionality. That means that rather than linking directly to an asset file, there is a special URL format that will serve up your files.
+
+The URL for any asset in your prototype should therefore look like this:
+
+<pre class="brush: xml">http://example.com/index.php/<assets_trigger>/<path_to_asset></pre>
+
+Where `<assets_trigger>` is as defined [in the 'triggers' section of your config file]({{ pt.pages.getUrlById('config-triggers') }}) (defaults to **_assets**) and `<path_to_asset>` is the path of the asset file that you wish to access, relative to the prototype's `/assets` directory.
+
+So to link to an image file located at `/prototypes/{my-prototype-name}/assets/img/monkey.gif` would look something like this (with [default URL trigger value]({{ pt.pages.getUrlById('config-triggers') }}) and without enabling [clean URLs]({{ pt.pages.getUrlById('pages-clean-urls') }})):
+
+<pre class="brush: xml">http://example.com/index.php/_assets/img/monkey.gif</pre>
+
+### Auto-generating links
+
+To make linking to your assets a bit easier, Prontotype provides a [couple of methods]({{ pt.pages.getUrlById('template-ref-assets') }}) for generating the links based on the path of your asset file (relative to the `/assets` directory). A couple of examples of using these might look like this:
+
+{% raw %}<pre class="brush: twig">{# Link to a CSS file #}
+<link rel="stylesheet" href="{{ pt.assets.getUrl('css/page.css') }}" media="all" type="text/css">
+{# Link to a image #}
+<img src="{{ pt.assets.getUrlPath('img/birds/blackbird.jpg') }}"></pre>{% endraw %}
+
+Taking this a step further, there are also some helpful snippets for generating [link, script and image elements]({{ pt.pages.getUrlById('snippet-assets') }}) available to make linking to assets even easier. For example:
+
+{% raw %}<pre class="brush: twig">{# Generate a link to a CSS file #}
+{{ pt.snippets.assets.stylesheet('css/page.css') }} <!-- <link rel="stylesheet" href="http://example.com/index.php/_assets/css/page.css" media="all" type="text/css"> -->
+{# Generate a link to a image #}
+{{ pt.snippets.assets.image('img/birds/blackbird.jpg') }} <!-- <img src="http://example.com/index.php/_assets/img/birds/blackbird.jpg"> --></pre>{% endraw %}
+
+See the [assets snippets section]({{ pt.pages.getUrlById('snippet-assets') }}) for more information on using and configuring these snippet shortcuts.
+
+### Static linking
+
+If for some reason you don't want to take advantage of Prontotype's dynamic asset linking, you can also directly link to your assets in the 'normal' way - just be aware that your web root is the top level Prontotype install directory so your relative URLs will need to look like `/prototypes/{my-prototype-name}/assets/img/flamingo.png` - i.e. include the prototype directory path in there.
+
+{% endset %}

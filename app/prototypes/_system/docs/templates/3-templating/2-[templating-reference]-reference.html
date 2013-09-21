@@ -1,0 +1,13 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Templating reference guide
+
+Prontotype provides a set of variables and data to work with within your templates. Full details are outlined in the pages below.
+
+<nav class="nav-inpage">
+{{ pt.snippets.navigation.pageTree(pt.pages.getCurrent(), {includeParent : false}) }}
+</nav>
+
+{% endset %}

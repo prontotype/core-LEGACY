@@ -1,0 +1,14 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Configuration reference
+
+The following is the contents of the default system configuration file. Anything within this can be overridden within your own configuration files.
+
+<pre class="brush: yaml">{{ pt.config.getDefaultConfigs(true) }}</pre>
+
+{% endset %}
+
+
+

@@ -1,0 +1,31 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Pages and URLs
+
+Pages in Prontotype are [Twig]({{ pt.pages.getUrlById('templating-twig') }}) templates that are addressable via a URL.
+
+They live in the prototype-specific templates directory - `/prototypes/{my-prototype-name}/templates` - and have a `.html` file extension.
+
+Pages can be [ordered]({{ pt.pages.getUrlById('pages-order-ids') }}#ordering) and can have a [reference ID]({{ pt.pages.getUrlById('pages-order-ids') }}#ids) assigned to them, should you wish. Pages with an ID can be moved anywhere within the templates directory and and generated links to them will remain valid, so you'll never need to update a whole bunch of links when you move a page around.
+
+The [mapping URLs to templates]({{ pt.pages.getUrlById('pages-routing') }}) section contains more specific information about how Prontotype decides which template should get served up for a particular URL.
+
+## Accessing page data within templates
+
+Each page will have a set metadata automatically generated for it, including it's URL, short URL, a ['pretty' page title]({{ pt.pages.getUrlById('pages-titles') }}) and more. An object representing the current page is available within each template, and information about other pages can also be fetched.
+
+You can read more about accessing page data from within your templates in the [pages section of the templating reference]({{ pt.pages.getUrlById('template-ref-pages') }}) guide.
+
+## Linking to other pages
+
+Whilst you can certainly hard-code links to other pages within your prototype, this can often cause issues when pages get moved around within the filesystem - as often happens while prototyping!
+
+So instead, for any page in the prototype that has an ID you can generate the URL as follows:
+
+{% raw %}<pre class="brush: twig"><a href="{{ pt.pages.getUrlById('my-page-id') }}">Read this page</a></pre>{% endraw %}
+
+See the [pages section of the templating reference]({{ pt.pages.getUrlById('template-ref-pages') }}) guide for more information on other handy page-related variables and methods.
+
+{% endset %}

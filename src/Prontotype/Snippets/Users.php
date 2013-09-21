@@ -26,7 +26,7 @@ Class Users extends Base {
             'submitLabel'   => "Login &rarr;",
         ), $opts);
         
-        return $this->renderTemplate('login.twig', array(
+        return $this->renderTemplate('login.html', array(
             'attrs' => $attrs,
             'opts' => $opts
         ));
@@ -38,7 +38,7 @@ Class Users extends Base {
             'href' => $this->app['pt.utils']->generateUrlPath('user.logout')
         ), $attrs);
         
-        return $this->app['twig']->render('_system/snippets/navigation/link.twig', array(
+        return $this->app['twig']->render('_system/snippets/navigation/link.html', array(
             'text'  => $text,
             'attrs' => $attrs
         ));

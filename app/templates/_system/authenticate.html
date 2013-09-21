@@ -1,0 +1,36 @@
+{% extends "_system/layouts/skeleton.html" %}
+
+{% block title %}
+You must be logged in to access this content
+{% endblock title %}
+
+{% set error = pt.notifications.get('error') %}
+
+{% block content %}
+
+<div class="pt-content-block">
+    
+    <h1>You must be logged in to access this content.</h1>
+    
+    {% if error %}
+    <div class="pt-notification pt-notification--error">
+        {{ error }}
+    </div>
+    {% endif %}
+    
+    <form action="{{ pt.urls.auth.check }}" method="post" class="pt-auth-form pt-content-panel">
+        
+        {{ pt.snippets.forms.label('Password:', 'pt-auth-password') }}
+        {{ pt.snippets.forms.input('password', 'password', null, {id : 'pt-auth-password'}) }}
+        {{ pt.snippets.forms.button('Go &rarr;') }}
+        
+    </form>
+    
+</div>
+
+
+    
+    
+
+
+{% endblock content %}

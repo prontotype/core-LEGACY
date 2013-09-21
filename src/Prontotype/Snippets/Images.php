@@ -35,7 +35,7 @@ Class Images extends Base {
     
     public function image($attrs)
     {
-        return $this->renderTemplate('image.twig', array(
+        return $this->renderTemplate('image.html', array(
             'attrs' => $attrs
         ));
     }

@@ -19,7 +19,7 @@ class DocsController implements ControllerProviderInterface
             
             $dataPath = '_system/docs/' . (empty($docs_path) ? 'index.md' : $docs_path . '.md');
             
-            return $app['twig']->render('_system/docs/index.twig', array(
+            return $app['twig']->render('_system/docs/index.html', array(
                 'dataPath' => $dataPath
             ));
             

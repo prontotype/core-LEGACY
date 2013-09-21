@@ -14,14 +14,14 @@ Class Forms extends Base {
             'method' => 'get',
         ), $attrs);
         
-        return $this->renderTemplate('open.twig', array(
+        return $this->renderTemplate('open.html', array(
             'attrs' => $attrs
         ));
     }
     
     public function close()
     {
-        return $this->renderTemplate('close.twig');
+        return $this->renderTemplate('close.html');
     }
     
     public function label($text = 'Label', $target = null, $attrs = array())
@@ -30,7 +30,7 @@ Class Forms extends Base {
             'for'   => '#' . str_replace('#', '', $target)
         ), $attrs);
         
-        return $this->renderTemplate('label.twig', array(
+        return $this->renderTemplate('label.html', array(
             'text'   => $text,
             'attrs'  => $attrs,
         ));
@@ -42,7 +42,7 @@ Class Forms extends Base {
             'type' => 'submit'
         ), $attrs);
         
-        return $this->renderTemplate('button.twig', array(
+        return $this->renderTemplate('button.html', array(
             'text'   => $text,
             'attrs'  => $attrs,
         ));
@@ -60,7 +60,7 @@ Class Forms extends Base {
             'id'    => $name
         ), $attrs);
         
-        return $this->renderTemplate('input.twig', array(
+        return $this->renderTemplate('input.html', array(
             'attrs'  => $attrs,
         ));
     }
@@ -91,7 +91,7 @@ Class Forms extends Base {
             'name' => $name,
         ), $attrs);
         
-        return $this->renderTemplate('select.twig', array(
+        return $this->renderTemplate('select.html', array(
             'value' => $value,
             'opts'  => $opts,
             'attrs' => $attrs,
@@ -104,7 +104,7 @@ Class Forms extends Base {
             'name' => $name,
         ), $attrs);
         
-        return $this->renderTemplate('textarea.twig', array(
+        return $this->renderTemplate('textarea.html', array(
             'value' => $value,
             'attrs' => $attrs,
         ));
@@ -112,7 +112,7 @@ Class Forms extends Base {
     
     // public function control($type = 'input', $label = null, $name = null, $value = null, $opts = array(), $attrs = array())
     // {
-    //     return $this->renderTemplate('control.twig', array(
+    //     return $this->renderTemplate('control.html', array(
     //         'type'  => $type,
     //         'label' => $label,
     //         'name'  => $name,

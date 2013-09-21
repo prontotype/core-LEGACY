@@ -18,7 +18,7 @@ class ToolsController implements ControllerProviderInterface {
 
         $controllers->get('/export', function () use ($app) {
             
-            return $app['twig']->render('_system/tools/export.twig', array(
+            return $app['twig']->render('_system/tools/export.html', array(
                 'exports' => $app['pt.exporter']->listContents()
             ));
 

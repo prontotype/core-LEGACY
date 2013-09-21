@@ -46,7 +46,7 @@ Class Navigation extends Base {
             $pages = $startPage->getSubPages();
         }
     
-        return $this->renderTemplate('page-tree.twig', array(
+        return $this->renderTemplate('page-tree.html', array(
             'pages' => $pages,
             'level' => $level,
             'opts'  => $opts,
@@ -117,7 +117,7 @@ Class Navigation extends Base {
             }
         }
         
-        return $this->renderTemplate('breadcrumb.twig', array(
+        return $this->renderTemplate('breadcrumb.html', array(
             'pages' => $pages,
             'opts'  => $opts,
             'attrs' => $attrs
