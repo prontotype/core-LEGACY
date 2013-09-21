@@ -21,7 +21,8 @@
         "mheap/Silex-Markdown": "*",
         "easybook/geshi" : "*",
         "sybio/image-workshop" : "2.0.*",
-        "symfony/finder" : "2.3.*"
+        "symfony/finder" : "2.3.*",
+        "symfony/filesystem" : "2.3.*"
     },
     "repositories" : [{
         "type": "vcs",

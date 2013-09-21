@@ -6,6 +6,7 @@ use Prontotype\Cache;
 use Prontotype\Prototype;
 
 use Symfony\Component\HttpFoundation\File\File;
+use PHPImageWorkshop\ImageWorkshop;
 
 Class Manager {
     
@@ -48,7 +49,7 @@ Class Manager {
     public function generateAsset($assetPath)
     {   
         $fullPath = $this->findAssetFile($assetPath);
-        
+
         $lastEditTime = filemtime($fullPath);
         $parts = pathinfo($fullPath);
         
@@ -62,6 +63,53 @@ Class Manager {
             'mime' => $this->getMimeType($fullPath),
             'content' => $parsed
         );
+    }
+    
+    public function generatePlaceholderImg($size = 300, $bgcolour = 'CCC', $colour = '999', $text = null)
+    {
+        $sizes = explode('x', strtolower($size));
+        if (count($sizes) == 1) {
+            $width = $sizes[0];
+            $height = $sizes[0];
+        } elseif (count($sizes) > 1) {
+            $width = $sizes[0];
+            $height = $sizes[1];
+        }
+        
+        $bgcolour = $this->makeHexColour($bgcolour);
+        $colour = $this->makeHexColour($colour);
+        
+        $text = empty($text) ? $width . 'x' . $height : $text;
+        $fontPath = $this->app['pt.app.paths.assets'] . '/_system/fonts/prontotype.ttf';
+        
+        
+        
+        $key = md5($width . $height . $bgcolour . $colour . $text);
+
+        if ( $imageData = $this->app['pt.cache']->get(Cache::CACHE_TYPE_IMAGES, $key) ) {
+            return $imageData;
+        }
+        
+        $layer = ImageWorkshop::initVirginLayer($width, $height, $bgcolour);
+        $textLayer = ImageWorkshop::initTextLayer($text, $fontPath, 30, $colour, 0, $bgcolour);
+        $layer->addLayer(1, $textLayer);
+        $img = $layer->getResult();
+        
+        ob_start();
+        imagepng($img);
+        $imageData = ob_get_contents();
+        ob_end_clean();
+        
+        $this->app['pt.cache']->set(Cache::CACHE_TYPE_IMAGES, $key, $imageData);
+        return $imageData;
+    }
+    
+    protected function makeHexColour($colour)
+    {
+        if (strlen($colour) == 3) {
+            $colour = $colour[0] . $colour[0] . $colour[1] . $colour[1] . $colour[2] . $colour[2];
+        }
+        return $colour;
     }
     
     public function registerProcessor(Processor $processor)
@@ -143,15 +191,18 @@ Class Manager {
     protected function getPathAliases($path)
     {
         $pathParts = pathinfo($path);
-        $ext = strtolower($pathParts['extension']);
-        $aliases = array();
-        if ( isset($this->aliases[$ext]) ) {
-            $baseName = $pathParts['dirname'] . '/' . $pathParts['filename'] . '.';
-            foreach( $this->aliases[$pathParts['extension']] as $aliasExt ) {
-                $aliases[] = $baseName . $aliasExt;
+        if ( isset($pathParts['extension']) ) {
+            $ext = strtolower($pathParts['extension']);
+            $aliases = array();
+            if ( isset($this->aliases[$ext]) ) {
+                $baseName = $pathParts['dirname'] . '/' . $pathParts['filename'] . '.';
+                foreach( $this->aliases[$pathParts['extension']] as $aliasExt ) {
+                    $aliases[] = $baseName . $aliasExt;
+                }
             }
+            return $aliases;
         }
-        return $aliases;
+        return array();
     }
     
     protected function getMimeType($fullPath)

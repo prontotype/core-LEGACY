@@ -110,6 +110,7 @@ Class Application {
             $this->app['pt.prototype.paths.cache.data'],
             $this->app['pt.prototype.paths.cache.requests'],
             $this->app['pt.prototype.paths.cache.exports'],
+            $this->app['pt.prototype.paths.cache.images'],
         ) as $path) {
             if ( ! file_exists($path) ) {
                 mkdir($path, 0771, true);

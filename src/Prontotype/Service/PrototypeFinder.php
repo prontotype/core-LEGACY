@@ -52,6 +52,7 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $app['pt.prototype.paths.cache.data']      = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/data';
         $app['pt.prototype.paths.cache.requests']  = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/requests';
         $app['pt.prototype.paths.cache.exports']   = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/exports';        
+        $app['pt.prototype.paths.cache.images']    = $app['pt.install.paths.cache.root'] . '/' . $app['pt.prototype.uid'] . '/images';
     }
         
     public function boot(SilexApp $app) {}

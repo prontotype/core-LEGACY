@@ -94,6 +94,10 @@ Class Prontotype implements ServiceProviderInterface {
                 Cache::CACHE_TYPE_EXPORTS => array(
                     'expiry' => 60 * 60 * 24 * 365,
                     'path' => $app['pt.prototype.paths.cache.exports'],
+                ),
+                Cache::CACHE_TYPE_IMAGES => array(
+                    'expiry' => 60 * 60 * 24 * 365,
+                    'path' => $app['pt.prototype.paths.cache.images'],
                 )
             ));
         });

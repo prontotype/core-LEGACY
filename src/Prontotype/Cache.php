@@ -8,6 +8,7 @@ Class Cache {
     const CACHE_TYPE_DATA = 'data';
     const CACHE_TYPE_ASSETS = 'assets';
     const CACHE_TYPE_EXPORTS = 'exports';
+    const CACHE_TYPE_IMAGES = 'images';
 
     protected $app;
     
