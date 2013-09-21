@@ -25,9 +25,6 @@ Class RouteMatcher {
             $this->addLoadPath($path);
         }
         $this->routes = $this->mergeRoutes();
-        echo '<pre>';
-        print_r($this->routes);
-        echo '</pre>';
     }
     
     public function convertRoute($route)
