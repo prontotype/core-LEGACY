@@ -14,10 +14,30 @@ Class Utils {
         'rss'    => 'application/rss+xml',
         'css'    => 'text/css',
         'less'   => 'text/css',
-        'scss'   => 'text/scss',
+        'scss'   => 'text/css',
         'js'     => 'text/javascript',
-        'coffee' => 'text/javascript',
+        'coffee' => 'text/coffeescript',
         'html'   => 'text/html',
+        'twig'   => 'text/html',
+        'txt'    => 'text/plain',
+        'yml'    => 'text/yaml',
+        'csv'    => 'text/csv',
+    );
+    
+    protected $mimeSearchStrings = array(
+        'json'   => array('json'),
+        'xml'    => array('xml'),
+        'rss'    => array('rss'),
+        'css'    => array('css'),
+        'less'   => array('less'),
+        'scss'   => array('scss'),
+        'js'     => array('javascript'),
+        'coffee' => array('coffeescript'),
+        'html'   => array('text/html'),
+        'twig'   => array('text/twig'),
+        'txt'    => array('text/plain'),
+        'yml'    => array('yml', 'yaml'),
+        'csv'    => array('csv'),
     );
 
     public function __construct($app)
@@ -28,6 +48,18 @@ Class Utils {
     public function getMimeTypeForExtension($ext)
     {
         return isset($this->mimeTypes[$ext]) ? $this->mimeTypes[$ext] : null;
+    }
+    
+    public function getMimeExtensionFromMimeType($mime)
+    {
+        foreach( $this->mimeSearchStrings as $ext => $searchStrings ) {
+            foreach( $searchStrings as $str ) {
+                if (strpos($mime, $str) !== false) {
+                    return $ext;
+                }
+            }
+        }
+        return null;
     }
     
     public function generateUrlPath($route, $params = array())

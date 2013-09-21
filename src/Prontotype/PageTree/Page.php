@@ -26,9 +26,6 @@ Class Page extends Base {
     
     public function getId()
     {
-        if ( $this->id === null ) {
-            $this->parseFileName();
-        }
         return empty($this->id) ? null : $this->id;
     }
     
@@ -47,17 +44,19 @@ Class Page extends Base {
         return $this->app['pt.request']->getUriForPath($this->getShortUrlPath());
     }
     
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+    
     public function getMimeType()
     {
-        $mime = $this->app['pt.utils']->getMimeTypeForExtension($this->getTypeHint());
+        $mime = $this->app['pt.utils']->getMimeTypeForExtension($this->getExtension());
         return $mime ? $mime : 'text/html';
     }
     
     public function isIndex()
     {
-        if ( $this->isIndex === null ) {
-            $this->parseFileName();
-        }
         return $this->isIndex;
     }
     
@@ -125,10 +124,11 @@ Class Page extends Base {
             $segments = explode('/', trim($this->getRelPath(),'/'));
             $cleanSegments = array();
             foreach( $segments as $segment ) {
-                preg_match($this->nameFormatRegex, str_replace($this->nameExtension, '', $segment), $segmentParts);
-                $cleanSegments[] = empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3];
+                $hideFlag = strpos($segment, '_') === 0 ? '_' : '';
+                preg_match($this->nameFormatRegex, $segment, $segmentParts);
+                $cleanSegments[] = $hideFlag . (empty($segmentParts[3]) ? $segmentParts[6] : $segmentParts[3]);
             }
-            if ( $cleanSegments[count($cleanSegments)-1] == 'index' || strpos($cleanSegments[count($cleanSegments)-1], 'index.') === 0 ) {
+            if ( strpos($cleanSegments[count($cleanSegments)-1],'index.') === 0 ) {
                 unset($cleanSegments[count($cleanSegments)-1]);
             }
             $up = rtrim($this->app['pt.prototype.path'] . '/' . implode('/', $cleanSegments),'/');
@@ -137,28 +137,46 @@ Class Page extends Base {
             }
             $this->urlPath = $this->prefixUrl($up);
         }
+        $ext = pathinfo($this->urlPath, PATHINFO_EXTENSION);
+        if ( in_array($ext, $this->cloakedExtensions) ) {
+            $this->urlPath = $this->stripExtension($this->urlPath);
+        }
         return $this->urlPath;
+    }
+    
+    public function setUrlPath($urlPath)
+    {
+        $this->urlPath = '/' . trim($urlPath,'/');
+        $originalExtension = $this->pathInfo['extension'];
+        $this->pathInfo['basename'] = pathinfo($urlPath, PATHINFO_BASENAME);
+        $this->pathInfo['filename'] = pathinfo($urlPath, PATHINFO_FILENAME);
+        $this->pathInfo['extension'] = pathinfo($urlPath, PATHINFO_EXTENSION);
+        if ( empty($this->pathInfo['extension']) ) {
+            $this->pathInfo['extension'] = $originalExtension;
+        }
+        $this->parseFileName($this->pathInfo['filename']);
     }
     
     public function toArray()
     {
         return array(
-            'id'        => $this->getId(),
-            'depth'     => $this->getDepth(),
-            'mimeType'  => $this->getMimeType(),
-            'contentType' => $this->getTypeHint(),
-            'typeHint'  => $this->getTypeHint(),
-            'shortUrlPath'  => $this->getShortUrlPath(),
-            'shortUrl'  => $this->getShortUrl(),
-            'niceName'  => $this->getNiceName(),
-            'title'     => $this->getTitle(),
-            'name'      => $this->getCleanName(),
-            'urlPath'   => $this->getUrlPath(),
-            'relPath'   => $this->getRelPath(),
-            'fullPath'  => $this->getFullPath(),
-            'isCurrent' => $this->isCurrent(),
+            'id'                => $this->getId(),
+            'depth'             => $this->getDepth(),
+            'mimeType'          => $this->getMimeType(),
+            'extension'         => $this->getExtension(),
+            'shortUrlPath'      => $this->getShortUrlPath(),
+            'shortUrl'          => $this->getShortUrl(),
+            'niceName'          => $this->getNiceName(),
+            'title'             => $this->getTitle(),
+            'name'              => $this->getCleanName(),
+            'urlPath'           => $this->getUrlPath(),
+            'relPath'           => $this->getRelPath(),
+            'fullPath'          => $this->getFullPath(),
+            'isHidden'          => $this->isHidden(),
+            'isPublic'          => $this->isPublic(),
+            'isCurrent'         => $this->isCurrent(),
             'isParentOfCurrent' => $this->isParentOfCurrent(),
-            'isPage'    => true,
+            'isPage'            => true,
         );
     }
     

@@ -196,22 +196,8 @@ Class Manager {
     
     protected function getExtensionFromMimeType($mime)
     {
-        if ( strpos($mime, 'json') !== false ) {
-            return 'json';
-        }
-        if ( strpos($mime, 'html') !== false ) {
-            return 'html';
-        }
-        if ( strpos($mime, 'csv') !== false ) {
-            return 'csv';
-        }
-        if ( strpos($mime, 'yml') !== false ) {
-            return 'yml';
-        }
-        if ( strpos($mime, 'xml') !== false ) {
-            return 'xml';
-        }
-        return 'txt';
+        $ext = $this->app['pt.utils']->getMimeExtensionFromMimeType($mime);
+        return $ext ? $ext : 'txt';
     }
     
 }

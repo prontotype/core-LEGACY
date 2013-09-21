@@ -23,28 +23,29 @@ Class Base implements \RecursiveIterator
     protected $fullPath = null;
     
     protected $pathInfo = null;
-    
-    protected $typeHint = null;
-    
+        
     protected $items = array();
     
     protected $position = 0;
     
     protected $nameOverrides = null;
     
-    protected $nameFormatRegex = '/^((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
+    protected $extension = null;
     
-    protected $nameExtension = array('.twig', '.html.twig', '.html');
+    protected $nameFormatRegex = '/^_?((\d*)[\._\-])?([^\[]*)?(\[([\d\w-_]*?)\][\._\-]?)?(.*?)$/';
     
+    protected $cloakedExtensions = array('html', 'twig');
+        
     public function __construct( SPLFileInfo $file, $app )
     {
         $this->app = $app;
         $this->fullPath = $file->getPath() . '/' .  $file->getBasename();
-        $this->relPath = str_replace($app['pt.prototype.paths.templates'], '', $this->fullPath);
-        $this->templatePath = str_replace($app['pt.prototype.paths.templates'], '', $this->fullPath);
+        $this->relPath = str_replace($this->app['pt.prototype.paths.templates'], '', $this->fullPath);
+        $this->templatePath = str_replace($this->app['pt.prototype.paths.templates'], '', $this->fullPath);
         $this->pathInfo = pathinfo($this->fullPath);
+        $this->parseFileName($this->pathInfo['filename']);
     }
-    
+
     public function getFullPath()
     {
         return $this->fullPath;
@@ -60,6 +61,11 @@ Class Base implements \RecursiveIterator
         return $this->templatePath;
     }
     
+    public function getBaseName()
+    {
+        return $this->pathInfo['basename'];
+    }
+    
     public function getUrl()
     {
         return $this->app['pt.request']->getUriForPath($this->getUnPrefixedUrlPath());
@@ -70,8 +76,9 @@ Class Base implements \RecursiveIterator
         return $this->unPrefixUrl($this->getUrlPath());
     }
     
-    public function matchesUrlPath($urlPath)
+    public function matchesUrlPath($urlPath, $includeHidden = false)
     {
+        if ( ! $includeHidden && $this->isHidden() ) return false;
         $urlPath = '/' . trim($urlPath,'/');
         return $this->unPrefixUrl($this->getUrlPath()) == $this->unPrefixUrl($urlPath);
     }
@@ -105,18 +112,7 @@ Class Base implements \RecursiveIterator
     
     public function getCleanName()
     {
-        if ( $this->cleanName === null ) {
-            $this->parseFileName();
-        }
         return $this->cleanName;
-    }
-    
-    public function getTypeHint()
-    {
-        if ( $this->typeHint === null ) {
-            $this->parseFileName();
-        }
-        return $this->typeHint;
     }
     
     public function isPage()
@@ -127,6 +123,22 @@ Class Base implements \RecursiveIterator
     public function isDirectory()
     {
         return $this instanceof Directory;
+    }
+    
+    public function isHidden()
+    {
+        $pathParts = explode('/',trim($this->getTemplatePath(),'/'));
+        foreach( $pathParts as $part ) {
+           if ( strpos($part, '_') === 0 ) {
+               return true;
+           }
+        }
+        return false;
+    }
+    
+    public function isPublic()
+    {
+        return ! $this->isHidden();
     }
     
     protected function prefixUrl($url)
@@ -148,25 +160,23 @@ Class Base implements \RecursiveIterator
 
     protected function isValidFile(SPLFileInfo $item)
     {
-        return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 && strpos($item->getBasename(), '_') !== 0 );
+        return ( ! $item->isLink() && ! $item->isDot() && strpos($item->getBasename(), '.') !== 0 );
     }
     
-    protected function parseFileName()
+    protected function parseFileName($filename)
     {
-        $filename = str_replace($this->nameExtension, '', $this->pathInfo['filename']);
+        $this->extension = isset($this->pathInfo['extension']) ? $this->pathInfo['extension'] : null;
         preg_match($this->nameFormatRegex, $filename, $parts);
         $this->id = ! empty($parts[5]) ? $parts[5] : '';
         $this->position = ! empty($parts[2]) ? $parts[2] : 0;
         $cleanName = empty($parts[3]) ? $parts[6] : $parts[3];
-        if ( $cleanName == 'index' || strpos($cleanName, 'index.') === 0) {
+        if ( $cleanName == 'index') {
             $this->isIndex = true;
             $segments = explode('/',trim($this->getUnPrefixedUrlPath(),'/'));
             if ( isset($segments[count($segments)-1]) ) {
                 $cleanName = $segments[count($segments)-1];
             }
         }
-        $ext = pathinfo($cleanName, PATHINFO_EXTENSION);
-        $this->typeHint = ! empty($ext) ? $ext : 'html';
         $this->cleanName = pathinfo($cleanName, PATHINFO_FILENAME);
     }
     
@@ -177,7 +187,6 @@ Class Base implements \RecursiveIterator
         $name = null;
         if ( count($this->app['pt.config']->get('pages.titles')) ) {
             foreach( $this->app['pt.config']->get('pages.titles') as $path => $niceName ) {
-                
                 if ( preg_match('/\[([^\]]*)\]/', $path, $matches) ) {
                     // is an ID
                     if ( $this instanceof Page && $matches[1] == $this->getId() ) {
@@ -245,6 +254,12 @@ Class Base implements \RecursiveIterator
 
     public function key() {
         return $this->position;
+    }
+    
+    protected function stripExtension($path)
+    {
+        if ( ! $path ) return null;
+        return str_replace('.' . pathinfo($path, PATHINFO_EXTENSION), '', $path);
     }
     
     // public function __get($name)
