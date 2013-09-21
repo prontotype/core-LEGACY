@@ -30,6 +30,7 @@ use Prontotype\Store\Manager as StoreManager;
 use Prontotype\Extension\Manager as ExtensionManager;
 use Prontotype\Assets\Manager as AssetManager;
 use Prontotype\Config as ConfigManager;
+use Prontotype\RouteMatcher;
 use Prontotype\Assets\LessProcessor;
 use Prontotype\Assets\ScssProcessor;
 
@@ -49,6 +50,13 @@ Class Prontotype implements ServiceProviderInterface {
                 $app['pt.prototype.paths.config'],
                 $app['pt.install.paths.config'],    
             ), $app['pt.app.paths.config'], $app['pt.prototype.environment']);
+        });
+        
+        $app['pt.route_matcher'] = $app->share(function($app) {
+            return new RouteMatcher($app, array(
+                $app['pt.prototype.paths.config'],
+                $app['pt.install.paths.config'],    
+            ));
         });
         
         date_default_timezone_set($app['pt.config']->get('timezone'));

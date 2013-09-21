@@ -2,11 +2,15 @@
 
 namespace Prontotype;
 
+use Symfony\Component\Yaml\Yaml;
+
 Class RouteMatcher {
 
     protected $app;
     
     protected $routeCache = array();
+    
+    protected $loadPaths = array();
     
     protected $tokens = array(
         '{any}' => '([^/]*)',
@@ -14,10 +18,16 @@ Class RouteMatcher {
         '{all}' => '(.*)'
     );
     
-    public function __construct($app)
+    public function __construct($app, $loadPaths = array())
     {
         $this->app = $app;
-        $this->routes = $this->loadRoutes();
+        foreach($loadPaths as $path) {
+            $this->addLoadPath($path);
+        }
+        $this->routes = $this->mergeRoutes();
+        echo '<pre>';
+        print_r($this->routes);
+        echo '</pre>';
     }
     
     public function convertRoute($route)
@@ -161,11 +171,50 @@ Class RouteMatcher {
         return $this->routes;
     }
     
-    protected function loadRoutes()
+    protected function prefixRoute($route)
+    {
+        $prefix = '';
+        if ( ! $this->app['pt.env.clean_urls'] ) {
+            $prefix = '/index.php';
+        }
+        return $prefix . $route;
+    }
+    
+    public function addLoadPath($path)
+    {
+        if ( file_exists($path) ) {
+            $this->loadPaths[] = $path . '/routes.yml';
+        }
+    }
+    
+    public function getLoadPaths()
+    {
+        return array_reverse($this->loadPaths);
+    }
+    
+    protected function mergeRoutes()
     {
         $routes = array();
-        $routeDefinitions = $this->app['pt.config']->get('pages.routes') ? $this->app['pt.config']->get('pages.routes') : array();
-        foreach( $routeDefinitions as $name => $details ) {
+        $loadPaths = $this->getLoadPaths();
+        foreach($loadPaths as $loadPath) {
+            if ( file_exists($loadPath)) {
+                if ( trim(file_get_contents($loadPath)) !== '' ) {
+                    $parsed = Yaml::parse($loadPath);
+                    if ($parsed !== null) {
+                        $routes = $this->merge($routes, $parsed);
+                    }
+                }
+            }
+        }
+        $configRoutes = $this->app['pt.config']->get('pages.routes') ? $this->app['pt.config']->get('pages.routes') : array();
+        $routes = $this->merge($routes, $configRoutes);
+        return $this->cleanRoutes($routes);
+    }
+    
+    protected function cleanRoutes($rawRoutes)
+    {
+        $routes = array();
+        foreach( $rawRoutes as $name => $details ) {
             if ( isset($details['match'], $details['display']) ) {
                 if ( is_array($details['display']) ) {
                     // should be string, probably forgot to quote an id in square brackets in the yml config
@@ -187,13 +236,17 @@ Class RouteMatcher {
         return $routes;
     }
     
-    protected function prefixRoute($route)
+    protected function merge( array &$array1, array &$array2 )
     {
-        $prefix = '';
-        if ( ! $this->app['pt.env.clean_urls'] ) {
-            $prefix = '/index.php';
+        $merged = $array1;
+        foreach ( $array2 as $key => &$value ) {
+            if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) ) {
+                $merged [$key] = $this->merge( $merged [$key], $value );
+            } else {
+                $merged [$key] = $value;
+            }
         }
-        return $prefix . $route;
+        return $merged;
     }
     
 }

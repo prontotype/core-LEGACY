@@ -34,7 +34,6 @@ Class Application {
         'pt.assets_helper' => '\Prontotype\Assets\Helper',
         'pt.session'       => '\Prontotype\Session',
         'pt.finder'        => '\Prontotype\Finder\Manager',
-        'pt.route_matcher' => '\Prontotype\RouteMatcher',
     );
     
     protected $srcPaths = array(

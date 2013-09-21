@@ -24,7 +24,6 @@ Class Config {
         foreach($loadPaths as $path) {
             $this->addLoadPath($path);
         }
-        $this->mergeConfig();
     }
     
     public function addLoadPath($path)
