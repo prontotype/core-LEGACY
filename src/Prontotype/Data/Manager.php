@@ -52,6 +52,15 @@ Class Manager {
         }
     }
     
+    public function raw($location, $replacements = null, $headers = null)
+    {
+        if ( strpos($location, 'http') !== 0 ) {
+            return $this->load($location, $replacements, null, null, true);
+        } else {
+            return $this->fetch($location, $replacements, null, null, $headers, true);
+        }
+    }
+    
     public function faker($seed = null)
     {
         if ($seed === null) {
@@ -64,12 +73,12 @@ Class Manager {
         return $this->seededFakers[$seed];
     }
     
-    protected function load($filePath, $replacements = null, $type = null, $dataPath = null)
+    protected function load($filePath, $replacements = null, $type = null, $dataPath = null, $raw = false)
     {
         if ( ! $replacements ) {
             $replacements = array();
         }
-        if ( isset($this->parsed[$filePath]) ) {
+        if ( ! $raw && isset($this->parsed[$filePath]) ) {
             $data = $this->parsed[$filePath];
         } else {
             try {
@@ -82,6 +91,9 @@ Class Manager {
             } catch ( \Exception $e ) {
                 return null;
             }
+            if ( $raw ) {
+                return $contents;
+            }
             try {
                 $data = $this->parse($contents, $extension);
             } catch ( \Exception $e ) {
@@ -92,17 +104,20 @@ Class Manager {
         return $this->find($data, $dataPath);
     }
     
-    protected function fetch($url, $replacements = null, $type = null, $dataPath = null, $headers = null)
+    protected function fetch($url, $replacements = null, $type = null, $dataPath = null, $headers = null, $raw = false)
     {
         if ( ! $replacements ) {
             $replacements = array();
         }
-        if ( isset($this->parsed[$url]) ) {
+        if ( ! $raw && isset($this->parsed[$url]) ) {
             $data = $this->parsed[$url];
         } else {
             $data = $this->app['pt.utils']->fetchFromUrl($url, $headers);
             $contents = $this->app['twig.stringloader']->render($data['body'], $replacements);
             if ( !empty($data['body']) ) {
+                if ( $raw ) {
+                    return $contents;
+                }
                 if ( ! $type ) {
                     $type = $this->getExtensionFromMimeType($data['mime']);
                 }
