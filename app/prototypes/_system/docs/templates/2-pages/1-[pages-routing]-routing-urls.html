@@ -4,22 +4,30 @@
 
 # Routing URLs to pages
 
-Prontotype handles requests for pages by attempting to map a URL to a `.html` file in the prototype's template directory, `/prototypes/{my-prototype-name}/templates`.
+Prontotype handles requests for pages by attempting to map a URL to a file in the prototype's `templates` directory.
 
-At it's simplest, it will map a URL to a template in much the same way that 'standard' URL to HTML page directory routing works.
+At it's simplest, it will map a URL to a template in much the same way that 'standard' URL to HTML page directory routing works, although for HTML files the file extension will not be present in the URL.
 
 **So for example**, given a URL such as `http://example.com/index.php/foo/bar`, Prontotype will look for the templates in the following locations, stopping when it finds one:
 
-1. `/prototypes/{my-prototype-name}/templates/foo/bar.html`
-2. `/prototypes/{my-prototype-name}/templates/foo/bar/index.html`
+1. `/path/to/prototype/templates/foo/bar.html`
+2. `/path/to/prototype/templates/foo/bar/index.html`
 
 If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required. 
+
+## Non-HTML content
+
+Sometimes you may want to serve up other types of content, such as JSON, XML or RSS, at a particular URL. No problem! Just use the appropriate file extension for the file, and Prontotype will ensure that the correct Content-Type headers are sent when displaying it.
+
+The URL routing for non-HTML content pages works exactly the same way as for HTML pages, with the exception that the file extension **is** retained in the URL - so for instance the JSON file at `templates/api/people.json` would be served up at the URL `http://example.com/index.php/api/people.json`.
 
 ## 'Hidden' templates {{ '{#' }}hidden-templates}
 
 Any directories or templates whose names start with an **underscore** (`_`) will be 'hidden' from the URL routing mechanism, and so will not accessible as pages. This is useful if you want to use one or more directories to contain template partials or layouts but don't want to risk them accidentally being exposed via a URL.
 
 Any templates within these 'underscore-prefixed' directories can be used for extending or including as any other [Twig]({{ pt.pages.getUrlById('templating-twig') }}) template would be.
+
+However, note that these templates **can** be routed to and displayed when [specifying a custom route]({{ pt.pages.getUrlById('pages-custom-routes') }}), if desired.
 
 ## URL 'trigger' segments
 

@@ -12,7 +12,7 @@ Below is an overview of how Prontotype configuration works - configuration of sp
 
 Prontotype supports both **global configuration files** (which affect all prototypes served by the Prontotype install) and **prototype-specific configuration files** (which override any global configuration provided).
 
-**Global configuration** files are kept in the `/config` directory, whilst **prototype-specific** files are stored within the individual prototype's directory at `/prototypes/{my-prototype-name}/config`.
+**Global configuration** files are kept in the `/config` directory, whilst **prototype-specific** files are stored within the individual prototype's directory at `/path/to/prototype/config`.
 
 **Common configuration** files are named `config.yml`. These will be loaded regardless of the [specified environment]({{ pt.pages.getUrlById('setup-prototypes') }}#environments).
 
@@ -29,7 +29,7 @@ When considering your configuration strategy it's worth understanding how config
 1. The system configuration file is loaded. This is not directly editable.
 1. The global, shared `/config/config.yml` file is loaded.
 1. The global, environment-specific `/config/{environment}.yml` file is loaded.
-1. The prototype-specific, common `/prototypes/{my-prototype-name}/config/config.yml` is loaded.
-1. The prototype-specific, environment-specific `/prototypes/{my-prototype-name}/config/{environment}.yml` is loaded.
+1. The prototype-specific, common `/path/to/prototype/config/config.yml` is loaded.
+1. The prototype-specific, environment-specific `/path/to/prototype/config/{environment}.yml` is loaded.
 
 {% endset %}
