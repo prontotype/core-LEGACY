@@ -60,7 +60,7 @@ Class Directory extends Base {
     {
         return $this->items;
     }
-    
+        
     public function toArray($siblings = null)
     {
         $subPages = array();

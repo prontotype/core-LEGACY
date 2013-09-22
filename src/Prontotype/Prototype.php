@@ -33,11 +33,11 @@ Class Prototype {
             throw new \Exception(sprintf("Prototype with label '%s' does not exist.", $label));
         }
         
-        if ( ! isset($this->definitions[$label]['prototype']) ) {
-            throw new \Exception(sprintf("Prototype with label '%s' does not have a 'prototype' key set.", $label));
+        if ( ! isset($this->definitions[$label]['location']) ) {
+            throw new \Exception(sprintf("Prototype with label '%s' does not have a 'location' key set.", $label));
         }
         
-        $location = $this->definitions[$label]['prototype'];
+        $location = $this->definitions[$label]['location'];
         
         if ( strpos($location,'/') === 0 && file_exists($location) ) {
             $path = $location;
@@ -83,12 +83,12 @@ Class Prototype {
     
     public function getPrototypePath()
     {
-        return $this->definition['prototype'];
+        return $this->definition['location'];
     }
     
     public function getUid()
     {
-        return md5($this->definition['prototype']);
+        return md5($this->definition['location']);
     }
     
     public function getDomain()
@@ -142,7 +142,7 @@ Class Prototype {
                     for ( $j = 0; $j < count($replacements); $j++ ) {
                         $replacementTokens['$' . ($j+1)] = $replacements[$j];
                     }
-                    $this->definition['prototype'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $this->definition['prototype']);
+                    $this->definition['location'] = str_replace(array_keys($replacementTokens), array_values($replacementTokens), $this->definition['location']);
                     $found = true;
                     break;
                 } else {

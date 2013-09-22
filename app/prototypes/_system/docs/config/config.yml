@@ -4,7 +4,8 @@ pages:
   titles:
     '/' : Overview
     '[setup]' : Setup and Installation
-    '[setup-prototypes]' : Prototypes and domains
+    '[setup-domains]' : Prototypes and domains
+    '[setup-filestructure]' : File structure of a prototype
     '[config-triggers]' : URL triggers
     '[pages]' : Pages and URLs
     '[pages-order-ids]' : Ordering and assigning IDs

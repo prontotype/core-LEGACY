@@ -3,7 +3,7 @@
 {% endif %}
     {% for item in pages %}
     {% if not item.isPage() or (item.isPage() and not opts.extensions|length) or(item.isPage() and opts.extensions|length and item.getExtension() in opts.extensions) %}
-    <li class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ level }} {% endif %}{% if item.isPage() %}is-page{% else %}is-directory{% endif %}{% if item.isCurrent() and opts.currentClass %} {{ opts.currentClass }}{% endif %}{% if item.isParentOfCurrent() and opts.parentClass %} {{ opts.parentClass }}{% endif %}">
+    <li class="{% if opts.levelClassPrefix %}{{ opts.levelClassPrefix }}{{ level }} {% endif %}{% if item.isPage() %}is-page{% else %}is-directory{% endif %}{% if item.isPage() and item.isCurrent() and opts.currentClass %} {{ opts.currentClass }}{% endif %}{% if item.isPage() and item.isParentOfCurrent() and opts.parentClass %} {{ opts.parentClass }}{% endif %}">
         {% if item.isPage() %}
         <a href="{{ item.getUrlPath() }}">{{ item.getTitle() }}</a>
         {% else %}
