@@ -8,7 +8,7 @@ Prontotype provides you with a number of features to make working with assets (C
 
 ## Asset file locations
 
-All your prototype's asset files should be stored within that prototype's `/assets` directory - for example at `/prototypes/{my-prototype-name}/assets`. Within this directory you can organise you assets into subdirectories however you see fit.
+All your prototype's asset files should be stored within that prototype's `/assets` directory - for example at `/path/to/prototype/assets`. Within this directory you can organise you assets into subdirectories however you see fit.
 
 ## Linking to assets from your templates
 
@@ -20,7 +20,7 @@ The URL for any asset in your prototype should therefore look like this:
 
 Where `<assets_trigger>` is as defined [in the 'triggers' section of your config file]({{ pt.pages.getUrlById('config-triggers') }}) (defaults to **_assets**) and `<path_to_asset>` is the path of the asset file that you wish to access, relative to the prototype's `/assets` directory.
 
-So to link to an image file located at `/prototypes/{my-prototype-name}/assets/img/monkey.gif` would look something like this (with [default URL trigger value]({{ pt.pages.getUrlById('config-triggers') }}) and without enabling [clean URLs]({{ pt.pages.getUrlById('pages-clean-urls') }})):
+So to link to an image file located at `/path/to/prototype/assets/img/monkey.gif` would look something like this (with [default URL trigger value]({{ pt.pages.getUrlById('config-triggers') }}) and without enabling [clean URLs]({{ pt.pages.getUrlById('pages-clean-urls') }})):
 
 <pre class="brush: xml">http://example.com/index.php/_assets/img/monkey.gif</pre>
 
@@ -44,6 +44,6 @@ See the [assets snippets section]({{ pt.pages.getUrlById('snippet-assets') }}) f
 
 ### Static linking
 
-If for some reason you don't want to take advantage of Prontotype's dynamic asset linking, you can also directly link to your assets in the 'normal' way - just be aware that your web root is the top level Prontotype install directory so your relative URLs will need to look like `/prototypes/{my-prototype-name}/assets/img/flamingo.png` - i.e. include the prototype directory path in there.
+If for some reason you don't want to take advantage of Prontotype's dynamic asset linking, you can also directly link to your assets in the 'normal' way - just be aware that your web root is the top level Prontotype install directory so your relative URLs will need to look like `/path/to/prototype/assets/img/flamingo.png` - i.e. include the prototype directory path in there.
 
 {% endset %}
