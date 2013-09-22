@@ -76,8 +76,8 @@ Class Manager {
             $height = $sizes[1];
         }
         
-        $bgcolour = $this->makeHexColour($bgcolour);
-        $colour = $this->makeHexColour($colour);
+        $bgcolour = empty($bgcolour) ? $this->makeHexColour('CCC') : $this->makeHexColour($bgcolour);
+        $colour = empty($colour) ? $this->makeHexColour('999') : $this->makeHexColour($colour);
         
         $text = empty($text) ? $width . 'x' . $height : $text;
         $fontPath = $this->app['pt.app.paths.assets'] . '/_system/fonts/prontotype.ttf';

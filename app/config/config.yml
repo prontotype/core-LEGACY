@@ -42,9 +42,12 @@ cache:
 snippets:
   images:
     placeholder:
-      service: dummyimage
+      service: prontotype
       width: 200
       height: 200
+      bgcolor: CCC
+      color: 999
+      category: abstract
       
 data:
   faker:

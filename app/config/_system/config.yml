@@ -5,6 +5,7 @@ system:
     images:
       placeholder:
         services:
-          dummyimage: http://dummyimage.com/{{ width }}x{{ height }}/{{ bgcolor }}/{{ fgcolor }}/{{ format }}&text={{ text }}
-          placeholdit: http://placehold.it/{{ width }}x{{ height }}/{{ bgcolor }}/{{ fgcolor }}/{{ format }}&text={{ text }}
-          lorempixel: http://lorempixel.com/{{ width }}/{{ height }}/{{ category }}/{{ text }}
+          dummyimage: http://dummyimage.com/{{ width }}x{{ height }}/{{ bgcolor }}/{{ color }}{% if format %}/{{ format }}{% endif %}?text={{ text }}
+          placeholdit: http://placehold.it/{{ width }}x{{ height }}/{{ bgcolor }}/{{ color }}&text={{ text }}
+          lorempixel: http://lorempixel.com/{{ width }}/{{ height }}{% if category %}/{{ category }}{% endif %}{% if text %}/{{ text }}{% endif %}
+          prontotype: '{{ host }}/{{ ptpath }}/{{ width }}x{{ height }}/{{ bgcolor }}/{{ color }}{% if text %}?text={{ text }}{% endif %}'
