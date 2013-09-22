@@ -82,8 +82,6 @@ Class Manager {
         $text = empty($text) ? $width . 'x' . $height : $text;
         $fontPath = $this->app['pt.app.paths.assets'] . '/_system/fonts/prontotype.ttf';
         
-        
-        
         $key = md5($width . $height . $bgcolour . $colour . $text);
 
         if ( $imageData = $this->app['pt.cache']->get(Cache::CACHE_TYPE_IMAGES, $key) ) {
@@ -91,8 +89,11 @@ Class Manager {
         }
         
         $layer = ImageWorkshop::initVirginLayer($width, $height, $bgcolour);
-        $textLayer = ImageWorkshop::initTextLayer($text, $fontPath, 30, $colour, 0, $bgcolour);
-        $layer->addLayer(1, $textLayer);
+        $textLayer = ImageWorkshop::initTextLayer($text, $fontPath, 20, $colour, 0, $bgcolour);
+        if ( ($textLayer->getWidth() - 40) > $layer->getWidth() ) {
+            $textLayer->resizeInPixel($width - 40, null, true);   
+        }
+        $layer->addLayer(1, $textLayer, 0, 0, 'MM');
         $img = $layer->getResult();
         
         ob_start();
