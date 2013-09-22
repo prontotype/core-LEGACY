@@ -5,6 +5,7 @@ pages:
     '/' : Overview
     '[setup]' : Setup and Installation
     '[setup-prototypes]' : Prototypes and domains
+    '[setup-folderstructure]' : Folder structure of a prototype
     '[config-triggers]' : URL triggers
     '[pages]' : Pages and URLs
     '[pages-order-ids]' : Ordering and assigning IDs
