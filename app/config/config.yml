@@ -19,6 +19,7 @@ triggers:
   tools: _tools
   auth: _auth
   assets: _assets
+  files: _files  
   user: _user
 
 user:

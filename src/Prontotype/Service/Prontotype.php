@@ -245,6 +245,9 @@ Class Prontotype implements ServiceProviderInterface {
         } 
         if ($app['pt.config']->get('triggers.assets')) {
             $app->mount($root . $app['pt.config']->get('triggers.assets'), new \Prontotype\Controller\AssetController());  
+        }
+        if ($app['pt.config']->get('triggers.files')) {
+            $app->mount($root . $app['pt.config']->get('triggers.files'), new \Prontotype\Controller\FileController());  
         } 
         if ($app['pt.config']->get('triggers.shorturl')) {
             $app->mount($root . $app['pt.config']->get('triggers.shorturl'), new \Prontotype\Controller\RedirectController());   
