@@ -85,6 +85,30 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
         <p class="hint">This or the corresponding method<strong>.getUrlPathById()</strong> can be useful for linking to other pages within the prototype in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
     </div>
     
+    <div class="method">
+        <h3 class="method-title" id="pages-getUrlPathForRoute">pt.pages.<span class="name">getUrlPathForRoute(<span class="var">routeReference</span> [, tokens ])</span></h3>
+        <ul class="variables">
+            <li><code>routeReference</code>: the <a href="{{ pt.pages.getUrlById('pages-custom-routes') }}">reference name for the custom route</a>.</li>
+            <li><code>tokens</code>: <em>(optional)</em> Ordered array of values to replace the route definition tokens with</li>
+        </ul>
+        <div class="method-desc">
+        <p>Generates a return the root-relative URL path (no domain, as a string) for the custom route identified by `routeReference`, with tokens replaced by items from the `params` array, if required. Returns <code>#</code> if the route is not found or if required token values are missing.</p>
+        </div>
+        {% raw %}<pre class="brush: twig">{{ pt.pages.getUrlPathForRoute('posts', [4]) }} <!-- /blog/posts/4 --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="pages-getUrlForRoute">pt.pages.<span class="name">getUrlForRoute(<span class="var">routeReference</span> [, tokens ])</span></h3>
+        <ul class="variables">
+            <li><code>routeReference</code>: the <a href="{{ pt.pages.getUrlById('pages-custom-routes') }}">reference name for the custom route</a>.</li>
+            <li><code>tokens</code>: <em>(optional)</em> Ordered array of values to replace the route definition tokens with</li>
+        </ul>
+        <div class="method-desc">
+        <p>Generates a URL for the custom route identified by `routeReference`, with tokens replaced by items from the `params` array, if required. Returns <code>#</code> if the route is not found or if required token values are missing.</p>
+        </div>
+        {% raw %}<pre class="brush: twig">{{ pt.pages.getUrlForRoute('posts', [4]) }} <!-- http://example.com/blog/posts/4 --></pre>{% endraw %}
+    </div>
+        
 </div>
 
 
