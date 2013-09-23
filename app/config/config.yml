@@ -42,7 +42,7 @@ cache:
     expiry: 18000 # 5 mins
   
 snippets:
-  images:
+  assets:
     placeholder:
       service: prontotype
       width: 200

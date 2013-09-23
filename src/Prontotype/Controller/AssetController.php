@@ -14,7 +14,7 @@ class AssetController implements ControllerProviderInterface {
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/placeholder/{size}/{bgcolour}/{colour}', function ($size, $bgcolour, $colour) use ($app) {
+        $controllers->get('/_placeholder/{size}/{bgcolour}/{colour}', function ($size, $bgcolour, $colour) use ($app) {
             $imgStr = $app['pt.assets']->generatePlaceholderImg($size, $bgcolour, $colour, $app['request']->query->get('text'));
             $response = new Response($imgStr, 200);
             $response->headers->set('Content-Type', 'image/png');

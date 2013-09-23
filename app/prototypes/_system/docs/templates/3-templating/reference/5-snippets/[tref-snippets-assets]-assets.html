@@ -46,8 +46,36 @@ All asset snippet methods are available under the `pt.snippets.assets` template 
         <div class="method-desc">
             <p>Outputs an <code>img</code> element for use in your HTML page, with the correct dynamic asset URL generated.</p>
         </div>
-{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.img('img/koala.png') }} <!-- <img href="http://example.com/index.php/_assets/img/koala.png"> -->
-{{ pt.snippets.assets.img('img/squirrel.jpg', {class:'big-squirrel'}) }} <!-- <img href="http://example.com/index.php/_assets/img/squirrel.jpg" class="big-squirrel"> --></pre>{% endraw %}
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.image('img/koala.png') }} <!-- <img href="http://example.com/index.php/_assets/img/koala.png"> -->
+{{ pt.snippets.assets.image('img/squirrel.jpg', {class:'big-squirrel'}) }} <!-- <img href="http://example.com/index.php/_assets/img/squirrel.jpg" class="big-squirrel"> --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="snippets-assets-placeholder">pt.snippets.assets.<span class="name">placeholder([ opts [, attrs ]])</span></h3>
+        <ul class="variables">
+            <li><code>opts</code>: <em>(optional)</em> Array of configuration options. See below for defaults.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the generated <code>img</code> element.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Outputs an <code>img</code> element configured to render a <a href="{{ pt.pages.getUrlById('assets-images') }}">placeholder image</a>.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.placeholder() }} <!-- <img href="http://example.com/_assets/_placeholder/200x200/CCC/999"> -->
+{{ pt.snippets.assets.placeholder({width:300, height:400, bgcolor:'F00'}, {class:'placeholder-pic'}) }} <!-- <img href="http://example.com/_assets/_placeholder/300x400/F00/999" class="placeholder-pic"> --></pre>{% endraw %}
+
+<h3><code>opts</code> options and defaults</h3>
+
+<p>Below are the default <code>opts</code> values - you can overwrite some or all of these to customise the <code>placeholder</code> method's behaviour.</p>
+
+{% raw %}<pre class="brush: twig">{
+    'width': 200,                   
+    'height': 200,             
+    'bgcolor': 'CCC', 
+    'color': '999', 
+    'text': null,       {# if null will use a string representation of the width x height #}
+    'service': null,    {# if null will use the default placeholder image service #}
+    'category': null,   {# used by some services, will use default if empty #}
+}</pre>{% endraw %}       
+
     </div>
     
 </div>

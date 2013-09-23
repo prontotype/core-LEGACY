@@ -4,6 +4,67 @@
 
 # Placeholder images
 
-Documentation coming soon.
+Prontotype has a simple, built-in placeholder image generation service so that you don't need to rely on third party image generation sites. And by using the [placeholder image snippet]({{ pt.pages.getUrlById('tref-snippets-assets') }}#snippets-assets-placeholder) to generate the `img` tag you'll also gain the ability to switch out to one of server popular external services with a single configuration change, too.
+
+Using the [placeholder image snippet]({{ pt.pages.getUrlById('tref-snippets-assets') }}#snippets-assets-placeholder) it's as easy as this:
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.placeholder() }}</pre>{% endraw %}
+
+That will output an image that looks like this:
+
+{{ pt.snippets.assets.placeholder() }}
+
+Of course, you probably want to customise a few things about the image, like the size, background colour etc. To do that you can pass in an array of options, like so:
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.placeholder({
+    'width': 400,                   
+    'height': 150,             
+    'bgcolor': '88b286', 
+    'color': 'fff', 
+    'text': 'My first image', 
+}) }}</pre>{% endraw %}
+
+Which will output the following image:
+
+{{ pt.snippets.assets.placeholder({
+    'width': 400,                   
+    'height': 150,             
+    'bgcolor': '88b286', 
+    'color': 'fff', 
+    'text': 'My first image'
+}) }}
+
+## Specifying an alternative service
+
+If you wish to use a third party placeholder images service, you can either set it on a global basis or specify it on a per-image basis.
+
+To <strong>globaly change </strong>the service used you can set it in [your configuration file]({{ pt.pages.getUrlById('config') }}) as follows:
+
+<pre class="brush: yaml">snippets:
+  assets:
+    placeholder:
+      service: lorempixel # can be any one of 'prontotype', 'dummyimage', 'placeholdit', 'lorempixel', 'placekitten' </pre>
+
+All placeholder image tags generated with the [placeholder image snippet]({{ pt.pages.getUrlById('tref-snippets-assets') }}#snippets-assets-placeholder) will be instantly switched over to use the chosen service without you having to update you templates.
+
+You can also set the service on a per-image tag basis (useful if you just want one placeholder image of a particular type), by specifying the service as one of the options, like so:
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.placeholder({
+    'service' : 'placekitten'
+}) }}</pre>{% endraw %}
+
+{{ pt.snippets.assets.placeholder({
+    'service' : 'placekitten'
+}) }}
+
+### Supported services:
+
+* Prontotype (built-in): `prontotype`
+* [Dummy Image](http://dummyimage.com): `dummyimage`
+* [Placehold.it](http://placehold.it): `placeholdit`
+* [Lorem Pixel](http://lorempixel.com): `lorempixel`
+* [Placekitten](http://placekitten.com): `placekitten`
+
+<p class="note">Note that <strong>not all services support all customisation options</strong> (like text, category etc). If the service doesn't support a specified option it will just be ignored.</p>
 
 {% endset %}

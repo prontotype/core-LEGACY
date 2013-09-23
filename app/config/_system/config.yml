@@ -8,4 +8,5 @@ system:
           dummyimage: http://dummyimage.com/{{ width }}x{{ height }}/{{ bgcolor }}/{{ color }}{% if format %}/{{ format }}{% endif %}?text={{ text }}
           placeholdit: http://placehold.it/{{ width }}x{{ height }}/{{ bgcolor }}/{{ color }}&text={{ text }}
           lorempixel: http://lorempixel.com/{{ width }}/{{ height }}{% if category %}/{{ category }}{% endif %}{% if text %}/{{ text }}{% endif %}
+          placekitten: http://placekitten.com/{% if greyscale %}g/{% endif %}{{ width }}/{{ height }}
           prontotype: '{{ host }}/{{ ptpath }}/{{ width }}x{{ height }}/{{ bgcolor }}/{{ color }}{% if text %}?text={{ text }}{% endif %}'
