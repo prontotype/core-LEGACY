@@ -38,4 +38,13 @@ You can of course mix ordering with pages IDs - so combining the examples above 
 <pre class="brush: xml">/foo/bar/1-[example-page]-example.html
 /foo/bar/2-[widget-1]-widget.html</pre>
 
+## Converting a template path to a URL path {{ '{#' }}converting-template-paths}
+
+If you know what your template path is, you can take the following steps to find out what the URL path to that template would be:
+
+1. Take the `templates`-directory relative filesystem path to the template - i.e. `/zoo/3-animals/2-[monkeypage]-monkeys.html`
+2. Strip out all 'ordering' information from it: `/zoo/animals/[monkeypage]-monkeys.html`
+3. Remove any page IDs: `/zoo/animals/monkeys.html`
+4. If the file extension is `.html` then remove that, otherwise leave it in - so in this example the page URL path will be: `/zoo/animals/monkeys`
+
 {% endset %}

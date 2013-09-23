@@ -27,7 +27,7 @@ class Filesystem extends \Twig_Loader_Filesystem
         $namespace = '__main__';
         $oldPaths = $this->paths[$namespace];
         
-        if ( strpos($name,'::') !== false && $this->app['pt.config']->get('templates.sideload') ) {
+        if ( strpos($name,'::') !== false && $this->app['pt.config']->get('sideload') ) {
             list($label, $location) = explode('::', $name);
             $pt = new Prototype($this->app['pt.prototypes.definitions'], $this->app['pt.prototypes.loadpaths'], $this->app);
             try {

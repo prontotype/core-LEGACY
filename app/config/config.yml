@@ -1,6 +1,7 @@
 timezone: Europe/London
 
 debug: false
+sideload: true
 
 authenticate:
   password: 
@@ -59,9 +60,3 @@ data:
     escape: '\'
     delimiter: ','
     enclosure: '"'
-    
-assets:
-  sideload: true
-  
-templates:
-  sideload: true

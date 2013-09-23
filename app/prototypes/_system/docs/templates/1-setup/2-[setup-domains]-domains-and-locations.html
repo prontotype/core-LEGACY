@@ -32,9 +32,9 @@ The value of the `domain` key in the prototype definition tells Prontotype which
 
 ## Specifing the prototype's location
 
-The value of the `location` key should be the path to the prototype that you wish to be served up.
+The value of the `location` key should be the filesystem path to the prototype that you wish to be served up.
 
-If it *doesn't* start with a forward slash (/), Prontotype will assume that the path is **relative to the Prontotype installation itself**, e.g. as used above for the 'default' prototype.
+If it *doesn't* start with a forward slash (/), Prontotype will assume that the path is **relative** to the Prontotype installation itself, e.g. as used above for the 'default' prototype.
 
 You can also store prototypes **outside** of the Prontotype install directory by providing a **full filesystem path** (beginning with a forward slash) as the value for the `location` key. So for example you could do the following:
 

@@ -1,0 +1,16 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Custom routes
+
+Pronotype lets you specify custom routes for serving up pages. These should be defined in a `routes.yml` file that lives in your prototype's `config` directory - i.e. at `/path/to/prototype/config/routes.yml`.
+
+Unlike [configuration files]({{ pt.pages.getUrlById('config') }}), you cannot define 'global' routes for all your prototypes, and nor can you define per-environment routes.
+
+Full details of how to specify custom routes for your prototype can be found in the [pages and URLs section]({{ pt.pages.getUrlById('pages-custom-routes') }}).
+
+{% endset %}
+
+
+

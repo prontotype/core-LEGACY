@@ -13,11 +13,13 @@ At it's simplest, it will map a URL to a template in much the same way that 'sta
 1. `/path/to/prototype/templates/foo/bar.html`
 2. `/path/to/prototype/templates/foo/bar/index.html`
 
-If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required. 
+If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required.
+
+There is more information on converting template filesystem paths to URL paths on the [ordering and IDs]({{ pt.pages.getUrlById('pages-order-ids') }}#converting-template-paths) documentation page.
 
 ## Non-HTML content
 
-Sometimes you may want to serve up other types of content, such as JSON, XML or RSS, at a particular URL. No problem! Just use the appropriate file extension for the file, and Prontotype will ensure that the correct Content-Type headers are sent when displaying it.
+Sometimes you may want to serve up other types of content, such as JSON, XML or RSS, at a particular URL. No problem! Just use the appropriate file extension for the file, and Prontotype will ensure that the correct `Content-Type` headers are sent when displaying it.
 
 The URL routing for non-HTML content pages works exactly the same way as for HTML pages, with the exception that the file extension **is** retained in the URL - so for instance the JSON file at `templates/api/people.json` would be served up at the URL `http://example.com/index.php/api/people.json`.
 
