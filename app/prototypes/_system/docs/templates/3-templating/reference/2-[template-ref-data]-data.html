@@ -14,15 +14,17 @@ You can access the [data]({{ pt.pages.getUrlById('data') }}) methods in your pro
 <div class="method-ref">
     
     <div class="method">
-        <h3 class="method-title" id="data-get">pt.data.<span class="name">get(location [, templateVars [, format ]])</span></h3>
+        <h3 class="method-title" id="data-get">pt.data.<span class="name">get(location [, templateVars [, format [, path [, headers ]]]])</span></h3>
         <ul class="variables">
-            <li><code>location</code>: <a href="{{ pt.pages.getUrlById('data-local') }}">Data path</a> or <a href="{{ pt.pages.getUrlById('data-external') }}">external URL</a> of data source</li>
+            <li><code>location</code>: <a href="{{ pt.pages.getUrlById('data-local') }}">Data file path</a> or <a href="{{ pt.pages.getUrlById('data-external') }}">external URL</a> of data source</li>
             <li><code>templateVars</code>: <em>(optional)</em> Array of template variables for use in the data file</li>
             <li><code>format</code>: <em>(optional)</em> The <a href="{{ pt.pages.getUrlById('data-formats') }}">format</a> of the file. This will be guessed by the system if not explicitly set here.</li>
+            <li><code>path</code>: <em>(optional)</em> A dot-notation style path (i.e. <code>path.to.item</code>) which can be used to return only a subset of the retrieved data</li>
+            <li><code>headers</code>: <em>(optional)</em> An array of HTTP headers in the form <code>header-name</code>: <code>header-value</code> to be sent with an external request.</li>
         </ul>
         <div class="method-desc">
-            <p>Fetch, parse and return the contents of a data file, optionally supplying variables for template parsing.</p>            
-        </div>
+            <p>Fetch, parse and return the contents of a data file (local or remote), optionally supplying variables for template parsing.</p>            
+        </div> 
 {% raw %}<pre class="brush: twig">{# Fetch a list of kangaroos from a local data file #}
 {% set kangaroos = pt.data.get('animals/kangaroos.json') %}
 
@@ -34,6 +36,18 @@ You can access the [data]({{ pt.pages.getUrlById('data') }}) methods in your pro
 
 {# Fetch a list of pigs from an external source, forcing the format parsing type to xml #}
 {% set pigs = pt.data.get('http://api.animalz.com/pigs', null, 'xml') %}</pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="data-get">pt.data.<span class="name">raw(location [, templateVars [, headers ]])</span></h3>
+        <ul class="variables">
+            <li><code>location</code>: <a href="{{ pt.pages.getUrlById('data-local') }}">Data file path</a> or <a href="{{ pt.pages.getUrlById('data-external') }}">external URL</a> of data source</li>
+            <li><code>templateVars</code>: <em>(optional)</em> Array of template variables for use in the data file</li>
+            <li><code>headers</code>: <em>(optional)</em> An array of HTTP headers in the form <code>header-name</code>: <code>header-value</code> to be sent with an external request.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Fetch and return the raw, unparsed contents of a data file, optionally supplying variables for template replacement.</p>
+        </div>
     </div>
     
     <div class="method">

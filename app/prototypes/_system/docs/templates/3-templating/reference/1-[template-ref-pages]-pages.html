@@ -46,7 +46,7 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
         <div class="method-desc">
         <p>Returns a {{ pageobjref }} of a page specified by it's (root-relative) URL path, or <code>null</code> if it's not found. </p>
         </div>
-        {% raw %}<pre class="brush: twig">{% set zebraPage = pt.pages.getById('/zoo/animals/zebras') %}</pre>{% endraw %}
+        {% raw %}<pre class="brush: twig">{% set zebraPage = pt.pages.getByUrlPath('/zoo/animals/zebras') %}</pre>{% endraw %}
     </div>
     
     {# <div class="method">
@@ -121,23 +121,7 @@ In the following examples we'll assume that the `examplePage` variable has been 
 {% raw %}<pre class="brush: twig">{% set examplePage = pt.pages.getById('hmstrs') %}</pre>{% endraw %}
 
 <div class="method-ref">
-    
-    {# <h3>Page object methods</h3>
-    
-    <ul class="method-links">
-        <li><a href="#page-gettitle">examplePage.<span class="name">getTitle()</span></a></li>
-        <li><a href="#page-getid">examplePage.<span class="name">getId()</span></a></li>
-        <li><a href="#page-geturlpath">examplePage.<span class="name">getUrlPath()</span></a></li>
-        <li><a href="#page-geturl">examplePage.<span class="name">getUrl()</span></a></li>
-        <li><a href="#page-getshorturlpath">examplePage.<span class="name">getShortUrlPath()</span></a></li>
-        <li><a href="#page-getshorturl">examplePage.<span class="name">getShortUrl()</span></a></li>
-        <li><a href="#page-getdepth">examplePage.<span class="name">getDepth()</span></a></li>
-        <li><a href="#page-gettemplatepath">examplePage.<span class="name">getTemplatePath()</span></a></li>
-        <li><a href="#page-getfullpath">examplePage.<span class="name">getFullPath()</span></a></li>
-        <li><a href="#page-iscurrent">examplePage.<span class="name">isCurrent()</span></a></li>
-        <li><a href="#page-isparentofcurrent">examplePage.<span class="name">isParentOfCurrent()</span></a></li>
-    </ul> #}
-    
+        
     <div class="method">
         <h3 class="method-title" id="page-gettitle">examplePage.<span class="name">getTitle()</span></h3>
         <div class="method-desc">
