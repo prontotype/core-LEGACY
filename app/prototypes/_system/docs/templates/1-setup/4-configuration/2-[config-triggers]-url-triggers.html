@@ -16,6 +16,7 @@ Below is the default set of trigger values:
 {% if pt.pages.getById('tools') %}  tools: _tools{% endif %}
   auth: _auth
   assets: _assets
+  files: _files
   user: _user</pre>
   
 To read more about the functionality each of these triggers expose, see the relevant docs page:
@@ -25,6 +26,7 @@ To read more about the functionality each of these triggers expose, see the rele
 {% if pt.pages.getById('tools') %}* `tools`: [{{ pt.pages.getById('tools').getTitle() }}]({{ pt.pages.getById('tools').getUrl() }}){% endif %}
 * `auth`: [{{ pt.pages.getById('config-passwords').getTitle() }}]({{ pt.pages.getById('config-passwords').getUrl() }})
 * `assets`: [{{ pt.pages.getById('assets').getTitle() }}]({{ pt.pages.getById('assets').getUrl() }})
+* `files`: [{{ pt.pages.getById('assets-files').getTitle() }}]({{ pt.pages.getById('assets-files').getUrl() }})
 * `user`: [{{ pt.pages.getById('users').getTitle() }}]({{ pt.pages.getById('users').getUrl() }})
 
 {% endset %}
