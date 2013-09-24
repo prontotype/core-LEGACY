@@ -78,6 +78,19 @@ All asset snippet methods are available under the `pt.snippets.assets` template 
 
     </div>
     
+    <div class="method">
+        <h3 class="method-title" id="snippets-assets-fileLink">pt.snippets.assets.<span class="name">fileLink(path, [, text [, attrs ]])</span></h3>
+        <ul class="variables">
+            <li><code>path</code>: Files-directory (<code>/files</code>) relative path to the file </li>
+            <li><code>text</code>: <em>(optional)</em> Text to use in the link. Defaults to the name of the file.</li>
+            <li><code>attrs</code>: <em>(optional)</em> Array of additional attributes to set on the generated <code>a</code> element.</li>
+        </ul>
+        <div class="method-desc">
+            <p>Outputs an <code>a</code> link element for use in your HTML page, with the correct dynamic file URL generated.</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.fileLink('animals/marmots.zip', 'Download now!') }} <!-- <a href="http://example.com/index.php/_files/animals/marmots.zip">Download now!</a> --></pre>{% endraw %}
+    </div>
+    
 </div>
 
 {% endset %}

@@ -33,13 +33,13 @@ To make linking to your assets a bit easier, Prontotype provides a [couple of me
 {# Link to a image #}
 <img src="{{ pt.assets.getUrlPath('img/birds/blackbird.jpg') }}"></pre>{% endraw %}
 
-Taking this a step further, there are also some helpful snippets for generating [link, script and image elements]({{ pt.pages.getUrlById('snippet-assets') }}) available to make linking to assets even easier. For example:
+Taking this a step further, there are also some helpful snippets for generating [link, script and image elements]({{ pt.pages.getUrlById('tref-snippets-assets') }}) available to make linking to assets even easier. For example:
 
 {% raw %}<pre class="brush: twig">{# Generate a link to a CSS file #}
 {{ pt.snippets.assets.stylesheet('css/page.css') }} <!-- <link rel="stylesheet" href="http://example.com/index.php/_assets/css/page.css" media="all" type="text/css"> -->
 {# Generate a link to a image #}
 {{ pt.snippets.assets.image('img/birds/blackbird.jpg') }} <!-- <img src="http://example.com/index.php/_assets/img/birds/blackbird.jpg"> --></pre>{% endraw %}
 
-See the [assets snippets section]({{ pt.pages.getUrlById('snippet-assets') }}) for more information on using and configuring these snippet shortcuts.
+See the [assets snippets section]({{ pt.pages.getUrlById('tref-snippets-assets') }}) for more information on using and configuring these snippet shortcuts.
 
 {% endset %}
