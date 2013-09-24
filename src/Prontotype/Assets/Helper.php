@@ -15,13 +15,13 @@ Class Helper {
         $this->app = $app;
     }
     
-    public function getUrl($path)
+    public function getAssetUrl($path)
     {
-        $path = str_replace('/index.php', '', $this->getUrlPath($path));
+        $path = str_replace('/index.php', '', $this->getAssetUrlPath($path));
         return $this->app['pt.request']->getUriForPath($path);
     }
     
-    public function getUrlPath($path)
+    public function getAssetUrlPath($path)
     {
         $path = $this->app['pt.assets']->aliasFilePath($path);
         $root = $this->app['pt.prototype.path'] . '/';  

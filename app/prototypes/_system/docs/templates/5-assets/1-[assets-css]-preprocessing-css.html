@@ -13,7 +13,7 @@ For example, using a LESS file is a simple as:
 {% raw %}<pre class="brush: twig"><!DOCTYPE html>
 <html lang="en">
 <head>    
-    <link rel="stylesheet" href="{{ pt.assets.getUrl('css/example.less') }}" media="all" type="text/css">
+    <link rel="stylesheet" href="{{ pt.assets.getAssetUrl('css/example.less') }}" media="all" type="text/css">
 </head>
 ...</pre>{% endraw %}
 
@@ -32,7 +32,7 @@ To make things even easier, you can also swap out the `.less`/`.scss` extension 
 {% raw %}<pre class="brush: twig"><!DOCTYPE html>
 <html lang="en">
 <head>    
-    <link rel="stylesheet" href="{{ pt.assets.getUrl('css/site.css') }}" media="all" type="text/css">
+    <link rel="stylesheet" href="{{ pt.assets.getAssetUrl('css/site.css') }}" media="all" type="text/css">
 </head>
 ...</pre>{% endraw %}
 

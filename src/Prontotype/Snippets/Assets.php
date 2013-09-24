@@ -52,7 +52,7 @@ Class Assets extends Base {
     public function stylesheet($href, $media = 'all', $attrs = array(), $rawPath = false)
     {
         if ( ! $rawPath ) {
-            $href = $this->app['pt.assets_helper']->getUrlPath($href);
+            $href = $this->app['pt.assets_helper']->getAssetUrlPath($href);
         }
         
         $attrs = $this->mergeOpts(array(
@@ -69,7 +69,7 @@ Class Assets extends Base {
     public function js($src, $attrs = array(), $rawPath = false)
     {
         if ( ! $rawPath ) {
-            $src = $this->app['pt.assets_helper']->getUrlPath($src);
+            $src = $this->app['pt.assets_helper']->getAssetUrlPath($src);
         }
         
         $attrs = $this->mergeOpts(array(
@@ -84,7 +84,7 @@ Class Assets extends Base {
     public function image($src, $attrs = array(), $rawPath = false)
     {
         if ( ! $rawPath ) {
-            $src = $this->app['pt.assets_helper']->getUrlPath($src);
+            $src = $this->app['pt.assets_helper']->getAssetUrlPath($src);
         }
         
         $attrs = $this->mergeOpts(array(

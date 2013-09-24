@@ -29,9 +29,9 @@ So to link to an image file located at `/assets/img/monkey.gif` would look somet
 To make linking to your assets a bit easier, Prontotype provides a [couple of methods]({{ pt.pages.getUrlById('template-ref-assets') }}) for generating the links based on the path of your asset file (relative to the `/assets` directory). A couple of examples of using these might look like this:
 
 {% raw %}<pre class="brush: twig">{# Link to a CSS file #}
-<link rel="stylesheet" href="{{ pt.assets.getUrl('css/page.css') }}" media="all" type="text/css">
+<link rel="stylesheet" href="{{ pt.assets.getAssetUrl('css/page.css') }}" media="all" type="text/css">
 {# Link to a image #}
-<img src="{{ pt.assets.getUrlPath('img/birds/blackbird.jpg') }}"></pre>{% endraw %}
+<img src="{{ pt.assets.getAssetUrlPath('img/birds/blackbird.jpg') }}"></pre>{% endraw %}
 
 Taking this a step further, there are also some helpful snippets for generating [link, script and image elements]({{ pt.pages.getUrlById('tref-snippets-assets') }}) available to make linking to assets even easier. For example:
 

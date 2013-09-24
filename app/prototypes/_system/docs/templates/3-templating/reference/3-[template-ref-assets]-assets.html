@@ -16,7 +16,7 @@ You can access the [assets]({{ pt.pages.getUrlById('assets') }}) methods in your
         <div class="method-desc">
             <p>Gets the full URL of an asset, specified by it's assets-directory (<code>/assets</code>) relative path.</p>            
         </div>
-{% raw %}<pre class="brush: twig"><link rel="stylesheet" href="{{ pt.assets.getUrl('css/page.css') }}" media="all" type="text/css"></pre>{% endraw %}
+{% raw %}<pre class="brush: twig"><link rel="stylesheet" href="{{ pt.assets.getAssetUrl('css/page.css') }}" media="all" type="text/css"></pre>{% endraw %}
         <p class="hint">Depending on the kind of asset requested from this URL, it may trigger some specific behaviour - for instance requesting the URL for a LESS file will result in the processed CSS being returned, along with the appropriate MIME type headers set. See the <a href="{{ pt.pages.getUrlById('assets') }}">assets docs</a> for more information.</p>
     </div>
     
@@ -25,7 +25,7 @@ You can access the [assets]({{ pt.pages.getUrlById('assets') }}) methods in your
         <div class="method-desc">
             <p>Gets the root-relative URL of an asset, specified by it's assets-directory (<code>/assets</code>) relative path.</p>            
         </div>
-{% raw %}<pre class="brush: twig"><link rel="stylesheet" href="{{ pt.assets.getUrlPath('css/page.css') }}" media="all" type="text/css"></pre>{% endraw %}
+{% raw %}<pre class="brush: twig"><link rel="stylesheet" href="{{ pt.assets.getAssetUrlPath('css/page.css') }}" media="all" type="text/css"></pre>{% endraw %}
         <p class="hint">Depending on the kind of asset requested from this URL, it may trigger some specific behaviour - for instance requesting the URL for a LESS file will result in the processed CSS being returned, along with the appropriate MIME type headers set. See the <a href="{{ pt.pages.getUrlById('assets') }}">assets docs</a> for more information.</p>
     </div>
     
