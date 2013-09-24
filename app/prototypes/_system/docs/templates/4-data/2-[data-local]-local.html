@@ -4,11 +4,11 @@
 
 # Local data files
 
-Prontotype can access any data files stored within your prototype's `/data` directory, e.g. at `/path/to/prototype/data`. You will have to create this directory if it does not already exist.
+Prontotype can access any data files stored within your prototype's `/data` directory. You will have to create this directory if it does not already exist.
 
 Within this directory, files can be organised into subdirectories as required. The **path** for any file within this directory is considered to be relative to the `/data` directory itself.
 
-So the contents of a file stored at `/path/to/prototype/data/birds/penguins.json` could be [accessed in your templates]({{ pt.pages.getUrlById('template-ref-data') }}) in the following manner:
+So the contents of a file stored at `/data/birds/penguins.json` could be [accessed in your templates]({{ pt.pages.getUrlById('template-ref-data') }}) in the following manner:
 
 {% raw %}<pre class="brush: twig">{% set penguins = pt.data.get('birds/penguins.json') %}</pre>{% endraw %}
 

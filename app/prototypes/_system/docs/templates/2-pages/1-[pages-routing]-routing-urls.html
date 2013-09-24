@@ -10,8 +10,8 @@ At it's simplest, it will map a URL to a template in much the same way that 'sta
 
 **So for example**, given a URL such as `http://example.com/index.php/foo/bar`, Prontotype will look for the templates in the following locations, stopping when it finds one:
 
-1. `/path/to/prototype/templates/foo/bar.html`
-2. `/path/to/prototype/templates/foo/bar/index.html`
+1. `/templates/foo/bar.html`
+2. `/templates/foo/bar/index.html`
 
 If neither file exists, Prontotype will show the default 404 page, which [can be customised]({{ pt.pages.getUrlById('templating-overrides') }}) if required.
 
