@@ -23,6 +23,7 @@ pages:
     '[data]' : Working with Data
     '[assets]' : Asset Handling
     '[assets-css]' : Preprocessing CSS
+    '[assets-files]' : Linking to files
     '[users]' : Users and Logins
     '[users-data]' : The users.yml file
     
