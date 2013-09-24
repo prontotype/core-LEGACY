@@ -96,4 +96,24 @@ Class Assets extends Base {
         ));
     }
     
+    public function fileLink($href, $text = null, $attrs = array(), $rawPath = false)
+    {
+        if ( ! $rawPath ) {
+            $href = $this->app['pt.assets_helper']->getFileUrlPath($href);
+        }
+        
+        if ( ! $text ) {
+            $text = pathinfo($href, PATHINFO_BASENAME);
+        }
+        
+        $attrs = $this->mergeOpts(array(
+            'href' => $href,
+        ), $attrs);
+            
+        return $this->renderTemplate('link.html', array(
+            'attrs'  => $attrs,
+            'text'   => $text
+        ));
+    }
+    
 }

@@ -32,4 +32,20 @@ Class Helper {
         return $path;
     }
     
+    public function getFileUrl($path)
+    {
+        $path = str_replace('/index.php', '', $this->getFileUrlPath($path));
+        return $this->app['pt.request']->getUriForPath($path);
+    }
+    
+    public function getFileUrlPath($path)
+    {
+        $root = $this->app['pt.prototype.paths.files'] . '/';  
+        $path = $this->app['pt.config']->get('triggers.files') . '/' . trim($path, '/');
+        if ( ! $this->app['pt.env.clean_urls'] ) {
+            $path = '/index.php' . $path;
+        }   
+        return $path;
+    }
+    
 }
