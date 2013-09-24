@@ -217,10 +217,10 @@ Class Prontotype implements ServiceProviderInterface {
 
             switch( $code ) {
                 case '404':
-                    $template = '_system/404.html';
+                    $template = '404.html';
                     break;
                 default:
-                    $template = '_system/error.html';
+                    $template = '500.html';
                     break;
             }
             
