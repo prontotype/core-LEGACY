@@ -15,61 +15,73 @@ class ToolsController implements ControllerProviderInterface {
     {
         $controllers = $app['controllers_factory'];
 
-
+        
         $controllers->get('/export', function () use ($app) {
             
-            return $app['twig']->render('_system/tools/export.html', array(
-                'exports' => $app['pt.exporter']->listContents()
-            ));
-
+            $crawler = new \Prontotype\Crawler\Crawler(); 
+            $crawler->setURL("http://prontotype-core.dev/");
+            $crawler->enableCookieHandling(true);
+            $crawler->setFollowMode(3);
+            $crawler->go();
+            
+            return '';
         })
         ->bind('export.overview');
         
-        
-        $controllers->get('/export/run', function () use ($app) {
-            
-            $details = $app['pt.exporter']->run();
-            return $app->redirect($app['pt.utils']->generateUrlPath('export.overview'));
-            
-        })
-        ->bind('export.run');
-        
-        
-        $controllers->get('/export/current', function () use ($app) {
-            
-            $details = $app['pt.exporter']->run();
-            return $app->redirect($app['pt.utils']->generateUrlPath('export.download', array(
-                'tag' => $details['tag']
-            )));
-            
-        })
-        ->bind('export.current');
-        
-        
-        $controllers->get('/export/download/{tag}', function ($tag) use ($app) {
-            
-            if ( ! $tag ) {
-                $app->abort(404);
-            }
-            
-            if ( $details = $app['pt.exporter']->getExportDetails($tag) ) {
-                return $app->sendFile($details['path'])->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $details['filename']);  
-            } else {
-                $app->abort(404);
-            }
-            
-        })
-        ->value('tag', null)
-        ->bind('export.download');
-        
-        
-        $controllers->get('/export/clear', function () use ($app) {
-            
-            $app['pt.exporter']->clear();
-            return $app->redirect($app['pt.utils']->generateUrlPath('export.overview'));
-            
-        })
-        ->bind('export.clear');
+        // $controllers->get('/export', function () use ($app) {
+        //     
+        //     return $app['twig']->render('_system/tools/export.html', array(
+        //         'exports' => $app['pt.exporter']->listContents()
+        //     ));
+        // 
+        // })
+        // ->bind('export.overview');
+        // 
+        // 
+        // $controllers->get('/export/run', function () use ($app) {
+        //     
+        //     $details = $app['pt.exporter']->run();
+        //     return $app->redirect($app['pt.utils']->generateUrlPath('export.overview'));
+        //     
+        // })
+        // ->bind('export.run');
+        // 
+        // 
+        // $controllers->get('/export/current', function () use ($app) {
+        //     
+        //     $details = $app['pt.exporter']->run();
+        //     return $app->redirect($app['pt.utils']->generateUrlPath('export.download', array(
+        //         'tag' => $details['tag']
+        //     )));
+        //     
+        // })
+        // ->bind('export.current');
+        // 
+        // 
+        // $controllers->get('/export/download/{tag}', function ($tag) use ($app) {
+        //     
+        //     if ( ! $tag ) {
+        //         $app->abort(404);
+        //     }
+        //     
+        //     if ( $details = $app['pt.exporter']->getExportDetails($tag) ) {
+        //         return $app->sendFile($details['path'])->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $details['filename']);  
+        //     } else {
+        //         $app->abort(404);
+        //     }
+        //     
+        // })
+        // ->value('tag', null)
+        // ->bind('export.download');
+        // 
+        // 
+        // $controllers->get('/export/clear', function () use ($app) {
+        //     
+        //     $app['pt.exporter']->clear();
+        //     return $app->redirect($app['pt.utils']->generateUrlPath('export.overview'));
+        //     
+        // })
+        // ->bind('export.clear');
         
         
         return $controllers;

@@ -22,11 +22,16 @@
         "easybook/geshi" : "*",
         "sybio/image-workshop" : "2.0.*",
         "symfony/finder" : "2.3.*",
-        "symfony/filesystem" : "2.3.*"
+        "symfony/filesystem" : "2.3.*",
+        "prontotype/phpcrawl" : "master"
     },
     "repositories" : [{
         "type": "vcs",
         "url": "https://github.com/prontotype/geshi"
+    },
+    {
+        "type": "vcs",
+        "url": "https://github.com/prontotype/phpcrawl"
     }],
     "minimum-stability": "dev",
     "autoload": {
