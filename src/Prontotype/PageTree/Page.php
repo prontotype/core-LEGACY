@@ -146,7 +146,7 @@ Class Page extends Base {
     
     public function setUrlPath($urlPath)
     {
-        $this->urlPath = '/' . trim($urlPath,'/');
+        $this->urlPath = $this->prefixUrl('/' . trim($urlPath,'/'));
         $originalExtension = $this->pathInfo['extension'];
         $this->pathInfo['basename'] = pathinfo($urlPath, PATHINFO_BASENAME);
         $this->pathInfo['filename'] = pathinfo($urlPath, PATHINFO_FILENAME);
