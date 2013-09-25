@@ -16,11 +16,12 @@ class FileController implements ControllerProviderInterface {
             
         $controllers->get('/{file_path}', function ($file_path) use ($app) {
             
-            $path = $app['pt.prototype.paths.files'] . '/' . $file_path;
-            if ( ! file_exists($path) ) {
+            try {
+                $path = $app['pt.files']->findFile($file_path);
+            } catch (\Exception $e) {
                 $app->abort(404);
             }
-            
+                
             return $app->sendFile($path);
         })
         ->assert('file_path', '.+')

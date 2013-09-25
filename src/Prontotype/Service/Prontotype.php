@@ -29,6 +29,7 @@ use Prontotype\Data\MarkdownParser;
 use Prontotype\Store\Manager as StoreManager;
 use Prontotype\Extension\Manager as ExtensionManager;
 use Prontotype\Assets\Manager as AssetManager;
+use Prontotype\Assets\FileManager;
 use Prontotype\Config as ConfigManager;
 use Prontotype\RouteMatcher;
 use Prontotype\Assets\LessProcessor;
@@ -125,6 +126,12 @@ Class Prontotype implements ServiceProviderInterface {
             ), array(
                 $app['pt.prototype.paths.assets'],
             ), $app['pt.app.paths.assets']);
+        });
+        
+        $app['pt.files'] = $app->share(function($app) {
+            return new FileManager($app, array(
+                $app['pt.prototype.paths.files'],
+            ), $app['pt.app.paths.files']);
         });
 
         $app['pt.extensions'] = $app->share(function($app) {

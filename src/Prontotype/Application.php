@@ -42,6 +42,7 @@ Class Application {
         'data'       => '/../../app/data',
         'config'     => '/../../app/config',
         'assets'     => '/../../app/assets',
+        'files'      => '/../../app/files',
         'templates'  => '/../../app/templates',
     );
     
