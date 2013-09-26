@@ -4,6 +4,6 @@ vendor/*
 bin/*
 cache/*
 config/*
-prototypes/*
+sites/*
 index.php
 .htaccess
