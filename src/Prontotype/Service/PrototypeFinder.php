@@ -33,11 +33,12 @@ Class PrototypeFinder implements ServiceProviderInterface {
         $app['pt.prototype']->loadByHost($host);
         
         $app['pt.prototype.label']       = $app['pt.prototype']->getLabel();
-        $app['pt.prototype.location']   = $app['pt.prototype']->getPrototypePath();
+        $app['pt.prototype.location']    = $app['pt.prototype']->getPrototypePath();
         $app['pt.prototype.uid']         = $app['pt.prototype']->getUid();
         $app['pt.prototype.domain']      = $app['pt.prototype']->getDomain();
         $app['pt.prototype.path']        = $app['pt.prototype']->getPath();
-        $app['pt.prototype.environment'] = $app['pt.prototype']->getEnvironment();        
+        $app['pt.prototype.environment'] = $app['pt.prototype']->getEnvironment();      
+        $app['pt.prototype.extends']     = $app['pt.prototype']->getExtendedPrototypeDefinitions();
 
         $app['pt.prototype.paths.root']       = $app['pt.prototype']->getRootPath();
         $app['pt.prototype.paths.templates']  = $app['pt.prototype']->getPathTo('templates');
