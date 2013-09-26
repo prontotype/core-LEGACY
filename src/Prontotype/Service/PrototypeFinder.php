@@ -62,11 +62,11 @@ Class PrototypeFinder implements ServiceProviderInterface {
     {
         $defs = array();
         foreach($defPaths as $loadPath) {
-            $loadPath = $loadPath . '/prototypes.yml';
+            $loadPath = $loadPath . '/sites.yml';
             if ( file_exists($loadPath) ) {
                 $ptDefinitions = Yaml::parse($loadPath);       
                 if (null === $ptDefinitions) {
-                    throw new \Exception(sprintf("The prototype loader file '%s' appears to be invalid YAML.", $loadPath));
+                    throw new \Exception(sprintf("The site loader file '%s' appears to be invalid YAML.", $loadPath));
                 }
                 $defs = array_merge($ptDefinitions, $defs);                
             }
