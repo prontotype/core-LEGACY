@@ -4,8 +4,8 @@ pages:
   titles:
     '/' : Overview
     '[setup]' : Setup and Installation
-    '[setup-prototypes]' : Prototypes and domains
-    '[setup-folderstructure]' : Folder structure of a prototype
+    '[setup-domains]' :Sites, domains and locations
+    '[setup-folderstructure]' : Folder structure of a Prontotype site
     '[config-triggers]' : URL triggers
     '[pages]' : Pages and URLs
     '[pages-order-ids]' : Ordering and assigning IDs

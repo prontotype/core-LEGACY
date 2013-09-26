@@ -4,21 +4,21 @@
 
 # Asset Handling
 
-Prontotype provides you with a number of features to make working with assets (CSS, JS, images etc) in your prototypes straightforward, including on-the-fly Sass and LESS preprocessing and handy tools for generating placeholder images.
+Prontotype provides you with a number of features to make working with assets (CSS, JS, images etc) in your sites straightforward, including on-the-fly Sass and LESS preprocessing and handy tools for generating placeholder images.
 
 ## Asset file locations
 
-All your prototype's asset files should be stored within that prototype's `/assets` directory - for example at `/assets`. Within this directory you can organise you assets into subdirectories however you see fit.
+All your site's asset files should be stored within that site's `/assets` directory - for example at `/assets`. Within this directory you can organise you assets into subdirectories however you see fit.
 
 ## Linking to assets from your templates
 
 By default Prontotype expects to dynamically serve up assets, allowing for preprocessing of files and other functionality. That means that rather than linking directly to an asset file, there is a special URL format that will serve up your files.
 
-The URL for any asset in your prototype should therefore look like this:
+The URL for any asset in your site should therefore look like this:
 
 <pre class="brush: xml">http://example.com/index.php/<assets_trigger>/<path_to_asset></pre>
 
-Where `<assets_trigger>` is as defined [in the 'triggers' section of your config file]({{ pt.pages.getUrlById('config-triggers') }}) (defaults to **_assets**) and `<path_to_asset>` is the path of the asset file that you wish to access, relative to the prototype's `/assets` directory.
+Where `<assets_trigger>` is as defined [in the 'triggers' section of your config file]({{ pt.pages.getUrlById('config-triggers') }}) (defaults to **_assets**) and `<path_to_asset>` is the path of the asset file that you wish to access, relative to the site's `/assets` directory.
 
 So to link to an image file located at `/assets/img/monkey.gif` would look something like this (with [default URL trigger value]({{ pt.pages.getUrlById('config-triggers') }}) and without enabling [clean URLs]({{ pt.pages.getUrlById('pages-clean-urls') }})):
 

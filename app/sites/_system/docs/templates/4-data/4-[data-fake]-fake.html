@@ -4,7 +4,7 @@
 
 # Auto-generating data
 
-To make populating your prototype with content easier, Prontotype integrates the [Faker library](https://github.com/fzaninotto/Faker) to [provide a method]({{ pt.pages.getUrlById('template-ref-data') }}#data-faker) for auto-generating data such as [names, addresses, dates, numbers and more](#faker-ref).
+To make populating your site with content easier, Prontotype integrates the [Faker library](https://github.com/fzaninotto/Faker) to [provide a method]({{ pt.pages.getUrlById('template-ref-data') }}#data-faker) for auto-generating data such as [names, addresses, dates, numbers and more](#faker-ref).
 
 The `pt.data.faker()` method returns a 'faker' instance, which can then be used to auto-generate content in your templates. For example:
 
@@ -17,7 +17,7 @@ This method will generate a randomly generate content for each call to the same 
 
 ## Using seeds to repeatably auto-generate data 
 
-If you want to remove the random generation aspect of the faker method - i.e. to use the **same** set of randomly generated data throughout your prototype and page refreshes - you can **seed** the faker instance by passing in an integer number to the `pt.data.faker()` method.
+If you want to remove the random generation aspect of the faker method - i.e. to use the **same** set of randomly generated data throughout your site and page refreshes - you can **seed** the faker instance by passing in an integer number to the `pt.data.faker()` method.
 
 Everywhere that uses that same seed integer will then produce the same set of auto-generated data. To help explain this consider the following example:
 
@@ -39,7 +39,7 @@ First Name: {{ otherFaker.firstName }} <!-- Jim --></pre>{% endraw %}
 
 By default Prontotype uses the **en_EN** locale, which generates US-style addresses, phone numbers etc. To change the locale see the section on configuration below. Possible locale values include: **en_GB**, **fr_FR**, **es_ES**, **de_DE** and many more - see the [faker documentation](https://github.com/fzaninotto/Faker#localization) for full details.
 
-## Prototype-wide configuration
+## site-wide configuration
 
 You can configure faker using the following configuration block in your config file:
 
@@ -48,7 +48,7 @@ You can configure faker using the following configuration block in your config f
     locale: en_EN # specify a different locale here if required
     seed: # set global seed here (see note)</pre>{% endraw %}
 
-Note that this allows you to set a prototype-wide seed for your faker instances, which will be applied to any faker instances that don't themselves specify a seed. However this is **not generally recommended** as it reduces your ability to randomly generate data in other parts of you prototype - specifying a per-instance seed is generally more flexible.
+Note that this allows you to set a site-wide seed for your faker instances, which will be applied to any faker instances that don't themselves specify a seed. However this is **not generally recommended** as it reduces your ability to randomly generate data in other parts of you site - specifying a per-instance seed is generally more flexible.
 
 ## Reference  {{ '{#' }}faker-ref}
 

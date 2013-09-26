@@ -7,7 +7,7 @@
 
 # Pages template reference
 
-You can access information about the pages in your prototype via the `pt.pages` variable.
+You can access information about the pages in your site via the `pt.pages` variable.
 
 Many of the methods available on the `pt.pages` variable will return a [page object](#page-objects) representation of a page, which will give you access to metadata about that page.
 
@@ -73,7 +73,7 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
         <p>A shortcut method to return the root-relative URL (no domain, as a string) of the page specified by the ID, or <code>#</code> if it's not found.</p>
         </div>
         {% raw %}<pre class="brush: twig">{{ pt.pages.getUrlById('hamsters') }} <!-- /animals/hamsters --></pre>{% endraw %}
-        <p class="hint">This or the corresponding method<strong>.getUrlById()</strong> can be useful for linking to other pages within the prototype in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
+        <p class="hint">This or the corresponding method<strong>.getUrlById()</strong> can be useful for linking to other pages within the site in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
     </div>
     
     <div class="method">
@@ -82,7 +82,7 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
         <p>A shortcut method to return the full URL (as a string) of the page specified by the ID, or <code>#</code> if it's not found.</p>
         </div>
         {% raw %}<pre class="brush: twig">{{ pt.pages.getUrlById('hamsters') }} <!-- http://example.com/animals/hamsters --></pre>{% endraw %}
-        <p class="hint">This or the corresponding method<strong>.getUrlPathById()</strong> can be useful for linking to other pages within the prototype in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
+        <p class="hint">This or the corresponding method<strong>.getUrlPathById()</strong> can be useful for linking to other pages within the site in a way that allows you to move pages around without breaking all your links, and is the recommended way to generate URLs in Prontotype.</p>
     </div>
     
     <div class="method">
@@ -116,7 +116,7 @@ Many of the methods available on the `pt.pages` variable will return a [page obj
 
 Once you have a **Pronototype page object** returned by one of the relevant methods above, you can then get data about the page that it represents.
 
-In the following examples we'll assume that the `examplePage` variable has been first set using the `pt.pages.getPageById()` method - but obviously in your prototype you can call your variables whatever you like!
+In the following examples we'll assume that the `examplePage` variable has been first set using the `pt.pages.getPageById()` method - but obviously in your site you can call your variables whatever you like!
 
 {% raw %}<pre class="brush: twig">{% set examplePage = pt.pages.getById('hmstrs') %}</pre>{% endraw %}
 

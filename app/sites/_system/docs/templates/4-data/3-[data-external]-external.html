@@ -4,7 +4,7 @@
 
 # External data sources
 
-You can also use **public** external data sources (such as JSON APIs) to provide data for your prototype. The parser to be used to parse the contents of the request will be guessed from the **MIME type** of the request. If an appropriate MIME type is not set (or you wish to override it) you can also [specify the format]({{ pt.pages.getUrlById('data-formats') }}) when requesting the data in your template. 
+You can also use **public** external data sources (such as JSON APIs) to provide data for your site. The parser to be used to parse the contents of the request will be guessed from the **MIME type** of the request. If an appropriate MIME type is not set (or you wish to override it) you can also [specify the format]({{ pt.pages.getUrlById('data-formats') }}) when requesting the data in your template. 
 
 To fetch data from an external source, simply use a **full URL** (including the http part) in place of a local path as the location in the [`pt.data.get()` method]({{ pt.pages.getUrlById('template-ref-data') }}#data-get). For example:
 

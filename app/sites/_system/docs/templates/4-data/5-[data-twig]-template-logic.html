@@ -14,8 +14,8 @@ This means that any dynamic information your data files require will have to be 
 
 ## Including/extending other files
 
-**Locally stored data files** (but **NOT** ones fetched from an external source) can also use Twig's [include](http://twig.sensiolabs.org/doc/tags/include.html) and [extends](http://twig.sensiolabs.org/doc/tags/extends.html) methods to pull in other files from within your prototypes' data directory. This can be useful when creating multiple data files that need to share a 'layout' - for instance XML files with a common header/footer etc.
+**Locally stored data files** (but **NOT** ones fetched from an external source) can also use Twig's [include](http://twig.sensiolabs.org/doc/tags/include.html) and [extends](http://twig.sensiolabs.org/doc/tags/extends.html) methods to pull in other files from within your sites' data directory. This can be useful when creating multiple data files that need to share a 'layout' - for instance XML files with a common header/footer etc.
 
-All include/extends paths will need to be taken **relative to the prototype's `/data` directory**. 
+All include/extends paths will need to be taken **relative to the site's `/data` directory**. 
 
 {% endset %}

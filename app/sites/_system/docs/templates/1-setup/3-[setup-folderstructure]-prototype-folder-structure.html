@@ -2,20 +2,20 @@
 
 {% set content %}
 
-# Folder structure of a prototype
+# Folder structure of a site
 
-The default prototype that you downloaded contains just one `templates` subfolder, which itself contained just a single `index.html` file. This is the bare minimum Prontotype needs to serve up a prototype.
+The default site that you downloaded contains just one `templates` subfolder, which itself contained just a single `index.html` file. This is the bare minimum Prontotype needs to serve up a site.
 
-There are other folders that Prontotype considers 'special' folders, including folders for [data files]({{ pt.pages.getUrlById('data') }}), [configuration]({{ pt.pages.getUrlById('config') }}) and [assets]({{ pt.pages.getUrlById('assets') }}). These are all optional for simple prototypes but using them will open up a wide range of additional functionality to your prototype.
+There are other folders that Prontotype considers 'special' folders, including folders for [data files]({{ pt.pages.getUrlById('data') }}), [configuration]({{ pt.pages.getUrlById('config') }}) and [assets]({{ pt.pages.getUrlById('assets') }}). These are all optional for simple sites but using them will open up a wide range of additional functionality to your site.
 
-The **full list of special folders** that can be used in the top-level directory of your prototype is as follows: 
+The **full list of special folders** that can be used in the top-level directory of your site is as follows: 
 
 * `assets` - For [assets]({{ pt.pages.getUrlById('assets') }}) such as CSS (or LESS/SCSS) files, JavaScript files and images etc.
-* `config` - For any prototype-specific [configuration files]({{ pt.pages.getUrlById('config') }}) that you need.
+* `config` - For any site-specific [configuration files]({{ pt.pages.getUrlById('config') }}) that you need.
 * `data` - Where your [data files]({{ pt.pages.getUrlById('data') }}) will live, if required.
-* `files` - For storing files that your prototype may need to serve up to users as downloads.
-* `templates` - Where your prototype's pages will live, and where [page request URLs will be routed into]({{ pt.pages.getUrlById('pages') }}).
+* `files` - For storing files that your site may need to serve up to users as downloads.
+* `templates` - Where your site's pages will live, and where [page request URLs will be routed into]({{ pt.pages.getUrlById('pages') }}).
 
-Outside of these, you can add any other folders you need into your prototype to organise things as you see fit.
+Outside of these, you can add any other folders you need into your site to organise things as you see fit.
 
 {% endset %}
