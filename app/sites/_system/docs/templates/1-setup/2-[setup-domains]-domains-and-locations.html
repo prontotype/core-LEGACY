@@ -6,7 +6,7 @@
 
 Your prototypes can live wherever you like on your filesystem, and can be accessed by whatever domain you like - all you need to do is to tell Prontotype how to match up a your domain(s) with your prototype(s). Note too that a single install of Prontotype can also serve up multiple prototypes at multiple domains!
 
-The `config/prototypes.yml` file tells Prontotype which domains match up to which prototype. The default contents of this file contains just a single prototype 'definition', and is as follows:
+The `config/sites.yml` file tells Prontotype which domains match up to which prototype. The default contents of this file contains just a single prototype 'definition', and is as follows:
 
 <pre class="brush: yaml">default:
   domain: '*'
@@ -51,7 +51,7 @@ It is very easy to configure a single Prontotype install to serve up multiple pr
 
 Using a single install as a prototype 'server' in this way is recommended if you have multiple prototypes, as in the future it means you only need to upgrade one set of code and all your prototypes will instantly benefit.
 
-To serve up an additional prototype (e.g. one in a folder named **foo** within the `/prototypes` directory) at a different domain, simply amend the `prototypes.yml` file to add another prototype definition block, which could look like this:
+To serve up an additional prototype (e.g. one in a folder named **foo** within the `/prototypes` directory) at a different domain, simply amend the `sites.yml` file to add another prototype definition block, which could look like this:
 
 <pre class="brush: yaml">foo_prototype:
   domain: 'foo.com'
@@ -67,7 +67,7 @@ This would serve up the **foo** prototype to all **foo.com** URLs, and the defau
 
 <p class="note">Note that the <strong>more specific URL patterns</strong> should be specified first in the file - Prontotype will stop looking as soon as it finds a domain to match.</p>
 
-You can add as many prototype configuration blocks to your `prototypes.yml` file as you like.
+You can add as many prototype configuration blocks to your `sites.yml` file as you like.
 
 ## Using environments {{ '{#' }}environments}
 
