@@ -4,7 +4,9 @@
 
 # Sites, domains and locations
 
-Your sites can live wherever you like on your filesystem, and can be accessed by whatever domain you like - all you need to do is to tell Prontotype how to match up a your domain(s) with your site(s). Note too that a single install of Prontotype can also serve up multiple sites at different domains.
+A single Prontotype instance can serve up one or more sites. It's also very flexible about where you store those sites - provided your PHP open_basedir settings allow you can effectively store your sites anywhere on your filesystem, outside of your main Prontotype install if you like.
+
+All you need to do is to tell Prontotype how to match up your domain(s) with your site(s), and where those sites live.
 
 The `config/sites.yml` file tells Prontotype which domains match up to which site. The default contents of this file contains just a single site 'definition', and is as follows:
 
