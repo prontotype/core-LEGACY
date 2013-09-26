@@ -1,0 +1,85 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Requests template reference
+
+You can access information about the current HTTP request via the `pt.request` variable.
+
+Note that in addition to the methods detailed below, the `pt.request` variable also provides access to all the methods implemented in the [Symfony2 Request class](http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html).
+
+## Available methods
+
+<div class="method-ref">
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getUrlPath">pt.request.<span class="name">getUrlPath()</span></h3>
+        <div class="method-desc">
+            <p>Gets the full URL path of the request (excluding the `index.php` segment if present).</p>
+        </div>
+{% raw %}<pre class="brush: twig">{{ pt.request.getUrlPath() }} <!-- /this/is/the/url?animal=monkey --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getUrlSegments">pt.request.<span class="name">getUrlSegments()</span></h3>
+        <div class="method-desc">
+            <p>Returns an array of all the individual segments in the URL.</p>
+        </div>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getUrlSegment">pt.request.<span class="name">getUrlSegment( position )</span></h3>
+        <div class="method-desc">
+            <p>Gets a URL segment, identified by it's position <code>pos</code> from the start of the URL path.</p>
+        </div>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getQueryString">pt.request.<span class="name">getQueryString( [ overrides ] )</span></h3>
+        <div class="method-desc">
+            <p>Returns GET request string from the current request, optionally providing a key:value hash of <code>overrides</code> to overwrite or append to the string.</p>
+        </div>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getQueryParam">pt.request.<span class="name">getQueryParam( name )</span></h3>
+        <div class="method-desc">
+            <p>Returns the value of the GET parameter specified by `name`, if set.</p>
+        </div>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getQueryParams">pt.request.<span class="name">getQueryParams()</span></h3>
+        <div class="method-desc">
+            <p>Returns a key:value hash of all the GET paramters set in the URL.</p>
+        </div>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getPostParams">pt.request.<span class="name">getPostParams()</span></h3>
+        <div class="method-desc">
+            <p>Returns a key:value hash of all the POST paramters set in the URL.</p>
+        </div>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getSchemeAndHttpHost">pt.request.<span class="name">getSchemeAndHttpHost()</span></h3>
+        <div class="method-desc">
+            <p>Returns the scheme and host name from the request</p>
+        </div>
+    {% raw %}<pre class="brush: twig">{{ pt.request.getSchemeAndHttpHost() }} <!-- http://mysite.com --></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="requests-getHttpHost">pt.request.<span class="name">getHttpHost()</span></h3>
+        <div class="method-desc">
+            <p>Returns the host name from the request</p>
+        </div>
+    {% raw %}<pre class="brush: twig">{{ pt.request.getHttpHost() }} <!-- mysite.com --></pre>{% endraw %}
+    </div>
+    
+    
+    
+</div>
+
+{% endset %}

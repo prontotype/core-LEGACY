@@ -6,9 +6,9 @@
 
 Pages in Prontotype are [Twig]({{ pt.pages.getUrlById('templating-twig') }}) templates that are addressable via a URL.
 
-They live in the site-specific templates directory - `/templates` - and typically will have a `.html` file extension.
+They live in the site-specific templates directory - `/templates` - and typically will have a `.html` file extension (although you can use `.twig` too, if you prefer).
 
-Pages can be [ordered]({{ pt.pages.getUrlById('pages-order-ids') }}#ordering) and can have a [reference ID]({{ pt.pages.getUrlById('pages-order-ids') }}#ids) assigned to them, should you wish. Pages with an ID can be moved anywhere within the templates directory and and generated links to them will remain valid, so you'll never need to update a whole bunch of links when you move a page around.
+Pages can be [ordered]({{ pt.pages.getUrlById('pages-order-ids') }}#ordering) and can have a [reference ID]({{ pt.pages.getUrlById('pages-order-ids') }}#ids) assigned to them, should you wish. Pages with an ID can be moved anywhere within the templates directory and and generated links to them will remain valid, so <strong>you'll never need to update a whole bunch of links</strong> when you move a page around.
 
 The [mapping URLs to templates]({{ pt.pages.getUrlById('pages-routing') }}) section contains more specific information about how Prontotype decides which template should get served up for a particular URL.
 
