@@ -18,6 +18,8 @@ Class Prototype {
     
     protected $searchPaths = array();
     
+    protected $extends = array();
+    
     public function __construct( $defs, $searchPaths, $app )
     {
         $this->app = $app;
@@ -61,7 +63,7 @@ Class Prototype {
         $this->definition = $this->definitions[$label];
         $this->label = $label;
         $this->location = $path;
-        
+        $this->extends = isset($this->definition['extends']) ? (array) $this->definition['extends'] : array();
         return true;
     }
          
@@ -106,12 +108,36 @@ Class Prototype {
         return isset($this->definition['environment']) ? $this->definition['environment'] : 'live';
     }
     
+    public function getExtendedPrototypeDefinitions()
+    {
+        $pts = array();
+        $added = array();
+        foreach( $this->extends as $label ) {
+            if ( $label == $this->label || in_array($label, $added) ) {
+                continue;
+            }    
+            if ( isset($this->definitions[$label]) ) {
+                $def = $this->definitions[$label];
+                $pt = new self($this->definitions, $this->searchPaths, $this->app);
+                try {
+                    $pt->load($label);
+                    $pts[] = $pt;
+                } catch (\Exception $e) {}
+            }
+            $added[] = $label;
+        }
+        return $pts;
+    }
+    
     public function loadByHost($host)
     {        
         $found = false;
         foreach( $this->definitions as $label => $def ) {
             try {
                 $this->load($label);
+                if ( ! $this->definition['domain'] ) {
+                    continue;
+                }
                 $matches = is_array($this->definition['domain']) ? $this->definition['domain'] : array($this->definition['domain']);
                 $regexp = '/^(';
                 $regexp .= implode('|', array_map(function($value){
@@ -157,6 +183,7 @@ Class Prototype {
             $this->definition = array();
             $this->label = null;
             $this->location = null;
+            $this->extends = array();
             throw new \Exception(sprintf("Could not find matching prototype for host '%s'.", $host));
         }
         
