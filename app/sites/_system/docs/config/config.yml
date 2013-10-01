@@ -1,0 +1,29 @@
+debug: true
+
+pages:
+  titles:
+    '/' : Overview
+    '[setup]' : Setup and Installation
+    '[setup-domains]' : 'Sites, domains and locations'
+    '[setup-folderstructure]' : Prontotype site structure
+    '[config-triggers]' : URL triggers
+    '[pages]' : Pages and URLs
+    '[pages-order-ids]' : Ordering and assigning IDs
+    '[pages-routing]' : Routing URLs to pages
+    '[pages-titles]' : Page titles
+    '[pages-errors]' : Error pages and 404s
+    '[pages-clean-urls]' : "Enabling 'clean' URLs"
+    '[templating-overrides]' : Overriding system templates
+    '[data-external]' : External data sources
+    '[data-local]' : Local data files
+    '[data-formats]' : Data formats
+    '[data-fake]' : "Auto-generating data"
+    '[data-twig]' : Template logic in data files  
+    '[data-api]' : JSON Data API
+    '[data]' : Working with Data
+    '[assets]' : Asset Handling
+    '[assets-css]' : Preprocessing CSS
+    '[assets-files]' : Linking to files
+    '[users]' : Users and Logins
+    '[users-data]' : The users.yml file
+    

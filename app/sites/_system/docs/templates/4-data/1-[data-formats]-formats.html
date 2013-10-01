@@ -1,0 +1,15 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Data formats
+
+You can use data in **YAML**, **JSON**, **XML**, **CSV** and **Markdown** formats in your site. With the exception of Markdown, all of these are parsed into an array structure for [use in your templates]({{ pt.pages.getUrlById('template-ref-data') }}). Markdown files are parsed through a Markdown parser and the contents are made available as a string.
+
+The format of the contents of the data file will be guessed either from it's **extension** (for locally stored data files) or it's **MIME type** (for external data sources).
+
+<p class="note">If an appropriate parser for the file cannot be found, then the contents of the data file will be delivered as-is to the template.</p>
+
+If for some reason you wish to force a file through a particular parser (if the file extension is not the conventional one for that file type, for instance), then the [`pt.data.get()` method]({{ pt.pages.getUrlById('template-ref-data') }}#data-get) lets you optionally specify the format parser to use. Possible values for this are: **yaml**, **json**, **xml**, **csv**, **markdown**.
+
+{% endset %}

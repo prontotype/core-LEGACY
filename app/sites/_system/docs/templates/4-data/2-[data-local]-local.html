@@ -1,0 +1,21 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Local data files
+
+Prontotype can access any data files stored within your site's `/data` directory. You will have to create this directory if it does not already exist.
+
+Within this directory, files can be organised into subdirectories as required. The **path** for any file within this directory is considered to be relative to the `/data` directory itself.
+
+So the contents of a file stored at `/data/birds/penguins.json` could be [accessed in your templates]({{ pt.pages.getUrlById('template-ref-data') }}) in the following manner:
+
+{% raw %}<pre class="brush: twig">{% set penguins = pt.data.get('birds/penguins.json') %}</pre>{% endraw %}
+
+The parser to run the local data file through is guessed from it's extension, although this can be [overridden to target a specific parser]({{ pt.pages.getUrlById('data-formats') }}) if required.
+
+## Using templating logic in local data files
+
+All data files are run through the [Twig template parser]({{ pt.pages.getUrlById('templating-twig') }}) **prior** to having the appropriate format parser run on them. Check out the page on [using template logic in data files]({{ pt.pages.getUrlById('data-twig') }}) for full details on how this works and what it allows you to do.
+
+{% endset %}

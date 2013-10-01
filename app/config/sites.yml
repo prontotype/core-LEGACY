@@ -1,0 +1,5 @@
+_docs:
+  domain: '*'
+  path: '_docs'
+  location: 'sites/_system/docs'
+  environment: _system

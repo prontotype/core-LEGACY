@@ -1,0 +1,92 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Sites, domains and locations
+
+A single Prontotype instance can serve up one or more sites. It's also very flexible about where you store those sites - provided your [PHP open_basedir](http://stackoverflow.com/questions/223800/how-can-i-relax-phps-open-basedir-restriction) settings allow, you can effectively store your sites anywhere on your filesystem, and outside of your main Prontotype install if you like.
+
+All you need to do is to tell Prontotype how to match up your domain(s) with your site(s), and where those sites live.
+
+The `config/sites.yml` file tells Prontotype which domains match up to which site. The default contents of this file contains just a single site 'definition', and is as follows:
+
+<pre class="brush: yaml">default:
+  domain: '*'
+  location: sites/default
+  environment: live</pre>
+
+This configuration will result in Prontotype serving up the default site (i.e. the one located in the `sites/default` directory within your Prontotype install) for *any* domain.
+
+Of course, that is quite possibly not the behaviour you want, and so you have a number of options for configuring this behavior.
+
+## Specifing a domain
+
+The value of the `domain` key in the site definition tells Prontotype which domain that particular site definition block is intended for, and uses a simple wildcard pattern to match domains against. Below are some examples of patterns and the resulting domains that would be matched:
+
+| Pattern | URL matches |
+| ----- | ----- |
+| foo.com | foo.com |
+| foo.* | foo.com, foo.dev, foo.site etc |
+| *.dev | foo.dev, bar.dev, test.dev etc |
+| *.foo.com | bar.foo.com, hello.foo.com etc |
+| \*.foo.\* | bar.foo.com, bar.foo.site, hello.foo.com, etc |
+| * | foo.com, foo.dev, bar.site, hello.test.com etc |
+
+## Specifing the site's location
+
+The value of the `location` key should be the filesystem path to the site that you wish to be served up.
+
+If it *doesn't* start with a forward slash (/), Prontotype will assume that the path is **relative** to the Prontotype installation itself, e.g. as used above for the 'default' site.
+
+You can also store sites **outside** of the Prontotype install directory by providing a **full filesystem path** (beginning with a forward slash) as the value for the `location` key. So for example you could do the following:
+
+<pre class="brush: yaml">mysite:
+  domain: '*'
+  location: /full/path/to/mysite
+  environment: live</pre>
+  
+And the system will look for your site at `/full/path/to/mysite`.
+
+## Serving multiple sites from a single install
+
+It is very easy to configure a single Prontotype install to serve up multiple sites for different domains, should you choose.
+
+Using a single install as a site 'server' in this way is recommended if you have multiple sites, as in the future it means you only need to upgrade one set of code and all your sites will instantly benefit.
+
+To serve up an additional site (e.g. one in a folder named **foo** within the `/sites` directory) at a different domain, simply amend the `sites.yml` file to add another site definition block, which could look like this:
+
+<pre class="brush: yaml">foo_site:
+  domain: 'foo.com'
+  location: sites/foo
+  environment: live
+
+default:
+  domain: '*'
+  location: sites/default
+  environment: live</pre>
+
+This would serve up the **foo** site to all **foo.com** URLs, and the default site for all other URLs. Note that the reference name (e.g. 'foo_site') can be anything you like - it has no bearing on which site is served up (but *can be* used for reference purposes in certain functions, so it's worth picking a useful one).
+
+<p class="note">Note that the <strong>more specific URL patterns</strong> should be specified first in the file - Prontotype will stop looking as soon as it finds a domain to match.</p>
+
+You can add as many site configuration blocks to your `sites.yml` file as you like.
+
+## Using environments {{ '{#' }}environments}
+
+The `environment` key lets you specify an environment for each site match block. Using different environments is completely optional but lets you load different configuration files in for different matched domains if required (as discussed in the [configuration section]({{ pt.pages.getUrlById('config') }})).
+
+So for example you could use the following `prontotypes.yml` file to serve up the same site but with a different environment value for the local **foo.dev** domain:
+
+<pre class="brush: yaml">local:
+  domain: 'foo.dev'
+  location: sites/default
+  environment: local
+
+default:
+  domain: 'foo.com'
+  location: sites/default
+  environment: live</pre>
+ 
+This can be useful if you only want to [password-protect]({{ pt.pages.getUrlById('config-passwords') }}) pages on your server but not on your local machine, for instance.
+
+{% endset %}

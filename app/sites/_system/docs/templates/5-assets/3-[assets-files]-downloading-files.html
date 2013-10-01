@@ -1,0 +1,31 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Linking to files for download
+
+Because your site directory is <strong>not publicly accessible</strong> it's not possible to directly link to files that you want to provide for download. Instead you'll need to place the files into a special directory called `/files` in the root of your site, and then link to them using Prontotype's download URL.
+
+The URL for any file in your `/files` directory will look like this:
+
+<pre class="brush: xml">http://example.com/index.php/<files_trigger>/<path_to_file></pre>
+
+Where `<files_trigger>` is as defined [in the 'triggers' section of your config file]({{ pt.pages.getUrlById('config-triggers') }}) (defaults to **_files**) and `<path_to_file>` is the path of the file that you wish to access, relative to the site's `/files` directory.
+
+So to link to a file located at `/files/animals/monkey.pdf` would look something like this (with [default URL trigger value]({{ pt.pages.getUrlById('config-triggers') }}) and without enabling [clean URLs]({{ pt.pages.getUrlById('pages-clean-urls') }})):
+
+<pre class="brush: xml">http://example.com/index.php/_files/animals/monkey.pdf</pre>
+
+### Auto-generating links
+
+Prontotype provides a [couple of methods]({{ pt.pages.getUrlById('template-ref-assets') }}) for generating the links based on the path of your file (relative to the `/files` directory). A couple of examples of using these might look like this:
+
+{% raw %}<pre class="brush: twig"><a href="{{ pt.assets.getFileUrl('animals/monkey.pdf') }}">Download now!</a></pre>{% endraw %}
+
+There is also a [snippet method]({{ pt.pages.getUrlById('tref-snippets-assets') }}) available for generating the entire file download link element:
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.assets.fileLink('animals/monkey.pdf', 'Monkey map download') }} <!-- <a href="http://example.com/index.php/_files/animals/monkey.pdf">Monkey map download</a> --></pre>{% endraw %}
+
+See the [assets snippets section]({{ pt.pages.getUrlById('tref-snippets-assets') }}) for more information on using this snippet shortcut.
+
+{% endset %}

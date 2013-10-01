@@ -1,0 +1,231 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Auto-generating data
+
+To make populating your site with content easier, Prontotype integrates the [Faker library](https://github.com/fzaninotto/Faker) to [provide a method]({{ pt.pages.getUrlById('template-ref-data') }}#data-faker) for auto-generating data such as [names, addresses, dates, numbers and more](#faker-ref).
+
+The `pt.data.faker()` method returns a 'faker' instance, which can then be used to auto-generate content in your templates. For example:
+
+{% raw %}<pre class="brush: twig">{% set faker = pt.data.faker() %}
+Name: {{ faker.firstName }} {{ faker.lastName }}
+Address: {{ faker.address }}
+Tel: {{ faker.phoneNumber }}</pre>{% endraw %}
+
+This method will generate a randomly generate content for each call to the same method (i.e. firstName etc) and each time the page is refreshed. This is great for testing aspects of your UI with different sets of data, lengths of names, addresses etc.
+
+## Using seeds to repeatably auto-generate data 
+
+If you want to remove the random generation aspect of the faker method - i.e. to use the **same** set of randomly generated data throughout your site and page refreshes - you can **seed** the faker instance by passing in an integer number to the `pt.data.faker()` method.
+
+Everywhere that uses that same seed integer will then produce the same set of auto-generated data. To help explain this consider the following example:
+
+{% raw %}<pre class="brush: twig">{# NON seeded example #}
+{% set faker = pt.data.faker() %}
+First Name: {{ faker.firstName }} <!-- Bob -->
+First Name: {{ faker.firstName }} <!-- Fred -->
+
+{# Example with seeding #}
+{% set seededFaker = pt.data.faker(123) %}
+First Name: {{ seededFaker.firstName }} <!-- Jim -->
+First Name: {{ seededFaker.firstName }} <!-- Jim -->
+
+{# In a different template #}
+{% set otherFaker = pt.data.faker(123) %}
+First Name: {{ otherFaker.firstName }} <!-- Jim --></pre>{% endraw %}
+
+## Locale
+
+By default Prontotype uses the **en_EN** locale, which generates US-style addresses, phone numbers etc. To change the locale see the section on configuration below. Possible locale values include: **en_GB**, **fr_FR**, **es_ES**, **de_DE** and many more - see the [faker documentation](https://github.com/fzaninotto/Faker#localization) for full details.
+
+## site-wide configuration
+
+You can configure faker using the following configuration block in your config file:
+
+{% raw %}<pre class="brush: yaml">data:
+  faker:
+    locale: en_EN # specify a different locale here if required
+    seed: # set global seed here (see note)</pre>{% endraw %}
+
+Note that this allows you to set a site-wide seed for your faker instances, which will be applied to any faker instances that don't themselves specify a seed. However this is **not generally recommended** as it reduces your ability to randomly generate data in other parts of you site - specifying a per-instance seed is generally more flexible.
+
+## Reference  {{ '{#' }}faker-ref}
+
+Below is a list of all the keys and example outputs (for the **en_EN** locale) that can be used to auto-generate data:
+
+{% set faker = pt.data.faker() %}
+
+### Person
+{% include '_inc/faker-table.html' with { opts: ['prefix','suffix','name','firstName','lastName'] }  %}
+
+### Address
+{% include '_inc/faker-table.html' with { opts: ['cityPrefix','secondaryAddress','state','stateAbbr','citySuffix', 'streetSuffix', 'buildingNumber', 'city', 'streetName', 'streetAddress', 'postcode', 'address', 'country', 'latitude', 'longitude'] }  %}
+
+### Phone number
+{% include '_inc/faker-table.html' with { opts: ['phoneNumber'] }  %}
+
+### Company
+{% include '_inc/faker-table.html' with { opts: ['catchPhrase', 'bs', 'company', 'companySuffix'] }  %}
+
+### Lorem
+{% include '_inc/faker-table.html' with { opts: [
+    {params: '(nb = 3)', name: 'words', args: [3], type:'array'},
+    {params: '(nbWords = 6)', name: 'sentence', args: [6]},
+    {params: '(nb = 3)', name: 'sentences', args: [3], type:'array'},
+    {params: '(nbSentences = 3)', name: 'paragraph', args: [3]},
+    {params: '(nb = 3)', name: 'paragraphs', args: [3], type:'array'},
+    {params: '(maxNbChars = 200)', name: 'text', args: [200]},
+] }  %}
+
+### Company
+{% include '_inc/faker-table.html' with { opts: ['email', 'safeEmail', 'freeEmail', 'companyEmail', 'freeEmailDomain', 'safeEmailDomain', 'userName', 'domainName', 'domainWord', 'tld', 'url', 'ipv4', 'ipv6'] }  %}
+
+### Datetime
+<table>
+    <tr>
+        <th class="faker-key">Key</th>
+        <th>Example output</th>
+    </tr>
+    <tr>
+        <td>unixTime</td>
+        <td>{{ faker.unixTime }}</td>
+    </tr>
+    <tr>
+        <td>dateTime</td>
+        <td>DateTime('2008-04-25 08:37:17')</td>
+    </tr>
+    <tr>
+        <td>dateTimeAD</td>
+        <td>DateTime('1800-04-29 20:38:49')</td>
+    </tr>
+    <tr>
+        <td>iso8601</td>
+        <td>{{ faker.iso8601 }}</td>
+    </tr>
+    <tr>
+        <td>date<span class="method-params">(format = 'Y-m-d')</span></td>
+        <td>{{ faker.date('Y-m-d') }}</td>
+    </tr>
+    <tr>
+        <td>time<span class="method-params">(format = 'H:i:s')</span></td>
+        <td>{{ faker.date('H:i:s') }}</td>
+    </tr>
+    <tr>
+        <td>dateTimeBetween<span class="method-params">(startDate = '-30 years', endDate = 'now')</span></td>
+        <td>DateTime('2003-03-15 02:00:49')</td>
+    </tr>
+    <tr>
+        <td>dateTimeThisCentury</td>
+        <td>DateTime('1915-05-30 19:28:21')</td>
+    </tr>
+    <tr>
+        <td>dateTimeThisDecade</td>
+        <td>DateTime('2007-05-29 22:30:48')</td>
+    </tr>
+    <tr>
+        <td>dateTimeThisYear</td>
+        <td>DateTime('2011-02-27 20:52:14')</td>
+    </tr>
+    <tr>
+        <td>dateTimeThisMonth</td>
+        <td>DateTime('2011-10-23 13:46:23')</td>
+    </tr>
+    <tr>
+        <td>amPm</td>
+        <td>'{{ faker.amPm }}'</td>
+    </tr>
+    <tr>
+        <td>dayOfMonth</td>
+        <td>'{{ faker.dayOfMonth }}'</td>
+    </tr>
+    <tr>
+        <td>dayOfWeek</td>
+        <td>'{{ faker.dayOfWeek }}'</td>
+    </tr>
+    <tr>
+        <td>month</td>
+        <td>'{{ faker.month }}'</td>
+    </tr>
+    <tr>
+        <td>monthName</td>
+        <td>'{{ faker.monthName }}'</td>
+    </tr>
+    <tr>
+        <td>year</td>
+        <td>'{{ faker.year }}'</td>
+    </tr>
+    <tr>
+        <td>century</td>
+        <td>'{{ faker.century }}'</td>
+    </tr>
+    <tr>
+        <td>timezone</td>
+        <td>'{{ faker.timezone }}'</td>
+    </tr>
+</table>
+
+### Datetime
+<table>
+    <tr>
+        <th class="faker-key">Key</th>
+        <th>Example output</th>
+    </tr>
+    <tr>
+        <td>randomDigit</td>
+        <td>{{ faker.randomDigit }}</td>
+    </tr>
+    <tr>
+        <td>randomDigitNotNull</td>
+        <td>{{ faker.randomDigitNotNull }}</td>
+    </tr>
+    <tr>
+        <td>randomNumber<span class="method-params">(nbDigits = NULL)</span></td>
+        <td>{{ faker.randomNumber }}</td>
+    </tr>
+    <tr>
+        <td>randomNumber<span class="method-params">(from, to)</span></td>
+        <td>{{ faker.randomNumber(100, 400) }}</td>
+    </tr>
+    <tr>
+        <td>randomLetter</td>
+        <td>{{ faker.randomLetter }}</td>
+    </tr>
+    <tr>
+        <td>randomLetter</td>
+        <td>'{{ faker.randomLetter }}'</td>
+    </tr>
+    <tr>
+        <td>randomElement<span class="method-params">(array = array ('a','b','c'))</span></td>
+        <td>'{{ faker.randomElement }}'</td>
+    </tr>
+    <tr>
+        <td>numerify<span class="method-params">(string = '###')</span></td>
+        <td>'{{ faker.numerify }}'</td>
+    </tr>
+    <tr>
+        <td>lexify<span class="method-params">(string = '???')</span></td>
+        <td>'{{ faker.lexify }}'</td>
+    </tr>
+    <tr>
+        <td>bothify<span class="method-params">(string = '## ??')</span></td>
+        <td>'{{ faker.bothify }}'</td>
+    </tr>
+</table>
+
+### UserAgent
+{% include '_inc/faker-table.html' with { opts: ['userAgent', 'chrome', 'firefox', 'safari', 'opera', 'internetExplorer'] }  %}
+
+### Color
+{% include '_inc/faker-table.html' with { opts: ['hexcolor', 'rgbcolor', {params: '', name: 'rgbColorAsArray', args: [], type:'array'}, 'rgbCssColor', 'safeColorName', 'colorName'] } %}
+
+### File
+{% include '_inc/faker-table.html' with { opts: ['fileExtension','mimeType'] } %}
+
+### Miscellaneous
+{% include '_inc/faker-table.html' with { opts: [
+    {params: '(chanceOfGettingTrue = 50)', name: 'boolean', args: [], type:'boolean'},
+    'md5', 'sha1', 'sha256', 'locale', 'countryCode', 'languageCode','uuid'
+] }  %}
+
+{% endset %}

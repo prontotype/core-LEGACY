@@ -1,0 +1,50 @@
+{% extends "_layouts/skeleton.html" %}
+
+
+{% set content %}
+
+# Assets template reference
+
+You can access the [assets]({{ pt.pages.getUrlById('assets') }}) methods in your site via the `pt.assets` variable.
+
+## Available methods
+
+<div class="method-ref">
+    
+    <div class="method">
+        <h3 class="method-title" id="assets-getUrl">pt.assets.<span class="name">getUrl(relPath)</span></h3>
+        <div class="method-desc">
+            <p>Gets the full URL of an asset, specified by it's assets-directory (<code>/assets</code>) relative path.</p>            
+        </div>
+{% raw %}<pre class="brush: twig"><link rel="stylesheet" href="{{ pt.assets.getAssetUrl('css/page.css') }}" media="all" type="text/css"></pre>{% endraw %}
+        <p class="hint">Depending on the kind of asset requested from this URL, it may trigger some specific behaviour - for instance requesting the URL for a LESS file will result in the processed CSS being returned, along with the appropriate MIME type headers set. See the <a href="{{ pt.pages.getUrlById('assets') }}">assets docs</a> for more information.</p>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="assets-getUrlPath">pt.assets.<span class="name">getUrlPath(relPath)</span></h3>
+        <div class="method-desc">
+            <p>Gets the root-relative URL of an asset, specified by it's assets-directory (<code>/assets</code>) relative path.</p>            
+        </div>
+{% raw %}<pre class="brush: twig"><link rel="stylesheet" href="{{ pt.assets.getAssetUrlPath('css/page.css') }}" media="all" type="text/css"></pre>{% endraw %}
+        <p class="hint">Depending on the kind of asset requested from this URL, it may trigger some specific behaviour - for instance requesting the URL for a LESS file will result in the processed CSS being returned, along with the appropriate MIME type headers set. See the <a href="{{ pt.pages.getUrlById('assets') }}">assets docs</a> for more information.</p>
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="assets-getFileUrl">pt.assets.<span class="name">getFileUrl(relPath)</span></h3>
+        <div class="method-desc">
+            <p>Gets the full URL of an file, specified by it's file-directory (<code>/files</code>) relative path.</p>            
+        </div>
+{% raw %}<pre class="brush: twig"><a href="{{ pt.assets.getFileUrl('animals/monkey.pdf') }}">Download now!</a></pre>{% endraw %}
+    </div>
+    
+    <div class="method">
+        <h3 class="method-title" id="assets-getFileUrlPath">pt.assets.<span class="name">getFileUrlPath(relPath)</span></h3>
+        <div class="method-desc">
+            <p>Gets the root-relative URL of an file, specified by it's file-directory (<code>/files</code>) relative path.</p>            
+        </div>
+{% raw %}<pre class="brush: twig"><a href="{{ pt.assets.getFileUrlPath('animals/monkey.pdf') }}">Download now!</a></pre>{% endraw %}
+    </div>
+    
+</div>
+
+{% endset %}

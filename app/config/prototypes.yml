@@ -1,5 +1,0 @@
-_docs:
-  domain: '*'
-  path: '_docs'
-  location: 'prototypes/_system/docs'
-  environment: _system

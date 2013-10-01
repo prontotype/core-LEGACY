@@ -32,11 +32,11 @@ Class Prototype {
         $path = null;
         
         if ( ! isset($this->definitions[$label]) ) {
-            throw new \Exception(sprintf("Prototype with label '%s' does not exist.", $label));
+            throw new \Exception(sprintf("Site with label '%s' does not exist.", $label));
         }
         
         if ( ! isset($this->definitions[$label]['location']) ) {
-            throw new \Exception(sprintf("Prototype with label '%s' does not have a 'location' key set.", $label));
+            throw new \Exception(sprintf("Site with label '%s' does not have a 'location' key set.", $label));
         }
         
         $location = $this->definitions[$label]['location'];
@@ -55,7 +55,7 @@ Class Prototype {
         }
         
         if ( $path === null ) {
-            throw new \Exception(sprintf("Prototype directory '%s' does not exist.", $location));
+            throw new \Exception(sprintf("Site directory '%s' does not exist.", $location));
         }
         
         // this is a valid prototype definition

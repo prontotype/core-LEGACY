@@ -1,0 +1,37 @@
+{% extends "_layouts/skeleton.html" %}
+
+{% set content %}
+
+# Installing Prontotype
+
+To get up and running with Prontotype, follow the following steps:
+
+## 1. Install Composer
+
+[Composer](http://getcomposer.org) is a PHP dependency manager that Prontotype uses to make sure it's internals stay up-to-date. If you don't already have Composer running on your system then you'll need to visit the [Composer website](http://getcomposer.org/) for information on how to install it.
+
+We'd recommend [installing it globally](http://getcomposer.org/doc/00-intro.md#globally) (and the installation command-line snippets below assume that to be the case) but it's entirely up to you!
+
+## 2. Download Prontotype
+
+You'll need to download the [latest version of Prontotype](https://github.com/prontotype/prontotype/archive/master.zip) from Github, unzip it and place the files somewhere accessible by your Apache server.
+
+## 3. Install Prontotype's dependencies
+
+Using the command-line (you can use Terminal.app if you are on a Mac), run Composer from the root of your Prontotype installation directory to install all of Prontotype's dependencies. The process might look something like this:
+
+<pre class="brush: bash">$ cd /path/to/my/prontotype/installation
+$ composer install</pre>
+
+## 4. Make sure permissions are correctly set
+The `/cache` directory in the root of your Prontotype installation will need the correct permissions to be writeable by PHP (probably 777 or 755 depending on your server configuration).
+
+## 5. Point a domain at your Prontotype installation
+
+Make sure Apache is set up to route requests from the domain of your choice into the <strong>top-level</strong> of your Prontotype installation, <strong>NOT</strong> the directory where your actual site's specific files are kept. See the [sites, domains and locations section]({{ pt.pages.getUrlById('setup-domains') }}) for more information on locating your individual site's files and mapping domains to them.
+
+## 6. Get prototyping! 
+
+Once that is all done, visiting your domain at `http://mysite.com` (or whatever you are using!) should display the default Prontotype welcome page.
+
+{% endset %}

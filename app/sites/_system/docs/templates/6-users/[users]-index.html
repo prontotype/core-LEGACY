@@ -1,0 +1,116 @@
+{% extends "_layouts/skeleton.html" %}
+     
+{% set content %}  
+
+# Users and logins
+
+To make it easier to site user-based interactions, Prontotype includes a system for mocking up users, accounts and logins. As a quick overview, the user/login system works as follows:
+
+1. You define one or more users, with optional metadata, in a special data file called `users.yml`
+2. Optionally update your site's [config file]({{ pt.pages.getUrlById('config') }}) to specify how you want your user's logins to be handled - Prontotype needs to know how to identify a user on login, and whether or not it should try to match an authentication parameter (like a password) or allow 'mocked up' authentication.
+3. Create a login page in your site, with the form POSTing to the **login URL** - or just use the [user login form snippet]({{ pt.pages.getUrlById('tref-snippets-users') }}) to generate this for you.
+4. In your pages, hide/show content or redirect check for the value of the special `pt.user` variable. If a user is logged in this will return the logged-in user's details as specified in your `users.yml` file. Otherwise it wll return `null`.
+5. Optionally create a 'logout' link, pointing to the **logout URL** - or use the [user logout link snippet]({{ pt.pages.getUrlById('tref-snippets-users') }}) to generate this for you.
+
+
+## The users.yml file
+
+At the heart of the system is a data file called `users.yml`. If you don't have one of these in your site's `/data` directory, the system default one will be used, which looks like this:
+
+{% raw %}<pre class="brush: yaml">default:
+  name: Edward Xample
+  username: example
+  password: test
+  email: ed@xample.com
+  role: user</pre>{% endraw %}
+
+This file defines one user. All of the user attributes are optional and you can add/remove to fit your needs. For instance, if you wanted to create two users for your site, one who should have 'admin' privileges and one who should be a regular user, you could use the following in your site's `/data/users.yml` file:
+
+{% raw %}<pre class="brush: yaml">admin_user:
+  name: Adrian Admin
+  username: admin
+  password: password123
+  role: admin
+
+regular_user:
+  name: Reginald Regular
+  username: regular
+  password: 123abc
+  role: user</pre>{% endraw %}
+
+## Configure your authentication strategy
+
+When a login form is submitted, Prontotype will look to identify a user (**identification**) and then see if their password matches (**authentication**). You can tell Prontotype which of the keys to use for both these actions - by default it will try and perform identification on the **username** key and authentication on the **password** key, and will check the POST request from your login form to look for values for those keys.
+
+To change the values of those keys, and to optionally also set the URL paths to redirect to after a successful login/logout has taken place, you can add a user configuration block into your [configuration file]({{ pt.pages.getUrlById('config') }}). The default block looks like this:
+
+{% raw %}<pre class="brush: yaml">user:
+  identify: username
+  auth: password
+  login:
+    redirect: /
+    error: Your login details were incorrect.
+  logout:
+    redirect: /</pre>{% endraw %}
+
+The `identify` and `auth` values are the ones that will be checked for indentification and authorisation purposes.
+
+### Optional passwords and default users
+
+If you want users to be able to **login without authentication**, you can just set the value of the `user.auth` key in your config file to `null`. On the login form they will only then need to enter their identifier (set to username, by default) - the contents of the authentication field will not be checked.
+
+If you want to log in <strong>a default user if the identification field in the login form is not filled in</strong>, you can create a hidden field above this one to specify the default user identifier value. This means that the login form can be submitted completely empty and a user of your choosing will still get logged in.
+
+<p class="note">Note that using the <a href="{{ pt.pages.getUrlById('tref-snippets-users') }}">user login form snippet</a> to generate your login form based on your configuration settings makes this process much easier!</p>
+
+## Creating a login form
+
+The easiest way to create a login form on the page of your choosing is to use the `pt.snippets.users.login()` method to generate the form based on your user configuration setup:
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.forms.login() }}</pre>{% endraw %}
+
+Using the default configuration this will generate a form that looks like this:
+
+{% raw %}<pre class="brush: xml"><form method="POST" action="/index.php/_user/login">
+    <div class="pt-control">
+        <label for="username">Username</label>
+        <input name="username" type="text" id="username">
+    </div>
+    <div class="pt-control">
+        <label for="password">Password</label>
+        <input name="password" type="password" id="password">
+    </div>
+    <button type="submit">Login &rarr;</button>
+</form></pre>{% endraw %}
+
+You can see the <a href="{{ pt.pages.getUrlById('tref-snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
+
+## Accessing current user metadata and restricting access to content
+
+In any of your templates you can check the value of the `pt.user` variable to see if there is a currently logged in user, and take action accordingly - perhaps showing/hiding content or redirecting users as required.
+
+If there is no logged in user then the value of this variable will be `null`. If there is a user logged in, then the variable will hold the metadata for that user that you defined in your `users.yml` file.
+
+A couple of examples:
+
+{% raw %}<pre class="brush: twig">{# redirect to the homepage if there is no user logged in #}
+{% if not user %}
+    {% redirect pt.pages.getUrlById('home') }
+{% endif %}
+
+{# Only show welcome message to logged in users who have a role value of 'admin' #}
+{% if user and user.role == 'admin' %}
+<p>Welcome {{ user.name }}</p>
+{% else %}
+<p>You need to be logged in as an administrator to see this content</p>
+{% endif %}</pre>{% endraw %}
+
+## Adding a logout link
+
+You can generate a logout link using the `pt.snippets.users.logout()` method as follows:
+
+{% raw %}<pre class="brush: twig">{{ pt.snippets.users.logout() }} <!-- <a href="/index.php/_user/logout">Log out</a> --></pre>{% endraw %}
+
+You can see the <a href="{{ pt.pages.getUrlById('tref-snippets-users') }}">user snippets page</a> for more information on the options available when using this snippet.
+
+{% endset %}
