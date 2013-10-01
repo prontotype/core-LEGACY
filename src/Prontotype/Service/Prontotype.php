@@ -104,15 +104,17 @@ Class Prontotype implements ServiceProviderInterface {
         });
         
         $app['pt.data'] = $app->share(function($app) {
+            $dataPaths = array($app['pt.prototype.paths.data']);
+            foreach( $app['pt.prototype.extends'] as $extended ) {
+                $dataPaths[] = $extended->getPathTo('data');
+            }
             return new DataManager($app, array(
                 new JsonParser($app),
                 new YamlParser($app),
                 new XmlParser($app),
                 new CsvParser($app),
                 new MarkdownParser($app)
-            ), array(
-                $app['pt.prototype.paths.data'],
-            ), $app['pt.app.paths.data']);
+            ), $dataPaths, $app['pt.app.paths.data']);
         });
         
         $app['pt.store'] = $app->share(function($app) {
@@ -120,22 +122,31 @@ Class Prontotype implements ServiceProviderInterface {
         });
         
         $app['pt.assets'] = $app->share(function($app) {
+            $assetPaths = array($app['pt.prototype.paths.assets']);
+            foreach( $app['pt.prototype.extends'] as $extended ) {
+                $assetPaths[] = $extended->getPathTo('assets');
+            }
             return new AssetManager($app, array(
                 new LessProcessor($app),
                 new ScssProcessor($app),
-            ), array(
-                $app['pt.prototype.paths.assets'],
-            ), $app['pt.app.paths.assets']);
+            ), $assetPaths, $app['pt.app.paths.assets']);
         });
         
         $app['pt.files'] = $app->share(function($app) {
-            return new FileManager($app, array(
-                $app['pt.prototype.paths.files'],
-            ), $app['pt.app.paths.files']);
+            $filePaths = array($app['pt.prototype.paths.files']);
+            foreach( $app['pt.prototype.extends'] as $extended ) {
+                $filePaths[] = $extended->getPathTo('files');
+            }
+            return new FileManager($app, $filePaths, $app['pt.app.paths.files']);
         });
-
+        
         $app['pt.extensions'] = $app->share(function($app) {
-            return new ExtensionManager($app, $app['pt.prototype.paths.extensions']);
+            // $extPaths = array($app['pt.prototype.paths.extensions']);
+            // foreach( $app['pt.prototype.extends'] as $extended ) {
+            //     $extPaths[] = $extended->getPathTo('extensions');
+            // }
+            $extPaths = $app['pt.prototype.paths.extensions']; // don't extend for now
+            return new ExtensionManager($app, $extPaths);
         });
         
         $app->register(new UrlGeneratorServiceProvider());
@@ -143,7 +154,11 @@ Class Prontotype implements ServiceProviderInterface {
         // template loading...
         
         $app['twig.loader.filesystem'] = $app->share(function ($app) {
-            $fl = new FilesystemLoader(array($app['pt.prototype.paths.templates']));
+            $tplPaths = array($app['pt.prototype.paths.templates']);
+            foreach( $app['pt.prototype.extends'] as $extended ) {
+                $tplPaths[] = $extended->getPathTo('templates');
+            }
+            $fl = new FilesystemLoader($tplPaths);
             $fl->setApp($app);
             $fl->setLoaderType('templates');
             return $fl;

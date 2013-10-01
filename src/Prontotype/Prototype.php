@@ -135,6 +135,9 @@ Class Prototype {
         foreach( $this->definitions as $label => $def ) {
             try {
                 $this->load($label);
+                if ( ! $this->definition['domain'] ) {
+                    continue;
+                }
                 $matches = is_array($this->definition['domain']) ? $this->definition['domain'] : array($this->definition['domain']);
                 $regexp = '/^(';
                 $regexp .= implode('|', array_map(function($value){
