@@ -94,13 +94,13 @@ If there is no logged in user then the value of this variable will be `null`. If
 A couple of examples:
 
 {% raw %}<pre class="brush: twig">{# redirect to the homepage if there is no user logged in #}
-{% if not user %}
+{% if not pt.user %}
     {% redirect pt.pages.getUrlById('home') }
 {% endif %}
 
 {# Only show welcome message to logged in users who have a role value of 'admin' #}
-{% if user and user.role == 'admin' %}
-<p>Welcome {{ user.name }}</p>
+{% if pt.user and pt.user.role == 'admin' %}
+<p>Welcome {{ pt.user.name }}</p>
 {% else %}
 <p>You need to be logged in as an administrator to see this content</p>
 {% endif %}</pre>{% endraw %}
