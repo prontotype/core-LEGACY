@@ -27,7 +27,7 @@ Class Forms extends Base {
     public function label($text = 'Label', $target = null, $attrs = array())
     {
         $attrs = $this->mergeOpts(array(
-            'for'   => '#' . str_replace('#', '', $target)
+            'for' => str_replace('#', '', $target)
         ), $attrs);
         
         return $this->renderTemplate('label.html', array(
