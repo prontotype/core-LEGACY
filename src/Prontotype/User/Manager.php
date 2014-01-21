@@ -60,9 +60,10 @@ Class Manager {
                 return $this->currentUser;
             } else {
                 $this->logoutUser();
+                return null;
             }
         }
-        return null;
+        return $this->currentUser;
     }
     
     public function getUserBy($key, $val)
