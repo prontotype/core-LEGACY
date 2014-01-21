@@ -29,7 +29,7 @@ Class Application {
         'pt.exporter'      => '\Prontotype\Exporter',
         'pt.scraper'       => '\Prontotype\Scraper\Scraper',
         'pt.utils'         => '\Prontotype\Utils',
-        'pt.user_manager'  => '\Prontotype\UserManager',
+        'pt.user_manager'  => '\Prontotype\User\Manager',
         'pt.snippets'      => '\Prontotype\Snippets\Manager',
         'pt.assets_helper' => '\Prontotype\Assets\Helper',
         'pt.session'       => '\Prontotype\Session',

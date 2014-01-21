@@ -23,6 +23,7 @@ triggers:
   user: _user
 
 user:
+  config_file: users.yml
   identify: username
   auth: password
   login:

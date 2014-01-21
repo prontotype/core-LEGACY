@@ -6,7 +6,7 @@
 
 To make it easier to site user-based interactions, Prontotype includes a system for mocking up users, accounts and logins. As a quick overview, the user/login system works as follows:
 
-1. You define one or more users, with optional metadata, in a special data file called `users.yml`
+1. You define one or more users, with optional metadata, in a special data file (by default it will look for a YAML file named `users.yml`, but that can be changed if required)
 2. Optionally update your site's [config file]({{ pt.pages.getUrlById('config') }}) to specify how you want your user's logins to be handled - Prontotype needs to know how to identify a user on login, and whether or not it should try to match an authentication parameter (like a password) or allow 'mocked up' authentication.
 3. Create a login page in your site, with the form POSTing to the **login URL** - or just use the [user login form snippet]({{ pt.pages.getUrlById('tref-snippets-users') }}) to generate this for you.
 4. In your pages, hide/show content or redirect check for the value of the special `pt.user` variable. If a user is logged in this will return the logged-in user's details as specified in your `users.yml` file. Otherwise it wll return `null`.
@@ -45,6 +45,7 @@ When a login form is submitted, Prontotype will look to identify a user (**ident
 To change the values of those keys, and to optionally also set the URL paths to redirect to after a successful login/logout has taken place, you can add a user configuration block into your [configuration file]({{ pt.pages.getUrlById('config') }}). The default block looks like this:
 
 {% raw %}<pre class="brush: yaml">user:
+  config_file: users.yml
   identify: username
   auth: password
   login:

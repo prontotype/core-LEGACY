@@ -1,8 +1,10 @@
 <?php
 
-namespace Prontotype;
+namespace Prontotype\User;
 
-Class UserManager {
+use Prontotype\User\User;
+
+Class Manager {
 
     protected $app;
     
@@ -19,7 +21,7 @@ Class UserManager {
     public function __construct($app)
     {
         $this->app = $app;        
-        $this->users = $this->app['pt.data']->get('users.yml') ?: array();
+        $this->users = $this->app['pt.data']->get($this->app['pt.config']->get('user.config_file')) ?: array();
         $this->identifyBy = $this->app['pt.config']->get('user.identify');
         $authConf = $this->app['pt.config']->get('user.auth');
         $this->authBy = ! empty($authConf) ? $authConf : null;
@@ -27,17 +29,16 @@ Class UserManager {
     
     public function userIsLoggedIn()
     {
-        if ( ! $user = $this->getCurrentUser() ) {
-            return false;
-        }
-        return $this->loggedInUserIsValid($user);
+        return !! $this->getCurrentUser();
     }
     
     public function attemptLogin($identity, $auth = null)
     {
-        if ( $userData = $this->getUserBy($this->identifyBy, $identity) ) {
-            if ( ! $this->authBy || $auth == @$userData[$this->authBy] ) {
-                $this->app['pt.store']->set($this->userCookieName, $userData);
+        $authByKey = $this->authBy;
+        $idByKey = $this->identifyBy;
+        if ( $user = $this->getUserBy($this->identifyBy, $identity) ) {
+            if ( ! $this->authBy || $auth == @$user->$authByKey ) {
+                $this->app['pt.store']->set($this->userCookieName, $user->$idByKey);
                 return true;
             }
         }
@@ -54,31 +55,20 @@ Class UserManager {
     public function getCurrentUser()
     {
         if ( $this->currentUser === null ) {
-            $this->currentUser = $this->app['pt.store']->get($this->userCookieName);
-        }
-        if ( $this->loggedInUserIsValid($this->currentUser) ) {
-            return $this->currentUser;    
-        } else {
-            $this->logoutUser();
-            return null;
-        }
-    }
-    
-    public function loggedInUserIsValid($user)
-    {
-        if ( $userData = $this->getUserBy($this->identifyBy, $user[$this->identifyBy]) ) {
-            if ( ! $this->authBy || @$user[$this->authBy] == @$userData[$this->authBy] ) {
-                return true;
+            $idByVal = $this->app['pt.store']->get($this->userCookieName);
+            if ( $this->currentUser = $this->getUserBy($this->identifyBy, $idByVal) ) {
+                return $this->currentUser;
             }
         }
-        return false;
+        $this->logoutUser();
+        return null;
     }
     
     public function getUserBy($key, $val)
     {
         foreach( $this->users as $userData ) {
             if ( @$userData[$key] == $val ) {
-                return $userData;
+                return $this->createUser($userData);
             }
         }
         return null;
@@ -104,4 +94,8 @@ Class UserManager {
         return $this->app['pt.utils']->makePrefixedUrl($rdir);
     }
     
+    protected function createUser($data)
+    {
+        return new User($data);
+    }
 }

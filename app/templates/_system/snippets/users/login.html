@@ -20,7 +20,7 @@
 {% if opts.auth %}
 <div class="pt-control">
     {{ pt.snippets.forms.label(opts.authLabel, opts.auth, postData[opts.auth]) }}
-    {{ pt.snippets.forms.password(opts.auth, postData[opts.identify]) }}
+    {{ pt.snippets.forms.password(opts.auth) }}
 </div>
 {% endif %}
 
