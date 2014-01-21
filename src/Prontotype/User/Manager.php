@@ -58,9 +58,10 @@ Class Manager {
             $idByVal = $this->app['pt.store']->get($this->userCookieName);
             if ( $this->currentUser = $this->getUserBy($this->identifyBy, $idByVal) ) {
                 return $this->currentUser;
+            } else {
+                $this->logoutUser();
             }
         }
-        $this->logoutUser();
         return null;
     }
     
