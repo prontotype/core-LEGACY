@@ -166,7 +166,7 @@ Class Manager {
             } catch( \Exception $e ) {}
         }        
         foreach($loadPaths as $loadPath) {            
-            $fullPath = $loadPath . '/' . strtolower($assetPath);
+            $fullPath = $loadPath . '/' . $assetPath;
             if ( ! file_exists( $fullPath ) ) {
                 $aliases = $this->getPathAliases($fullPath);
                 if ( count($aliases) ) {
