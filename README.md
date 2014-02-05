@@ -1,4 +1,4 @@
 Prontotype Core
 ================
 
-Work-in-progress v3.0 rewrite of [Prontotype](http://prontotype.allmarkedup.com). Not yet ready for use.
+Core codebase for [Prontotype](https://github.com/prontotype/prontotype). Do not install this repository directly.
