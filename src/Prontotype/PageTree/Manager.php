@@ -30,10 +30,12 @@ Class Manager {
         if ( ! $this->current ) {
             $requestPath = $this->app['pt.request']->getUrlPath();
             $requestPath = empty($requestPath) ? '/' : $requestPath;
-            $this->current = clone $this->getByRoute($requestPath);
-            if ( $this->current && $requestPath !== str_replace('/index.php', '', $this->current->getUrlPath()) ) {
-                // been rerouted
-                $this->current->setUrlPath($requestPath);
+            if ( $current = $this->getByRoute($requestPath) ) {
+                $this->current = clone $current;
+                if ( $this->current && $requestPath !== str_replace('/index.php', '', $this->current->getUrlPath()) ) {
+                    // been rerouted
+                    $this->current->setUrlPath($requestPath);
+                }
             }
         }
         return $this->current;
