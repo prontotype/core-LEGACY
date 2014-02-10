@@ -25,8 +25,71 @@ Class RouteMatcher {
             $this->addLoadPath($path);
         }
         $this->routes = $this->mergeRoutes();
+        $this->convertRoutes();
+    }
+
+    public function convertRoutes()
+    {
+        $routes = $this->getRoutes();
+
+                echo '<pre>';
+                print_r($routes);
+                echo '</pre>';
+
+        foreach( $routes as $name => &$route ) {
+
+            $route['match'] = $this->replaceIds($route['match']);
+
+            $route['tokens'] = $this->parseTokens($route['match']);
+
+            $route['match'] = $this->rationaliseUrlPath($route['match']);
+
+            // // see if there are any page ID placeholders that need parsing out
+            // $replacements = array();
+            // if ( preg_match('/\[([^\]]*)\]/', $routeSpec, $matches) ) {
+            //     if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
+            //         $replacements[] = trim($routePage->getUnPrefixedUrlPath(),'/');
+            //         if ( $root == '/' ) {
+            //             $routeSpec = str_replace(
+            //                 array($matches[0],'index.php'),
+            //                 array($routePage->getUrlPath(),''),
+            //                 $routeSpec
+            //             );                            
+            //         } else {
+            //             $routeSpec = str_replace(
+            //                 array($matches[0],'index.php', $root),
+            //                 array($routePage->getUrlPath(),'', ''),
+            //                 $routeSpec
+            //             );
+            //         }
+            //     } else {
+            //         continue;
+            //     }
+            // }
+            
+            // $routeSpec = ltrim($root,'/') . trim($routeSpec,'/');
+            
+            // // replace helper placeholders
+            // if ( preg_match( $this->makeRegexp($routeSpec, $this->tokens), $route, $matches ) ) {
+            //     // we have a match!
+            //     for( $i = 0; $i < count($matches); $i++ ) {
+            //         if ( $i !== 0) {
+            //             $replacements[] = $matches[$i];
+            //         }
+            //     }
+            //     $route = $details['display'];
+            //     break;
+            // }
+        }
+
+
+                echo '<pre>';
+                print_r($routes);
+                echo '</pre>';
+
     }
     
+    // takes a URL and returns the URL that it gets mapped to.
     public function convertRoute($route)
     {
         $route = trim($route,'/');
@@ -102,6 +165,14 @@ Class RouteMatcher {
             return $this->app['pt.request']->getUriForPath($urlPath);
         }
     }
+
+    public function parseTokens($path)
+    {
+        preg_match_all('/\{(.*?)(:([A-Za-z\d_]*))?\}/', $path, $matches);
+                echo '<pre>';
+                print_r($matches);
+                echo '</pre>';
+    }
     
     public function getUrlPathForRoute($routeName, $params = array())
     {
@@ -140,27 +211,35 @@ Class RouteMatcher {
         return '/^' . $route . '$/';
     }
     
-    protected function replaceIds($route)
+    protected function replaceIds($str)
     {
-        $root = $this->app['pt.prototype.path'] . '/';
-        if ( preg_match('/\[([^\]]*)\]/', $route, $matches) ) {
-            if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
-                if ( $root == '/' ) {
-                    $route = $root . str_replace(
-                        array($matches[0],'index.php'),
-                        array($routePage->getUrlPath(),''),
-                        $route
-                    );    
-                } else {
-                    $route = $root . str_replace(
-                        array($matches[0],'index.php',$root),
-                        array($routePage->getUrlPath(),'',''),
-                        $route
-                    );    
-                }                    
+        if ( preg_match_all('/\[([^\]]*)\]/', $str, $matches) ) {
+            for($i = 0; $i < count($matches[0]); $i++) {
+                $pageId = $matches[1][$i];
+                if ($page = $this->app['pt.pages']->getById($pageId)) {
+                    $str = str_replace($matches[0][$i], $page->getUrlPath(), $str);
+                }
             }
         }
-        return $route;
+        // $root = $this->app['pt.prototype.path'] . '/';
+        // if ( preg_match_all('/\[([^\]]*)\]/', $route, $matches) ) {
+        //     if ( $routePage = $this->app['pt.pages']->getById($matches[1]) ) {
+        //         if ( $root == '/' ) {
+        //             $route = $root . str_replace(
+        //                 array($matches[0],'index.php'),
+        //                 array($routePage->getUrlPath(),''),
+        //                 $route
+        //             );    
+        //         } else {
+        //             $route = $root . str_replace(
+        //                 array($matches[0],'index.php',$root),
+        //                 array($routePage->getUrlPath(),'',''),
+        //                 $route
+        //             );    
+        //         }                    
+        //     }
+        // }
+        return $str;
     }
     
     protected function getRoutes()
@@ -244,6 +323,12 @@ Class RouteMatcher {
             }
         }
         return $merged;
+    }
+
+    protected function rationaliseUrlPath($path)
+    {
+        $path = str_replace('//', '/', $path);
+        return $path;
     }
     
 }
