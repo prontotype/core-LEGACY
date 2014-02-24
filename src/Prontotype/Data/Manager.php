@@ -42,6 +42,11 @@ Class Manager {
         }
         return $paths;
     }
+
+    public function json($location, $replacements = null, $type = null, $dataPath = null, $headers = null)
+    {
+        return json_encode($this->get($location, $replacements, $type, $dataPath, $headers));
+    }
     
     public function get($location, $replacements = null, $type = null, $dataPath = null, $headers = null)
     {
