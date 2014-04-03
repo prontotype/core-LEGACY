@@ -61,7 +61,8 @@ Class Manager {
         
         return array(
             'mime' => $this->getMimeType($fullPath),
-            'content' => $parsed
+            'content' => $parsed,
+            'full_path' => $fullPath
         );
     }
     
@@ -217,4 +218,24 @@ Class Manager {
         $file = new File($fullPath);
         return $file->getMimeType();
     }
+
+    public function getCacheHeadersForPath($path)
+    {   
+        $lastModified = filemtime($path);
+        $etagFile = md5_file($path);
+        $ifModifiedSince = (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : false);
+        $etagHeader = (isset($_SERVER['HTTP_IF_NONE_MATCH']) ? trim($_SERVER['HTTP_IF_NONE_MATCH']) : false);
+
+        if ( @ strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified || $etagHeader == $etagFile) {
+            return null;
+        }
+
+        return array(
+            'Cache-Control' => 'public',
+            'Content-Type'  => $this->getMimeType($path),
+            'Last-Modified' => gmdate("D, d M Y H:i:s", $lastModified) . " GMT",
+            'Etag' => $etagFile,
+        );
+    }
+
 }

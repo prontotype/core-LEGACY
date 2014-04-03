@@ -34,10 +34,14 @@ class AssetController implements ControllerProviderInterface {
             } catch ( \Exception $e ) {
                 return $app->abort(404);
             }
+    
+            $headers = $app['pt.assets']->getCacheHeadersForPath($assetDetails['full_path']);
+
+            if ($headers === null) {
+                return $app->abort(304);
+            }
             
-            return new Response($assetDetails['content'], 200, array(
-                'Content-Type' => $assetDetails['mime']
-            ));
+            return new Response($assetDetails['content'], 200, $headers);
         
         })
         ->assert('asset_path', '.+')

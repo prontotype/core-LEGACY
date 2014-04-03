@@ -48,6 +48,8 @@ Class Application {
     
 	public function __construct($paths)
     {
+        session_cache_limiter('public');
+        
         $this->paths = $paths;
         $this->app = $app = new SilexApp();
         
