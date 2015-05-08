@@ -1,5 +1,5 @@
 {
-    "name": "prontotype/core",
+    "name": "prontotype/core-legacy",
     "description": "Core application code for Prontotype",
     "keywords": ["prototyping","prototype server","framework"],
     "homepage": "http://github.com/prontotype/prontotype",
